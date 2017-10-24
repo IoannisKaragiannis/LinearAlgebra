@@ -4,7 +4,7 @@ This is a simple demo to illustrate how the *LinearAlgebra* library works. The t
 
 ## GETTING STARTED
 
-These were the two steps to make my demo collaborate with the *LinearAlgebra* library.
+These are the two steps to be made so that this demo can collaborate with the *LinearAlgebra* library.
 
 **_Step 1_:**
 ```
@@ -32,7 +32,13 @@ Remember: if you decide to store the *LinearAlgebra* in a directory other than *
 In order for this demo to be ran you need to store the *LinearAlgebra* library under the */usr/local/LinearAlgebra* directory as desribed in the main README.md. From your terminal type the following:
 
 ```
-/usr/local/LinearAlgebra/demo/Debug/./KalmanFilter
+cd /usr/local/LinearAlgebra/demo/
+make clean
+make all
+```
+The binary you need to run is under the *build/bin/* directory, so type this on your terminal.
+```
+build/bin/./KalmanFilter
 ```
 
 You should see:
@@ -50,7 +56,7 @@ est_err_vel = [ 1.00 0.92 0.58 0.30 0.15 0.08 ]
 
 These results can be confirmed by looking on the table at page 24 of the [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
 
-## CROSS COMPILE FOR ARM PROCESSORS
+## CROSS-COMPILE DEMO
 
 Install the ARM cross compiler toolchain on your Linux Ubuntu PC:
 ```
@@ -69,21 +75,7 @@ $ sudo apt-get install gcc-arm-linux-gnueabihf
 $ sudo apt-get install g++-arm-linux-gnueabihf
 ```
 
-Cross Compile Settings for your project.
-
-Right click on your project:
-Properties -> C/C++ Build -> Settings -> Manage Configurations
-Press New.. and name it as you wish. For simplicity I usually call them DebugARM/ReleaseARM.
-
-Now, in the *GCC C++ Compiler* and *GCC C++ Linker* command insert **arm-linux-gnueabihf-g++-4.8** or a newer version if you prefer. Respectively insert **arm-linux-gnueabihf-gcc-4.8** in the *GCC C Compiler*. We don't need to specify the path for them as they are stored under */usr/bin/* during installation. This path is by default included in Eclipse. If that's not your case, make sure you inlude the respective path in front of the compiler's name. Find where your cross-compiler is stored by typing the following on your terminal:
-
-```
-$ find /usr/ -name "arm-linux-gnueabihf-g++-4.8"
-```
-
-In the *GCC C++ Compiler* add the following path in the includes: **/usr/arm-linux-gnueabihf/include**. In the *GCC C++ Linker* add this in the library search path: **/usr/arm-linux-gnueabihf/lib**. Last but not least in *GCC Assembler* change **as** to **/usr/arm-linux-gnueabihf/bin/as**
-
-YOU ARE READY TO CROSS COMPILE YOUR PROJECT!!!
+Now, you can simply edit the makefile and modify lines 7-10 accordingly.
 
 
 ## AUTHORS
