@@ -1,17 +1,12 @@
 # LinearAlgebra
 
-This is a linear algebra library. It consists of two major classes, _**vec**_ standing for vector
+This is an easy-to-install linear algebra library. It consists of two major classes, _**vec**_ standing for vector
 and _**mat**_ standing for matrix together with a set of accompanying functions and operations.
 This library might be useful for projects within the field of signal/image processing,
 machine learning, and in general any kind of academic/scientific project.
 
-Being a static library it will increase the overall size of your project's binary, but it means that
-you won't need to carry along a copy of the library that is being used. As the code is connected
-at compile time there are not any additional run-time loading costs. The code is simply there.
-Personally, I prefer static libraries to ensure that the binary does not have many external
-dependencies that may be difficult to meet, such as specific versions of the C++ standard library
-or specific versions of the Boost C++ library.
-
+This is a header-only library which means you don't have to worry about different platforms where the library might be used.
+This is a header-only library simplifies the build process. You don't need to build the library, and you don't need to specify the compiled library during the link step of the build. If you do have a compiled library, you will probably want to build multiple versions of it: One compiled with debugging enabled, another with optimization enabled, and possibly yet another stripped of symbols. And maybe even more for a multi-platform system.
 
 ## GETTING STARTED
 
