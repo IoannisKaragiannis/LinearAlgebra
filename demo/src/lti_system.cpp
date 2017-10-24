@@ -81,7 +81,7 @@ void lti_system::set_system(const mat& m1, const mat& m2, const mat& m3,
 	H = m4; R = m5;
 
 
-	if(sampling_period > 0 && std::abs(sampling_period) != Inf){
+	if(sampling_period > 0 && std::abs(sampling_period) != Inf(double)){
 		dt = sampling_period;
 	}else{
 		std::string msg = FILE_LINE_ERROR + "exception in lti_system::set_system(...): frequency has to be positive";
