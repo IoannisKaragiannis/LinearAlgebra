@@ -115,47 +115,17 @@ $ rm -r /home/user_name/Downloads/LinearAlgebra-master.zip
 ```
 
 Now the *LinearAlgebra*  containing the source code, as well as 
-the header files and the binaries should lay under the */usr/local/LinearAlgebra* directory.
-
-**_Step 3_:**
-
-In order to build the library type the following on your terminal:
-
-```
-$ cd /usr/local/LinearAlgebra
-$ make clean
-$ make all
-```
-Now the *bin* folder should contain the objects created for the library and under the *lib* folder you should see the *libLinearAlgebra.a* file.
+the header files and the binaries should lay under the */usr/local/LinearAlgebra* directory. That was it. Enjoy!
 
 ### LINK YOUR PROJECT WITH *LinearAlgebra* LIBRARY.
 
-**_Step 1_:**
 
+In your main project include this line 
+
+```c++
+#include </usr/local/LinearAlgebra/include/base.h>
 ```
-Right click on your project:
-Properties -> C/C++ Build -> Settings -> GCC C++ Linker -> Libraries
-and add the proper library and library path as shown below.
-
-Depending on your configuration (Debug/Release), you should link
-your project accordingly to the proper library that was built as
-described above.
-
-```
-![Screenshot](/images/LinearAlgebraLibrary/Linker_libraries.png)
-
-**_Step 2_:**
-
-```
-Right click on your project:
-Properties -> C/C++ Build -> Settings -> GCC C++ Compiler -> Includes
-and add the proper path for the header files of the current library
-as shown below:
-
-```
-![Screenshot](/images/LinearAlgebraLibrary/compiler_includes.png)
-
-
+That was it. Enjoy!
 
 ## DEMO
 
@@ -272,8 +242,6 @@ $ sudo apt-get install gcc-arm-linux-gnueabihf
 $ sudo apt-get install g++-arm-linux-gnueabihf
 ```
 
-If you have to cross-compile your project using this library, you have to make sure that you link the project to the correct cross-compiled version of the library as well. I have already cross compiled the library for *AM3358 ARM Cortex-A8* processor (BeagleBone). That is why I used gcc-arm-linux-gnueabihf.  It's in the DebugARM or ReleaseARM folder. But if for some reason you need a newer gcc/g++ version or another processor, you have to cross-compile it yourself. 
-
 Cross Compile Settings for your project.
 
 Right click on your project:
@@ -289,7 +257,6 @@ $ find /usr/ -name "arm-linux-gnueabihf-g++-4.8"
 In the *GCC C++ Compiler* add the following path in the includes: **/usr/arm-linux-gnueabihf/include**. In the *GCC C++ Linker* add this in the library search path: **/usr/arm-linux-gnueabihf/lib**. Last but not least in *GCC Assembler* change **as** to **/usr/arm-linux-gnueabihf/bin/as**
 
 YOU ARE READY TO CROSS COMPILE YOUR PROJECT!!!
-
 
 
 ## RUNNING TESTS
