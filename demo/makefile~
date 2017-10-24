@@ -84,7 +84,7 @@ $(TARGET): $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
 	@$(MKDIR_P) $(TARGET_DEST)
-	$(CXX_LINKER) -o $(TARGET_FULL_PATH) $(OBJS) $(USER_OBJS) $(LIBS)
+	$(CXX) -o $(TARGET_FULL_PATH) $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
