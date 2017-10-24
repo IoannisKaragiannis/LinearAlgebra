@@ -1,109 +1,22 @@
 # DEMO
 
-This is a simple demo to illustrate how the LinearAlgebra works. The two main features of this demo is the *lti_system* class and the *kalman* class. In this demo we will implement a Kalman filter to track the position of a free falling ball given that we can measure its position with some noisy instrument. The example was based upon [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
+This is a simple demo to illustrate how the LinearAlgebra works. The two main features of this demo is the *lti_system* class and the *kalman* class. In this demo we will implement a Kalman filter to track the position of a free falling ball given that we can measure its position with some noisy instrument. The example was based upon [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf). All functions of this demo are selfexplanatory, so feel free to read the respective header and source files.
 
 ## GETTING STARTED
 
-I have only been working on Eclipse running on Ubuntu, thus I will only provide you with instructions
-assuming your OS and IDE is Linux and Eclipse respectively. You should find it out yourself how to adopt
-these instructions for different OS or IDE.
+Enable C++11 and introduce at least the g++-4.8 compiler as explained in the LinearAlgebra README.md.
 
 ### PREREQUISITES
 
 At least g++-4.8 and C++11 enabled.
  
+## RUN THIS DEMO
 
-### ENABLE C++11
-
-**_Step 1_:**
-```
-On your Eclipse environment, configure syntax parser:
-
-Window -> Preferences -> C/C++ -> Build -> Settings -> Discovery -> CDT GCC Build-in Compiler Settings
-In the text box entitled "Command to get compiler specs" append -std=c++11
-The following screenshot displays the above mentioned settings
-```
-
-![Screenshot](/images/LinearAlgebraLibrary/c++11_in_eclipse.png)
-
-**_Step 2_:**
-```
-Right click on your project:
-
-Properties -> C/C++ Build -> Settings -> Tool Settings -> GCC C++ Compiler -> Dialect
-Put -std=c++11 into text box entitled 'other dialect flags' or select ISO C++11 from the 
-language standard drop down as shown below:
-```
-
-![Screenshot](/images/LinearAlgebraLibrary/c++11_in_project.png "con comment")
-
-**_Step 3_:**
-```
-
-Right click on your project
-Properties -> C/C++ General -> Path and symbols (Tab) -> GNU C++ and press add
-Remember to add symbol '__cplusplus' with value '201103L' as shown below:
+In order for this demo to be ran you need to store the *LinearAlgebra* library under the */usr/local/LinearAlgebra* directory as desribed in the main README.md. From your terminal, navigate to this directory and do the following:
 
 ```
-![Screenshot](/images/LinearAlgebraLibrary/cplusplus_in_project.png)
-
-
-### COMPILE AT LEAST WITH g++-4.8
-
-**_Step 1_:**
-
-This library was compiled with a g++-4.8 compiler (which includes C++11), so make sure
-you have at least this version on your linux-machine. 
-```
-$ sudo apt-get install python-software-properties
-$ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-$ sudo apt-get update
-$ sudo apt-get install gcc-4.8
-$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
-```
-
-**_Step 2_:**
 
 ```
-In your Eclipse project force the compiler and the linker to be g++-4.8 as shown below
-```
-![Screenshot](/images/LinearAlgebraLibrary/g++-48_compiler.png)
-![Screenshot](/images/LinearAlgebraLibrary/g++-4.8_linker.png)
-
-
-### DOWNLOAD AND INSTALL *LinearAlgebra* LIB ON YOUR MACHINE
-
-**_Step 1_:**
-```
-Download the current repository from the 'Clone or Download' button as as shown below
-```
-
-![Screenshot](/images/LinearAlgebraLibrary/download_repo.png)
-
-
-**_Step 2_:**
-
-If the unzip command isn't already installed on your system, then run:
-```
-$ sudo apt-get install unzip
-```
-
-Unzip the file. Make sure you are root so you have all transferring/deleting permissions).
-
-```
-$ sudo su
-$ cd /home/user_name/Downloads
-$ sudo unzip LinearAlgebra-master.zip 
-$ cp -r /home/user_name/Downloads/LinearAlgebra-master/. /usr/local/LinearAlgebra/
-```
-Clean your *Downloads* folder
-
-```
-$ rm -r /home/user_name/Downloads/LinearAlgebra-master/
-$ rm -r /home/user_name/Downloads/LinearAlgebra-master.zip
-```
-
-Now the *LinearAlgebra*  containing all the necessary header files should lay under the */usr/local/LinearAlgebra* directory. Could it be more simple? You can always store the LinearAlgebra anywhere you prefer. Even in your project's directory. It's totally up to you.
 
 ### LINK YOUR PROJECT WITH *LinearAlgebra* LIBRARY.
 
