@@ -104,12 +104,18 @@ Unzip the file. Make sure you are root so you have all transferring/deleting per
 ```
 $ sudo su
 $ cd /home/user_name/Downloads
-$ sudo unzip LinearAlgebraLibrary-master.zip 
-$ mv /home/user_name/Downloads/LinearAlgebraLibrary-master/LinearAlgebra/ /usr/local/lib/
+$ sudo unzip LinearAlgebra-master.zip 
+$ cp -r /home/user_name/Downloads/LinearAlgebra-master/. /usr/local/LinearAlgebra/
+```
+Clean your *Downloads* folder
+
+```
+$ rm -r /home/user_name/Downloads/LinearAlgebra-master/
+$ rm -r /home/user_name/Downloads/LinearAlgebra-master.zip
 ```
 
 Now the *LinearAlgebra*  containing the source code, as well as 
-the header files should lay under the */usr/local/lib* directory.
+the header files and the binaries should lay under the */usr/local/LinearAlgebra* directory.
 
 **_Step 3_:**
 
