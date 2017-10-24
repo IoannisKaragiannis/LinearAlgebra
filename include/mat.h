@@ -6,7 +6,7 @@
  * Copyright (c) 2017 Ioannis Karagiannis
  * All rights reserved
 
- * This file is part of myLinearAlgebra library.
+ * This file is part of the LinearAlgebra library.
 
  * LinearAlgebra is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
