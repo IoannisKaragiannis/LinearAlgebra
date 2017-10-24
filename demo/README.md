@@ -20,6 +20,12 @@ I did that only once in the *lti_system.h* file:
 ```c++
 #include </usr/local/LinearAlgebra/include/base.h>
 ```
+
+Remember: if you decide to store the *LinearAlgebra* in a directory other than */usr/local/* then you should change the *include* accordingly.
+
+```c++
+#include </your_path/LinearAlgebra/include/base.h>
+```
  
 ## RUN THIS DEMO
 
