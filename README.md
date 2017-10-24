@@ -127,7 +127,7 @@ P.S.: If you stored the *LinearAlgebra* in a directory other than */usr/local/* 
 #include </your_path/LinearAlgebra/include/base.h>
 ```
 
-## DEMO
+## TUTORIAL EXAMPLE
 
 ```c++
 #include <iostream>
@@ -223,41 +223,6 @@ m1*inv(m1) =
 If for any reason an exception is thrown you can navigate to the */tmp/LinearAlgebra/* directory
 where the *error_log.txt* file will guide you to debug your code. 
 
-## CROSS COMPILE FOR ARM PROCESSORS
-
-Install the ARM cross compiler toolchain on your Linux Ubuntu PC:
-```
-$ sudo apt-get install libc6-armel-cross libc6-dev-armel-cross
-$ sudo apt-get install binutils-arm-linux-gnueabi
-$ sudo apt-get install libncurses5-dev
-```
-If you are using an Arietta, Aria or FOX G20 board:
-```
-$ sudo apt-get install gcc-arm-linux-gnueabi
-$ sudo apt-get install g++-arm-linux-gnueabi
-```
-If you are using an Acqua or RoadRunner board:
-```
-$ sudo apt-get install gcc-arm-linux-gnueabihf
-$ sudo apt-get install g++-arm-linux-gnueabihf
-```
-
-Cross Compile Settings for your project.
-
-Right click on your project:
-Properties -> C/C++ Build -> Settings -> Manage Configurations
-Press New.. and name it as you wish. For simplicity I just call them DebugARM/ReleaseARM.
-
-Now, in the *GCC C++ Compiler* and *GCC C++ Linker* command insert **arm-linux-gnueabihf-g++-4.8** or a newer version if you prefer. Respectively insert **arm-linux-gnueabihf-gcc-4.8** in the *GCC C Compiler*. We don't need to specify the path for them as they are stored under */usr/bin/* during installation. This path is by default included in Eclipse. If that's not your case, make sure you inlude the respective path in front of the compiler's name. Find where your cross-compiler is stored by typing the following on your terminal:
-
-```
-$ find /usr/ -name "arm-linux-gnueabihf-g++-4.8"
-```
-
-In the *GCC C++ Compiler* add the following path in the includes: **/usr/arm-linux-gnueabihf/include**. In the *GCC C++ Linker* add this in the library search path: **/usr/arm-linux-gnueabihf/lib**. Last but not least in *GCC Assembler* change **as** to **/usr/arm-linux-gnueabihf/bin/as**
-
-YOU ARE READY TO CROSS COMPILE YOUR PROJECT!!!
-
 
 ## RUNNING TESTS
 
@@ -329,183 +294,10 @@ Assuming you are using Linux, an error-log file will be stored under the
 /tmp/LinearAlgebra/ directory. This will be helpful to detect bugs in your
 code related to *LinearAlgebra* lib.
 
+# DEMO
 
-## EXTENSIVE EXAMPLE USING *lti_system* and *kalman* classes.
+Look at the demo folder.
 
-The following example was taken from [Kalman example](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf). You can compare the results of the following code with the table at page 24 of the aforementioned example. In order to run the following code make sure you have linked it with the LinearAlgebra library as described above.
-
-
-```c++
-#include <iostream>
-#include </usr/local/LinearAlgebra/include/base.h>
-
-int main(){
-  clear_file(LOG_ERROR_FILE);
-  clear_file(LOG_FILE);
-  clear_file(WARNING_FILE);
-  try{
-      	//test_speed_of_basic_operations(3);
-
-	// ========================== FREE FALLING BALL EXAMPLE =============================
-	/*| State vector:                                                                   |
-         *| x[k] = [pos[k] vel[k]]                                                          |
-	 *|                                                                                 |
-	 *|          |1   dt|          |dt^2/2|                                             |
-	 *| x[k+1] = |0    1|*x[k] +   |  dt  |*(-g) + w[k] = F*x[k] + B*u[k] + w[k]        |
-	 *|                                                                                 |
-	 *| It is worth-mentioning that in this model there is no noise since the input is  |
-	 *| the gravitational force. However, we could introduce some noise which is related|
-	 *| to unmodeled dynamics (e.g.: friction). For dt = 1[s] (f = 1[Hz]) we get:       |
-	 *|                                                                                 |
-	 *|          |1    1|          |0.5|                                                |
-	 *| x[k+1] = |0    1|*x[k] +   | 1 |*(-g) + w[k] = F*x[k] + B*u[k] + w[k]           |
-	 *|                                                                                 |
-	 *| Assume that we measure directly the height of the ball.                         |
-	 *| Our measurements come with some noise.                                          |
-	 *|                                                                                 |
-	 *| z[k] = [1 0]*x[k]+v[k]                                                          |
-	 *===================================================================================
-	 */
-
-	// Declare system's matrices
-	algebra::mat F, B, Q, H, R;
-
-	// I will use the parameters from the example given at page 15 of
-	// http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf
-
-	float freq = 1; // [Hz]
-	float dt = 1.0/freq; //sampling period
-
-	// Gravitational force
-	float g = 1;
-
-	// State transition matrix
-	F = algebra::eye(2);
-	F(0,1) = dt;
-
-	// Standard deviation of process noise
-	float q_std = 0;
-
-	// Process noise variance
-	algebra::mat q(1,1); q(0,0) = q_std*q_std;
-
-	// Control input matrix
-	B.set_size(2,1); B(0,0) = dt*dt/2.0; B(1,0) = dt;
-
-	// Auxiliary matrix to shape proper noise variance matrix.
-	algebra::mat G(2,1); G(0,0) = dt*dt/2.0; G(1,0) = dt;
-
-	// Process noise variance matrix
-	Q = G*q*transpose(G);
-
-	// Observation matrix
-	H = "[1 0]";
-
-	// Observation noise variance
-	R.set_size(1,1); R(0,0) = 1;
-
-	// True initial conditions
-	float pos_0 = 100;
-	float vel_0 = 0;
-	algebra::vec x0(2); x0(0) = pos_0; x0(1) = vel_0;
-
-	// Create an LTI system
-	algebra::lti_system sys;
-	sys.set_system(F, B, Q, H, R, dt);
-	
-	// Set size of position and velocity vectors
-	size_t N = 6;
-	
-	// Declare vectors for true position and velocity
-	algebra::vec pos_true(N), vel_true(N);
-
-	// Declare position-measurement vector
-	algebra::vec pos_meas(N);
-
-	// Set true initial conditions
-	pos_true(0) = pos_0;
-	vel_true(0) = vel_0;
-
-	// Set input to be u = -g
-	algebra::vec u(1); u(0) = -g;
-
-	for(size_t i = 1; i < N; i++){
-	    sys.run_model(x0, u);
-	    pos_true(i) = (sys.get_output())(0);
-	    vel_true(i) = (sys.get_state())(1);
-	}
-
-	// Normally velocity is not observable in this system
-	// so, we shouldn't be able to access it. But, for the
-	// sake of this example I assume I can get it.
-
-	// Position measurements taken from page 24 of
-	// http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf
-	pos_meas = "[0 100 97.9 94.4 92.7 87.3]";
-
-	// There is no measurement at time 0
-	pos_meas(0) = NaN_NUMERIC_LIMIT(double);
-	
-	// Introduce Kalman filter object
-	algebra::kalman kalman;
-	algebra::vec pos_hat(N), vel_hat(N), est_err_pos(N), est_err_vel(N);
-
-	// Initial guess to feed the Kalman filter
-	algebra::vec x_hat0; x_hat0 = "[95 1]";
-
-	// Uncertainty of the initial guess
-	algebra::mat P0 = algebra::eye(2);
-	P0(0,0) = 10; P0(1,1) = 1;
-
-	kalman.set_initial_conditions(x_hat0, P0);
-
-	pos_hat(0) = x_hat0(0);
-	vel_hat(0) = x_hat0(1);
-	est_err_pos(0) = P0(0,0);
-	est_err_vel(0) = P0(1,1);
-
-	// Introduce measurement vector to feed the Kalman filter
-	algebra::vec y(1);
-
-	for(size_t i = 1; i < N; i++){
-	    y(0) = pos_meas(i);
-	    kalman.update(sys, u, y);
-	    pos_hat(i) = kalman.get_estimate()(0);
-	    vel_hat(i) = kalman.get_estimate()(1);
-	    est_err_pos(i) = kalman.get_cov_error()[0];
-	    est_err_vel(i) = kalman.get_cov_error()[1];
-	}
-
-	printf("pos_true = "); pos_true.print(2);
-	printf("pos_meas = "); pos_meas.print(2);
-	printf("pos_hat  = "); pos_hat.print(2);
-	printf("\n");
-	printf("vel_true = "); vel_true.print(2);
-	printf("vel_hat  = "); vel_hat.print(2);
-	printf("\n");
-	printf("est_err_pos = "); est_err_pos.print(2);
-	printf("est_err_vel = "); est_err_vel.print(2);
-
-   }catch(const std::exception& e){
-	std::cerr << "EXCEPTION CAUGHT: " << e.what() << std::endl;
-	return EXIT_FAILURE;
-   }
-
-   return EXIT_SUCCESS;
-}
-```
-If you run this code it should yield back.
-```
-pos_true = [ 100.00 99.50 98.00 95.50 92.00 87.50] 
-pos_meas = [ nan 100.00 97.90 94.40 92.70 87.30] 
-pos_hat  = [ 95.00 99.62 98.43 95.21 92.35 87.68] 
-
-vel_true = [ 0.00 -1.00 -2.00 -3.00 -4.00 -5.00] 
-vel_hat  = [ 1.00 0.38 -1.16 -2.90 -3.69 -4.84] 
-
-est_err_pos = [ 10.00 0.92 0.67 0.66 0.61 0.55] 
-est_err_vel = [ 1.00 0.92 0.58 0.30 0.15 0.08] 
-```
 
 So, now you must have familiriazed yourself with the LinearAlgebra library. Start your exciting project using this library and don't forget to say a good word for me.
 
