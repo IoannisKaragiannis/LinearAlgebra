@@ -42,6 +42,8 @@ est_err_pos = [ 10.00 0.92 0.67 0.66 0.61 0.55 ]
 est_err_vel = [ 1.00 0.92 0.58 0.30 0.15 0.08 ] 
 ```
 
+These results can be confirmed by looking on the table at page 24 of the [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
+
 ## CROSS COMPILE FOR ARM PROCESSORS
 
 Install the ARM cross compiler toolchain on your Linux Ubuntu PC:
