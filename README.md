@@ -114,7 +114,7 @@ $ rm -r /home/user_name/Downloads/LinearAlgebra-master/
 $ rm -r /home/user_name/Downloads/LinearAlgebra-master.zip
 ```
 
-Now the *LinearAlgebra*  containing all the necessary header files should lay under the */usr/local/LinearAlgebra* directory. That was it. Enjoy!
+Now the *LinearAlgebra*  containing all the necessary header files should lay under the */usr/local/LinearAlgebra* directory. Could it be more simple?
 
 ### LINK YOUR PROJECT WITH *LinearAlgebra* LIBRARY.
 
