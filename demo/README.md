@@ -35,6 +35,9 @@ In order for this demo to be ran you need to store the *LinearAlgebra* library u
 cd /usr/local/LinearAlgebra/demo/
 make clean
 make all
+```
+The binary you need to run is under the *build/bin/* directory, so type this on your terminal.
+```
 build/bin/./KalmanFilter
 ```
 
