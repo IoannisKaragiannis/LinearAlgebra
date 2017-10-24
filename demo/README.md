@@ -1,6 +1,6 @@
 # DEMO
 
-This is a simple demo to illustrate how the *LinearAlgebra* library works. The two main features of this demo is the **lti_system** class and the **kalman** class. In this demo we will implement a Kalman filter to track the position of a free falling ball given that we measure its position with a noisy instrument. The example was based upon [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf). All functions of this demo are selfexplanatory, so feel free to read the respective header and source files.
+This is a simple demo to illustrate how the *LinearAlgebra* library works. The two main features of this demo is the **lti_system** class and the **kalman** class. In this demo we will implement a Kalman filter to track the position of a free falling ball given that we measure its position with a noisy instrument. This demo is based upon [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf). All functions of this demo are selfexplanatory, so feel free to read the respective header and source files.
 
 ## GETTING STARTED
 
