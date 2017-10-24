@@ -12,6 +12,12 @@ AR = ar
 
 CXXFLAGS = -std=c++0x -D__cplusplus=201103L -O3 -Wall -fmessage-length=0
 
+TARGET = KalmanFilter
+BUILD_FOLDER = build
+TARGET_DEST = $(BUILD_FOLDER)/bin
+TARGET_FULL_PATH = $(TARGET_DEST)/$(TARGET)
+OBJ_DEST = build/objects
+
 # Command to remove files after calling "make clean"
 RM = sudo rm -rf
 
@@ -19,16 +25,10 @@ RM = sudo rm -rf
 # -m 777 assigns the folder root permissions
 MKDIR_P = sudo mkdir -p -m 777
 
-LIB_NAME = "libLinearAlgebra.a"
-LIB_DIR = lib
-LIB_FULL_PATH = $(LIB_DIR)/$(LIB_NAME)
 
-
-# All of the sources participating in the build are defined here
 
 # Every subdirectory with source files must be described here
 
-BIN_DIR = bin
 
 O_SRCS := 
 CPP_SRCS := 
@@ -44,8 +44,8 @@ OBJS :=
 C++_DEPS := 
 C_DEPS := 
 CC_DEPS := 
-ARCHIVES := 
 CPP_DEPS := 
+EXECUTABLES := 
 CXX_DEPS := 
 C_UPPER_DEPS := 
 
@@ -54,14 +54,14 @@ C_UPPER_DEPS :=
 
 CPP_SRCS = $(wildcard *.cpp)
 
-OBJS = ./$(BIN_DIR)/kalman.o ./$(BIN_DIR)/lti_system.o 
+OBJS = ./$(OBJ_DEST)/kalman.o ./$(OBJ_DEST)/lti_system.o  ./$(OBJ_DEST)/KalmanFilter.o
 
-CPP_DEPS = ./$(BIN_DIR)/kalman.d ./$(BIN_DIR)/lti_system.d 
+CPP_DEPS = ./$(OBJ_DEST)/kalman.d ./$(OBJ_DEST)/lti_system.d ./$(OBJ_DEST)/KalmanFilter.d
 
 
 # Each subdirectory must supply rules for building sources it contributes
-$(BIN_DIR)/%.o: src/miscellaneous/%.cpp
-	@$(MKDIR_P) $(BIN_DIR)/
+$(OBJ_DEST)/%.o: src/%.cpp
+	@$(MKDIR_P) $(OBJ_DEST)/
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
 	$(CXX) $(CXXFLAGS) -c -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
@@ -77,20 +77,21 @@ LIBS =
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: libLinearAlgebra.a
+all: $(TARGET)
 
 # Tool invocations
-libLinearAlgebra.a: $(OBJS) $(USER_OBJS)
+$(TARGET): $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
-	@echo 'Invoking: GCC Archiver'
-	@$(MKDIR_P) lib/
-	$(AR) -r $(LIB_FULL_PATH) $(OBJS) $(USER_OBJS) $(LIBS)
+	@echo 'Invoking: GCC C++ Linker'
+	@$(MKDIR_P) $(TARGET_DEST)
+	$(CXX) -o $(TARGET_FULL_PATH) $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(ARCHIVES)$(CPP_DEPS)$(CXX_DEPS)$(C_UPPER_DEPS) $(LIB_FULL_PATH) 
+	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(EXECUTABLES)$(CPP_DEPS)$(CXX_DEPS)$(C_UPPER_DEPS) $(TARGET_FULL_PATH) 
+	-$(RM) $(BUILD_FOLDER)
 	-@echo ' '
 
 .PHONY: all clean dependents
