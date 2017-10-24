@@ -161,8 +161,7 @@ as shown below:
 
 ```c++
 #include <iostream>
-#include <stdio.h>
-#include </usr/local/lib/LinearAlgebra/base.h>
+#include </usr/local/LinearAlgebra/include/base.h>
 
 int main(){
   clear_file(LOG_ERROR_FILE);
@@ -321,8 +320,7 @@ The following script reveals how simple it is to run the speed tests.
 
 ```c++
 #include <iostream>
-#include <stdio.h>
-#include </usr/local/lib/LinearAlgebra/base.h>
+#include </usr/local/LinearAlgebra/include/base.h>
 
 int main(){
   clear_file(LOG_ERROR_FILE);
@@ -372,8 +370,7 @@ The following example was taken from [Kalman example](http://biorobotics.ri.cmu.
 
 ```c++
 #include <iostream>
-#include <stdio.h>
-#include </usr/local/lib/LinearAlgebra/base.h>
+#include </usr/local/LinearAlgebra/include/base.h>
 
 int main(){
   clear_file(LOG_ERROR_FILE);
