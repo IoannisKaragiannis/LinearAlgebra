@@ -1,4 +1,4 @@
-# LinearAlgebraLibrary
+# LinearAlgebra
 
 This is a linear algebra library. It consists of two major classes, _**vec**_ standing for vector
 and _**mat**_ standing for matrix together with a set of accompanying functions and operations.
