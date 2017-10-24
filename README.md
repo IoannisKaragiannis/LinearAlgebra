@@ -480,7 +480,7 @@ int main(){
 	pos_meas = "[0 100 97.9 94.4 92.7 87.3]";
 
 	// There is no measurement at time 0
-	pos_meas(0) = NaN;
+	pos_meas(0) = NaN_NUMERIC_LIMIT(double);
 	
 	// Introduce Kalman filter object
 	algebra::kalman kalman;
