@@ -1,6 +1,6 @@
 /*============================================================================
  * Name         : vec.h implements basic vector operations
- * 				  and can be used for linear algebra projects.
+ *                and can be used for linear algebra projects.
  * Version      : 1.0.0, 11 Sep 2017
  *
  * Copyright (c) 2017 Ioannis Karagiannis

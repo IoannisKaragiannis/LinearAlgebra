@@ -1,6 +1,6 @@
 /*===========================================================================
  * Name         : speed_tests.h includes function to test
- * 				  the time-performance of basic operations.
+ *                the time-performance of basic operations.
  * Version      : 1.0.0, 7 Oct 2017
  *
  * Copyright (c) 2017 Ioannis Karagiannis

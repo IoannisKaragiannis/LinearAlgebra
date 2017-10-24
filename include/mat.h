@@ -1,6 +1,6 @@
 /*===========================================================================
  * Name         : mat.h implements basic matrix operations and
- * 				  can be used for linear algebra projects.
+ *                can be used for linear algebra projects.
  * Version      : 1.0.0, 16 Sep 2017
  *
  * Copyright (c) 2017 Ioannis Karagiannis

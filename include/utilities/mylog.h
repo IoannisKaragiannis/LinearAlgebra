@@ -1,6 +1,6 @@
 /*============================================================================
  * Name         : mylog.h is a logger for storing exceptions
- * 				  thrown from myLinearAlgebra library.
+ *                thrown from myLinearAlgebra library.
  * Version      : 1.0.0, 11 Sep 2017
  *
  * Copyright (c) 2017 Ioannis Karagiannis
