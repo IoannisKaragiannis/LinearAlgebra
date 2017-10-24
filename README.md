@@ -120,7 +120,7 @@ the header files and the binaries should lay under the */usr/local/LinearAlgebra
 ### LINK YOUR PROJECT WITH *LinearAlgebra* LIBRARY.
 
 
-In your main project include this line 
+Remember that this is a header-only library based on templates. Therefore, there is no need to compile anything at this step. Go to your main project and include this line 
 
 ```c++
 #include </usr/local/LinearAlgebra/include/base.h>
