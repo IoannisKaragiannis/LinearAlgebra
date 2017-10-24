@@ -100,13 +100,13 @@ Unzip the file. Make sure you are root so you have all transferring/deleting per
 $ sudo su
 $ cd /home/user_name/Downloads
 $ sudo unzip LinearAlgebra-master.zip 
-$ cp -r /home/user_name/Downloads/LinearAlgebra-master/. /usr/local/LinearAlgebra/
+$ cp -r LinearAlgebra-master/. /usr/local/LinearAlgebra/
 ```
 Clean your *Downloads* folder
 
 ```
-$ rm -r /home/user_name/Downloads/LinearAlgebra-master/
-$ rm -r /home/user_name/Downloads/LinearAlgebra-master.zip
+$ rm -r LinearAlgebra-master
+$ rm -r LinearAlgebra-master.zip
 ```
 
 Now the *LinearAlgebra*  containing all the necessary header files should lay under the */usr/local/LinearAlgebra* directory. Could it be more simple? You can always store the LinearAlgebra anywhere you prefer. Even in your project's directory. It's totally up to you.
