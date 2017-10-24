@@ -6,7 +6,7 @@ This library might be useful for projects within the field of signal/image proce
 machine learning, and in general any kind of academic/scientific project.
 
 This is a header-only library which means you don't have to worry about different platforms where the library might be used.
-This is a header-only library simplifies the build process. You don't need to build the library, and you don't need to specify the compiled library during the link step of the build. If you do have a compiled library, you will probably want to build multiple versions of it: One compiled with debugging enabled, another with optimization enabled, and possibly yet another stripped of symbols. And maybe even more for a multi-platform system.
+This header-only library simplifies the build process. You don't need to build the library, and you don't need to specify the compiled library during the link step of the build. If you do have a compiled library, you will probably want to build multiple versions of it: One compiled with debugging enabled, another with optimization enabled, and possibly yet another stripped of symbols. And maybe even more for a multi-platform system.
 
 ## GETTING STARTED
 
