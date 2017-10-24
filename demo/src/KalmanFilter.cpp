@@ -6,7 +6,7 @@
  * Copyright (c) 2017 Ioannis Karagiannis
  * All rights reserved
 
- * This file is part of myLinearAlgebra library.
+ * This file is part of the LinearAlgebra library.
 
  * KalmanFilter is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * See the GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with myLinearAlgebra.  If not, see <http://www.gnu.org/licenses/>.
+ * along with LinearAlgebra.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Contact info: https://www.linkedin.com/in/ioannis-karagiannis-7129394a/
- * 				ioanniskaragiannis1987@gmail.com
+ *               ioanniskaragiannis1987@gmail.com
 ===============================================================================*/
 
 
