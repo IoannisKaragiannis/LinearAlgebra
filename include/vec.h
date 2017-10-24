@@ -131,7 +131,6 @@ public:
 	T& operator[](size_t k);
 
 	void print(int);  // Set precision for double
-	void print();
 
 	friend Mat<T> lup_invert<T>(Mat<T>&, const Vec<T>&);
 
@@ -617,61 +616,18 @@ T& Vec<T>::operator[](size_t k)
 
 
 template <class T>
-void Vec<T>::print()
-{
-	if(length_ != 0){
-		if( typeid(data_[0]) == typeid(int) ){
-			printf("[ ");
-			size_t i;
-			for(i = 0; i < length_; i++){
-				printf("%d ", data_[i]);
-			}
-			printf("] \n");
-		}else if( typeid(data_[0]) == typeid(double) ){
-			printf("[ ");
-			size_t i;
-			for(i = 0; i < length_; i++){
-				// Set default precision = 3
-				printf("%.3f ", data_[i]);
-			}
-			printf("] \n");
-		}else{
-			std::string msg = FILE_LINE_ERROR + " invalid type of vec in printf(int): it should be Vec<double> or Vec<int> ";
-			log_error(msg.c_str());
-			throw std::invalid_argument(msg);
-		}
-	}else{
-		printf("[] \n");
-	}
-}
-
-template <class T>
 void Vec<T>::print(int precision)
 {
-
 	if((*this).size() == 0){
 		printf("[ ] \n");
 		return;
-	}
-
-	if( typeid(data_[0]) == typeid(int) ){
-		printf("[ ");
-		size_t i;
-		for(i = 0; i < length_; i++){
-			printf("%d ", data_[i]);
-		}
-		printf("] \n");
-	}else if( typeid(data_[0]) == typeid(double) ){
+	}else{
 		printf("[ ");
 		size_t i;
 		for(i = 0; i < length_; i++){
 			printf("%.*f ", precision, data_[i]);
 		}
 		printf("] \n");
-	}else{
-		std::string msg = FILE_LINE_ERROR + " invalid type of vec in printf(int): it should be Vec<double> or Vec<int> ";
-		log_error(msg.c_str());
-		throw std::invalid_argument(msg);
 	}
 }
 

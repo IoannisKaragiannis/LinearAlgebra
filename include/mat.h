@@ -124,7 +124,6 @@ public:
 	Mat<T> operator/(T t);
 
 	void print(int precision);
-	void print();
 
 	// Declaration of friend functions
 	friend Mat<T> transpose<>(const Mat<T>&);
@@ -800,47 +799,11 @@ void Mat<T>::print(int precision){
 
 	if((*this).size() == 0){
 		printf("| | \n");
-		return;
-	}
-	if(typeid(data_[0][0]) == typeid(double)){
+	}else{
 		for(size_t i = 0; i < rows_; i++){
 			printf("| ");
 			for(size_t j = 0; j < cols_; j++){
 				printf("%.*f ", precision, data_[i][j]);
-			}
-			printf("|\n");
-		}
-	}else if(typeid(data_[0][0]) == typeid(int)){
-		for(size_t i = 0; i < rows_; i++){
-			printf("| ");
-			for(size_t j = 0; j < cols_; j++){
-				printf("%d ", data_[i][j]);
-			}
-			printf("|\n");
-		}
-	}
-}
-
-template <class T>
-void Mat<T>::print(){
-
-	if((*this).size() == 0){
-		printf("| | \n");
-		return;
-	}
-	if(typeid(data_[0][0]) == typeid(double)){
-		for(size_t i = 0; i < rows_; i++){
-			printf("| ");
-			for(size_t j = 0; j < cols_; j++){
-				printf("%.3f ", data_[i][j]);
-			}
-			printf("|\n");
-		}
-	}else if(typeid(data_[0][0]) == typeid(int)){
-		for(size_t i = 0; i < rows_; i++){
-			printf("| ");
-			for(size_t j = 0; j < cols_; j++){
-				printf("%d ", data_[i][j]);
 			}
 			printf("|\n");
 		}
