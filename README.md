@@ -121,6 +121,12 @@ Remember that this is a header-only library based on templates. Therefore, there
 ```
 That was it. Enjoy!
 
+P.S.: If you stored the *LinearAlgebra* in a directory other than */usr/local/* you should make the approriate change like this:
+
+```c++
+#include </your_path/LinearAlgebra/include/base.h>
+```
+
 ## DEMO
 
 ```c++
