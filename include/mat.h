@@ -138,8 +138,8 @@ protected:
 
 private:
 	std::vector< std::vector<T> > data_;
-	size_t rows_ = NaN_NUMERIC_LIMIT(size_t);
-	size_t cols_ = NaN_NUMERIC_LIMIT(size_t);
+	size_t rows_ = NaN(size_t);
+	size_t cols_ = NaN(size_t);
 };
 
 
@@ -1059,7 +1059,7 @@ Mat<T> inv(const Mat<T>& a){
 		}else{
 			std::string msg = FILE_LINE_ERROR + "warning in  mat::inv(const mat& m): SINGULAR MATRIX.";
 			warning(msg.c_str());
-			return abs(a)*NaN_NUMERIC_LIMIT(T);
+			return abs(a)*NaN(T);
 		}
 	}else{
 		std::string msg = FILE_LINE_ERROR + " exception in  mat::inv(const mat& m): NON-SQUARE MATRIX: use pinv(const mat& m)";
@@ -1096,7 +1096,7 @@ Mat<T> pinv(Mat<T>& a){
 		std::string msg = FILE_LINE_ERROR + "warning in 'mat::pinv(const mat& a)': ILL-DEFINED MATRIX !!!";
 		warning(msg.c_str());
 		Mat<T> tmp(a.cols(), a.rows());
-		a_inv = abs(tmp)*NaN_NUMERIC_LIMIT(T);
+		a_inv = abs(tmp)*NaN(T);
 	}
 
 	return a_inv;

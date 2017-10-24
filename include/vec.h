@@ -29,8 +29,8 @@
  * The most common functions among vectors and matrices are introduced. In order
  * to avoid bad memory allocation exceptions the MAX_ACCEPTABLE_VECTOR_SIZE is introduced
  * Therefore, for MAX_ACCEPTABLE_VECTOR_SIZE = 16000:
- * a) max_vec_size = 64 [KB]
- * b) max_mat_size =  1 [GB]
+ * a) max_vec_size = 128 [KB]
+ * b) max_mat_size =   2 [GB]
  *
  * IT IS STRONGLY RECOMMENDED TO ONLY INSTANTIATE VECTORS WITH SIZE LESS THAN 16000.
  * */
@@ -59,17 +59,14 @@
 #include <random>		// C++11 feature for random number generation
 
 
-#define Inf std::numeric_limits<double>::infinity()
-
 #define M_PI 3.14159265358979323846
 #define NEGATIVE_INFINITY -std::numeric_limits<double>::infinity()
 #define SIZE_T_MAX std::numeric_limits<size_t>::max()-1 // At the matrix inversion function we have: size_t P[size + 1];
-#define MAX_ACCEPTABLE_VECTOR_SIZE 16000 // Don't increase that unless you have los of RAM.
+#define MAX_ACCEPTABLE_VECTOR_SIZE 16000 // Don't increase that unless you have lots of RAM available.
 
-#define MAX_NUMERIC_LIMIT(a) ( std::numeric_limits<a>::max() )
-#define NaN_NUMERIC_LIMIT(a) ( std::numeric_limits<a>::quiet_NaN() )
-#define Inf_NUMERIC_LIMIT(a) ( std::numeric_limits<a>::infinity() )
-
+#define MAX(a) ( std::numeric_limits<a>::max() )
+#define NaN(a) ( std::numeric_limits<a>::quiet_NaN() )
+#define Inf(a) ( std::numeric_limits<a>::infinity() )
 
 
 #define FILE_LINE_ERROR std::string(__FILE__) + std::string(":") + std::to_string(__LINE__) + std::string(": ")
@@ -140,7 +137,7 @@ private:
 	// Since we are not using pointers the destructor will
 	// destroy the allocated memory for the object.
 	std::vector<T> data_;
-	size_t length_ = NaN_NUMERIC_LIMIT(size_t);
+	size_t length_ = NaN(size_t);
 };
 
 // DEFAULT CONSTUCTOR
@@ -838,7 +835,7 @@ inline T min(const Vec<T>& v)
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
-	T min = MAX_NUMERIC_LIMIT(T);
+	T min = MAX(T);
 	size_t i = 0, size = v.size();
 	for (i = size; i--;){
 		if(v.get(i) < min ){
@@ -858,7 +855,7 @@ inline T min(const Vec<T>& v, size_t &index)
 		throw std::invalid_argument(msg);
 	}
 	index = 0;
-	T min = MAX_NUMERIC_LIMIT(T);;
+	T min = MAX(T);;
 	// Calculate the index of the minimum value
 	size_t i = 0, size = v.size();
 	for (i = size; i--;){
