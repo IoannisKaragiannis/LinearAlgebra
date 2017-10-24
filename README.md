@@ -119,21 +119,14 @@ the header files and the binaries should lay under the */usr/local/LinearAlgebra
 
 **_Step 3_:**
 
-In order to build the library for either Debug or Release configuration type
-the following on your terminal:
+In order to build the library type the following on your terminal:
 
 ```
-$ cd /usr/local/lib/LinearAlgebra/Debug
+$ cd /usr/local/LinearAlgebra
 $ make clean
 $ make all
 ```
-or
-```
-$ cd /usr/local/lib/LinearAlgebra/Release
-$ make clean
-$ make all
-```
-respectively.
+Now the *bin* folder should contain the objects created for the library and under the *lib* folder you should see the *libLinearAlgebra.a* file.
 
 ### LINK YOUR PROJECT WITH *LinearAlgebra* LIBRARY.
 
