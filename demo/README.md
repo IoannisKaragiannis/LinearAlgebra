@@ -32,7 +32,10 @@ Remember: if you decide to store the *LinearAlgebra* in a directory other than *
 In order for this demo to be ran you need to store the *LinearAlgebra* library under the */usr/local/LinearAlgebra* directory as desribed in the main README.md. From your terminal type the following:
 
 ```
-/usr/local/LinearAlgebra/demo/Debug/./KalmanFilter
+cd /usr/local/LinearAlgebra/demo/
+make clean
+make all
+build/bin/./KalmanFilter
 ```
 
 You should see:
@@ -68,6 +71,8 @@ If you are using an Acqua or RoadRunner board:
 $ sudo apt-get install gcc-arm-linux-gnueabihf
 $ sudo apt-get install g++-arm-linux-gnueabihf
 ```
+
+If you want to cross-compile this demo you can simply edit the makefile and modify lines 7-10 accordingly.
 
 Cross Compile Settings for your project.
 
