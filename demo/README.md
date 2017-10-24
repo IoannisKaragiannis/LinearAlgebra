@@ -75,7 +75,7 @@ $ sudo apt-get install gcc-arm-linux-gnueabihf
 $ sudo apt-get install g++-arm-linux-gnueabihf
 ```
 
-Now, you can simply edit the makefile and modify lines 7-10 accordingly.
+Now, you can simply edit the makefile and modify line 11 accordingly.
 
 
 ## AUTHORS
