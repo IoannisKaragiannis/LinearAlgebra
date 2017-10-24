@@ -1,22 +1,39 @@
+# ------------------------------------------------
+# Generic Makefile
+#
+# Author: Ioannis Karagiannis
+# email : ioanniskaragiannis1987@gmail.com
+# Date  : 2017-10-23
+# ------------------------------------------------
 
-#configuration settings
+# Choose only between the two platforms: [LINUX, ARM]
+# Change the PLATFORM variable to ARM for cross-compilation
+PLATFORM = LINUX
 
-
-# If you want to cross-compile your library for ARM processor
-# uncomment/comment accordingly the following 4 lines.
+# In case you need to use different cross-compiler for your
+# platform, then extend the code below with an extra else if()
+ifeq ($(PLATFORM), LINUX)
 CXX = g++-4.8
 CXX_LINKER = g++-4.8
-#CXX = arm-linux-gnueabihf-g++-4.8
-#CXX_LINKER = arm-linux-gnueabihf-g++-4.8
+else if ($(PLATFORM), ARM)
+CXX = arm-linux-gnueabihf-g++-4.8
+CXX_LINKER = arm-linux-gnueabihf-g++-4.8
+endif
 
-
+# Define the flags for your compiler
 CXXFLAGS = -std=c++0x -D__cplusplus=201103L -O3 -Wall -fmessage-length=0
 
+# Define the build folder where the objects and 
+# the binary file will be stored.
+BUILD_FOLDER = ./build
+
 TARGET = KalmanFilter
-BUILD_FOLDER = build
-TARGET_DEST = $(BUILD_FOLDER)/bin
-TARGET_FULL_PATH = $(TARGET_DEST)/$(TARGET)
-OBJ_DEST = build/objects
+TARGET_DIR = $(BUILD_FOLDER)/bin
+TARGET_FULL_PATH = $(TARGET_DIR)/$(TARGET)
+OBJ_DIR = $(BUILD_FOLDER)/objects
+
+# include the source folder of your project (with all the .cpp files)
+SRC_DIR = src
 
 # Command to remove files after calling "make clean"
 RM = sudo rm -rf
@@ -26,71 +43,48 @@ RM = sudo rm -rf
 MKDIR_P = sudo mkdir -p -m 777
 
 
+# This line collects all the source files (.cpp) in the current directory
+# and saves them in the CPP_SRCS variable.
+CPP_SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 
-# Every subdirectory with source files must be described here
+# This line transforms the content of the CPP_SRCS variable, changing all
+# file suffixes from .cpp to .o, thus constructing the object file list we need.
+OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(CPP_SRCS))
 
+# This line includes one dependency file (.d) for each source file (.cpp).
+# Remember, each .o file is both a target and a dependency. In this case,
+# if kalman.d or lti_system.d change, the target KalmanFilter needs to be
+# recompiled or relinked.
+CPP_DEPS = $(patsubst $(OBJ_DIR)/%.o,$(OBJ_DIR)/%.d,$(OBJS))
 
-O_SRCS := 
-CPP_SRCS := 
-C_UPPER_SRCS := 
-C_SRCS := 
-S_UPPER_SRCS := 
-OBJ_SRCS := 
-ASM_SRCS := 
-CXX_SRCS := 
-C++_SRCS := 
-CC_SRCS := 
-OBJS := 
-C++_DEPS := 
-C_DEPS := 
-CC_DEPS := 
-CPP_DEPS := 
-EXECUTABLES := 
-CXX_DEPS := 
-C_UPPER_DEPS := 
-
-
-# Add inputs and outputs from these tool invocations to the build variables 
-
-CPP_SRCS = $(wildcard *.cpp)
-
-OBJS = ./$(OBJ_DEST)/kalman.o ./$(OBJ_DEST)/lti_system.o  ./$(OBJ_DEST)/KalmanFilter.o
-
-CPP_DEPS = ./$(OBJ_DEST)/kalman.d ./$(OBJ_DEST)/lti_system.d ./$(OBJ_DEST)/KalmanFilter.d
-
+-include $(CPP_DEPS)   # include all dep files in the makefile
 
 # Each subdirectory must supply rules for building sources it contributes
-$(OBJ_DEST)/%.o: src/%.cpp
-	@$(MKDIR_P) $(OBJ_DEST)/
+./$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@$(MKDIR_P) $(OBJ_DIR)/
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
 	$(CXX) $(CXXFLAGS) -c -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
-
-USER_OBJS =
-
 LIBS =
-
-
-# Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
 all: $(TARGET)
 
 # Tool invocations
-$(TARGET): $(OBJS) $(USER_OBJS)
+$(TARGET): $(OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	@$(MKDIR_P) $(TARGET_DEST)
-	$(CXX_LINKER) -o $(TARGET_FULL_PATH) $(OBJS) $(USER_OBJS) $(LIBS)
+	@$(MKDIR_P) $(TARGET_DIR)
+	$(CXX_LINKER) -o $(TARGET_FULL_PATH) $(OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(EXECUTABLES)$(CPP_DEPS)$(CXX_DEPS)$(C_UPPER_DEPS) $(TARGET_FULL_PATH) 
+	-$(RM) $(OBJS) $(CPP_DEPS) $(TARGET_FULL_PATH) 
 	-$(RM) $(BUILD_FOLDER)
 	-@echo ' '
 
