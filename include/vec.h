@@ -44,23 +44,22 @@
 #include <vector>
 #include <limits>       // numeric limits
 #include <cmath>
-#include <math.h>       /* pow */
+#include <math.h>       // pow
 #include <stdexcept>    // for exception, runtime_error, out_of_range
 
 #include <stdarg.h>     // va_list, va_start, va_arg, va_end */
 #include <iostream>     // for cout
-#include <sstream>		// for peek
+#include <sstream>      // for peek
 #include <algorithm>    // std::min, std::sort()
 
 #include "utilities/mylog.h"
 
 #include <typeinfo>
 #include <memory>       // for smart pointer: unique_ptr
-#include <random>		// C++11 feature for random number generation
+#include <random>       // C++11 feature for random number generation
 
 
 #define M_PI 3.14159265358979323846
-#define NEGATIVE_INFINITY -std::numeric_limits<double>::infinity()
 #define SIZE_T_MAX std::numeric_limits<size_t>::max()-1 // At the matrix inversion function we have: size_t P[size + 1];
 #define MAX_ACCEPTABLE_VECTOR_SIZE 16000 // Don't increase that unless you have lots of RAM available.
 
