@@ -21,7 +21,7 @@ these instructions for different OS or IDE.
 
 ### PREREQUISITES
 
-
+At least g++-4.8 and C++11 enabled.
  
 
 ### ENABLE C++11
@@ -516,4 +516,4 @@ P.S.: There are several linear algebra libraries out there way more complete and
 
 ## LICENSE
 
-This project is licensed under the GNU General Public License - see the [LICENSE.md](https://github.com/IoannisKaragiannis/LinearAlgebraLibrary/blob/master/LICENSE) file for details
+This project is licensed under the GNU General Public License - see the [LICENSE.md](https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/LICENSE) file for details
