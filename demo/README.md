@@ -4,7 +4,7 @@ This is a simple demo to illustrate how the *LinearAlgebra* library works. The t
 
 ## GETTING STARTED
 
-These were the two steps to make my demo collaborate with the *LinearAlgebra* library.
+These are the two steps to be made so that this demo can collaborate with the *LinearAlgebra* library.
 
 **_Step 1_:**
 ```
