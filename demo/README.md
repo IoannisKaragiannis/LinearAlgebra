@@ -1,12 +1,6 @@
-# LinearAlgebra
+# DEMO
 
-This is an easy-to-install linear algebra library. It consists of two major classes, _**vec**_ standing for vector
-and _**mat**_ standing for matrix together with a set of accompanying functions and operations.
-This library might be useful for projects within the field of signal/image processing,
-machine learning, and in general any kind of academic/scientific project.
-
-This is a header-only library which means you don't have to worry about different platforms where the library might be used.
-This header-only library simplifies the build process. You don't need to build the library, and you don't need to specify the compiled library during the link step of the build. If you do have a compiled library, you will probably want to build multiple versions of it: One compiled with debugging enabled, another with optimization enabled, and possibly yet another stripped of symbols. And maybe even more for a multi-platform system.
+This is a simple demo to illustrate how the LinearAlgebra works. The two main features of this demo is the *lti_system* class and the *kalman* class. In this demo we will implement a Kalman filter to track the position of a free falling ball given that we can measure its position with some noisy instrument. The example was based upon [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
 
 ## GETTING STARTED
 
