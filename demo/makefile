@@ -67,7 +67,7 @@ CPP_DEPS = $(patsubst $(OBJ_DIR)/%.o,$(OBJ_DIR)/%.d,$(OBJS))
 	$(CXX) $(CXXFLAGS) -c -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
-
+	
 LIBS =
 
 # All Target
@@ -81,6 +81,11 @@ $(TARGET): $(OBJS)
 	$(CXX_LINKER) -o $(TARGET_FULL_PATH) $(OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
+	@echo '********* RUN DEMO *************'
+	@echo '********************************'
+	@echo ' '
+	@build/bin/./KalmanFilter
+
 
 # Other Targets
 clean:
