@@ -166,15 +166,15 @@ int main(){
 			est_err_vel(i) = kalman.get_cov_error()[1];
 		}
 
-		printf("pos_true = "); pos_true.print(2);
-		printf("pos_meas = "); pos_meas.print(2);
-		printf("pos_hat  = "); pos_hat.print(2);
+		printf("pos_true = "); pos_true.print();
+		printf("pos_meas = "); pos_meas.print();
+		printf("pos_hat  = "); pos_hat.print();
 		printf("\n");
-		printf("vel_true = "); vel_true.print(2);
-		printf("vel_hat  = "); vel_hat.print(2);
+		printf("vel_true = "); vel_true.print();
+		printf("vel_hat  = "); vel_hat.print();
 		printf("\n");
-		printf("est_err_pos = "); est_err_pos.print(2);
-		printf("est_err_vel = "); est_err_vel.print(2);
+		printf("est_err_pos = "); est_err_pos.print();
+		printf("est_err_vel = "); est_err_vel.print();
 
 	}catch(const std::exception& e){
 		std::cerr << "EXCEPTION CAUGHT: " << e.what() << std::endl;
