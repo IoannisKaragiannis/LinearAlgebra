@@ -283,18 +283,18 @@ strassen-multiplication of two squared (4x4) matrices lasted 0.236 [ms]
 inversion of a squared (4x4) matrix lasted 0.002 [ms]
 ```
 
-I will provide you with a table summarizing advantages and drawbacks of this library.
+I will provide you with a table summarizing the speed-performance of this library.
 
-|  SIZE   |   INVERSION   |       ADDITION       |
-|---------|---------------------------------------
-|   4x4   |   0.002 [ms]  |   10<sup>-6</sup> [s]|
-|  10x10  |   0.011 [ms]  |                      |
-|  50x50  |   0.425 [ms]  |                      |   
-| 100x100 |   2.999 [ms]  |                      |
-| 250x250 |  44.178 [ms]  |                      |
-| 500x500 | 471.896 [ms]  |                      |
-|1000x1000|   9.898 [s]   |                      |
-|4000x4000|  14.443 [min] |                      |
+|  SIZE   |  INVERSION  |  ADDITION   |
+|---------|-------------|--------------
+|   4x4   |   2e-6 [s]  |   2e-6 [s]  |
+|  10x10  | 1.1e-5 [s]  |   2e-6 [s]  |
+|  50x50  | 4.2e-4 [s]  | 2.7e-5 [s]  |   
+| 100x100 | 2.9e-3 [s]  | 1.4e-4 [s]  |
+| 250x250 | 4.4e-2 [s]  | 1.2e-3 [s]  |
+| 500x500 | 4.7e-1 [s]  | 4.6e-3 [s]  |
+|1000x1000|    9.8 [s]  | 1.6e-2 [s]  |
+|4000x4000|    866 [s]  | 2.4e-1 [s]  |
 
 In conclusion, one should think twice before multiplying or inverting large matrices both time-wise and memory-wise speaking. Consider the memory these matrices occupy. A 4000x4000 matrix consisting of floats occupies 128MB. For a single multiplication we would need three times this memory. However, one can notice how useful Strassen multiplication becomes for large matrices. In the above example for two 4000x4000 matrices the normal multiplication lasted 22.3 minutes when it only took 14.3 for Strassen.
 
