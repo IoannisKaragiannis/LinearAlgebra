@@ -67,6 +67,8 @@
 #define NaN(a) ( std::numeric_limits<a>::quiet_NaN() )
 #define Inf(a) ( std::numeric_limits<a>::infinity() )
 
+#define EPSILON 1e-10  // This will be used for comparison with zero in find_zero() and find_non_zero()
+
 
 #define FILE_LINE_ERROR std::string(__FILE__) + std::string(":") + std::to_string(__LINE__) + std::string(": ")
 
@@ -807,13 +809,13 @@ inline Vec<T> find_non_zero(const Vec<T>& v)
 	Vec<T> result(size);
 	for (i = size; i--;)
 	{
-		if (v.get(i) != 0)
+		if ( fabs(v.get(i) - T(0)) < EPSILON )
 		{
-			result.set(i, 1.0);
+			result.set(i, T(0));
 		}
 		else
 		{
-			result.set(i, 0);
+			result.set(i, T(1));
 		}
 	}
 	return result;
@@ -828,13 +830,13 @@ inline Vec<T> find_zero(const Vec<T>& v)
 	Vec<T> result(size);
 	for (i = size; i--;)
 	{
-		if (v.get(i) == 0)
+		if ( fabs(v.get(i) - T(0)) < EPSILON )
 		{
-			result.set(i, 1.0);
+			result.set(i, T(1));
 		}
 		else
 		{
-			result.set(i, 0);
+			result.set(i, T(0));
 		}
 	}
 	return result;

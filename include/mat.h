@@ -1378,13 +1378,13 @@ inline Mat<T> find_non_zero(const Mat<T>& m)
 	{
 		for (j = cols; j--;)
 		{
-			if(m.get(i,j) != 0)
+			if(fabs(m.get(i,j) - T(0)) < EPSILON)
 			{
-				result.set(i, j, T(1));
+				result.set(i, j, T(0));
 			}
 			else
 			{
-				result.set(i, j, T(0));
+				result.set(i, j, T(1));
 			}
 		}
 	}
@@ -1402,7 +1402,7 @@ inline Mat<T> find_zero(const Mat<T>& m)
 	{
 		for (j = cols; j--;)
 		{
-			if (m.get(i,j) == 0)
+			if ( fabs(m.get(i,j) - T(0)) < EPSILON )
 			{
 				result.set(i, j, T(1));
 			}
