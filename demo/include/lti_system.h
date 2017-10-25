@@ -30,7 +30,7 @@
 #ifndef LTI_SYSTEM_H_
 #define LTI_SYSTEM_H_
 
-#include <../../LinearAlgebra/include/base.h>
+#include "../../include/base.h"
 
 namespace algebra {
 

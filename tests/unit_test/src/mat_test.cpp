@@ -25,7 +25,7 @@
 =====================================================================================================*/
 
 #include "../include/catch.hpp"
-#include <../../../include/base.h>
+#include "../../../include/base.h"
 
 namespace algebra {
 

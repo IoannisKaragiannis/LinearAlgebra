@@ -37,7 +37,7 @@
 // #define REQUIRE_THROWS( expr ) INTERNAL_CATCH_THROWS( "REQUIRE_THROWS", Catch::ResultDisposition::Normal, "", expr )
 
 #include "../include/catch.hpp"
-#include <../../../include/base.h>
+#include "../../../include/base.h"
 
 namespace algebra {
 
