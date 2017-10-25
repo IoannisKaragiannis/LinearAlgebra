@@ -232,24 +232,7 @@ where the *error_log.txt* file will guide you to debug your code.
 
 ## RUNNING TESTS
 
-
-### UNIT TESTS
-
-**_Step 1_:**
-```
-Take the project called UnitTests and load it on Eclipse.
-```
-**_Step 2_:**
-```
-Link the project with LinearAlgebra library as described above.
-```
-**_Step 3_:**
-```
-Compile and Run the tests. Done!
-```
-An error log file will be created under the /tmp/LinearAlgebra directory. This file contains all the exceptions thrown 
-while running the unit-test. It reveals all the extreme cases I have taken into consideration. If you can think of a
-counter-example that would fail the test feel free to contact me.
+Look at the [unit test](https://github.com/IoannisKaragiannis/LinearAlgebra/tree/master/tests/unit_test) folder.
 
 
 ### SPEED TESTS
@@ -312,7 +295,7 @@ or Mac OS I cannot guarantee anything.
 
 # DEMO
 
-Look at the demo folder.
+Look at the [demo](https://github.com/IoannisKaragiannis/LinearAlgebra/tree/master/demo) folder.
 
 
 So, now you must have familiriazed yourself with the LinearAlgebra library. Start your exciting project using this library and don't forget to say a good word for me.
