@@ -20,6 +20,7 @@ ifeq($(PLATFORM), ARM)
 CXX = arm-linux-gnueabihf-g++-4.8
 CXX_LINKER = arm-linux-gnueabihf-g++-4.8
 endif
+endif
 
 # Define the flags for your compiler
 CXXFLAGS = -std=c++0x -D__cplusplus=201103L -O3 -Wall -fmessage-length=0
