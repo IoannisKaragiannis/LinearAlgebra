@@ -2,30 +2,9 @@
 
 This is a unit test based upon *catch.hpp* file. For more details see [CATCH](https://github.com/philsquared/Catch).
 
-## GETTING STARTED
+## PREREQUISITES
 
-These are the two steps to be made so that the unit test can collaborate with the *LinearAlgebra* library.
-
-**_Step 1_:**
-```
-Enabled C++11 and introduced the g++-4.8 compiler as explained in the LinearAlgebra README.md. 
-```
-**_Step 2_:**
-```
-Linked demo with the base.h file.
-```
-
-I did that only once in the *lti_system.h* file:
-
-```c++
-#include </usr/local/LinearAlgebra/include/base.h>
-```
-
-Remember: if you decide to store the *LinearAlgebra* in a directory other than */usr/local/* then you should change the *include* accordingly.
-
-```c++
-#include </your_path/LinearAlgebra/include/base.h>
-```
+Make sure you have enabled C++11 as described in the main README file.
  
 ## RUN THE UNIT TEST
 
@@ -53,7 +32,6 @@ You should see the following:
 All tests passed (2479 assertions in 98 test cases)
 
 ```
-
 Be patient. The unit test, unlike any of your projects, is testing all the functions defined in the *vec.h* and *mat.h* files. So, it takes some time to create the executable of the unit test. It's roughly 1.1 [MB]; way larger than the respective executable of the demo which was around 136 [KB]. That's becauase the demo code only used a few functions of the *LinearAlgebra* library. Not all of them. 
 
 
