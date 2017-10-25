@@ -3,16 +3,20 @@
 This is an easy-to-install linear algebra library. It consists of two major classes, _**Vec**_ standing for vector
 and _**Mat**_ standing for matrix together with a set of accompanying functions and operations.
 This library might be useful for projects within the field of signal/image processing,
-machine learning, and in general any kind of academic/scientific project. For your information, I have defined a variable inside class _**Vec**_ which is called MAX_ACCEPTABLE_VECTOR_SIZE. I have set this variable equal to 16000. Bare in mind that a vector of this size, given that it contains *double* values, would require 128 [KB] of memory. Respectively a 16000x16000 matrix would take 2 [GB] of memory. 2 [GB] for the instantiation of a single matrix object. Not to mention the CPU usage in case one decides to invert or multiply such large matrices. Thus, the only reason I have introduced this variable is to protect a user who doesn't know what he's doing. If you indeed have way more resources (RAM, CPU, etc.) than this library assumes, you can go under your responsibility and increase the value of this variable.
+machine learning, and in general in any kind of academic/scientific project.
+
+For your information, I have defined a variable inside class _**Vec**_ which is called MAX_ACCEPTABLE_VECTOR_SIZE. I have set this variable equal to 16000. Bare in mind that a vector of this size, given that it contains *double* values, would require 128 [KB] of memory. Respectively a 16000x16000 matrix would take 2 [GB] of memory. 2 [GB] for the instantiation of a single matrix object. Not to mention the CPU usage in case one decides to invert or multiply such large matrices. Thus, the only reason I have introduced this variable is to protect a user who doesn't know what he's doing. If you indeed have way more resources (RAM, CPU, etc.) than this library assumes, you can go under your responsibility and increase the value of this variable.
 
 This is a header-only library which means you don't have to worry about different platforms where the library might be used.
 This header-only library simplifies the build process. You don't need to build the library, and you don't need to specify the compiled library during the link step of the build. If you do have a compiled library, you will probably want to build multiple versions of it: One compiled with debugging enabled, another with optimization enabled, and possibly yet another stripped of symbols. And maybe even more for a multi-platform system.
 
+To clear things out, this library is intended to be used on Linux OS. I cannot guarantee anything regarding its performance on different OS.
+
 ## GETTING STARTED
 
 I have only been working on Eclipse running on Ubuntu, thus I will only provide you with instructions
-assuming your OS and IDE is Linux and Eclipse respectively. You should find it out yourself how to adopt
-these instructions for different OS or IDE.
+assuming your IDE is Eclipse. You should find it out yourself how to adopt
+these instructions for different IDE.
 
 ### PREREQUISITES
 
@@ -245,7 +249,7 @@ Compile and Run the tests. Done!
 ```
 An error log file will be created under the /tmp/LinearAlgebra directory. This file contains all the exceptions thrown 
 while running the unit-test. It reveals all the extreme cases I have taken into consideration. If you can think of a
-counter-example that would not pass the test feel free to contact me.
+counter-example that would fail the test feel free to contact me.
 
 
 ### SPEED TESTS
@@ -303,9 +307,8 @@ In conclusion, inversion is computatioanlly expensive and is therefore not recom
 Assuming you are using Linux, an error-log file will be stored under the
 /tmp/LinearAlgebra/ directory. This will be helpful to detect bugs in your
 code related to *LinearAlgebra* lib. If you are working on an OS other than Linux
-the functions within *mylog.h* file will not work. But this problematic behaviour will 
-only occur in the case an exception is thrown. In this case a message will pop up on 
-your IDE's console anyways. So, don't worry.
+the functions within *mylog.h* file will not work. As I haven't tested this library on Windows
+or Mac OS I cannot guarantee anything.
 
 # DEMO
 
