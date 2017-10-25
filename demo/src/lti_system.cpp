@@ -45,9 +45,7 @@ lti_system::lti_system()
 lti_system::~lti_system() {}
 
 
-mat lti_system::get_state_transition_matrix(){
-	return F;
-}
+mat lti_system::get_state_transition_matrix() { return F; }
 
 mat lti_system::get_control_matrix() { return B; }
 
