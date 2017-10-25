@@ -19,7 +19,7 @@ Download and store the *LinearAlgebra* library  under any directory you prefer a
 
 **_Step 2_:**
 
-Navigate to the unit test folder and type the following on your terminal
+Navigate to the demo folder and type the following on your terminal
 
 ```
 cd /your_path/LinearAlgebra/demo
