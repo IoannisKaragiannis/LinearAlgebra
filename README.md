@@ -283,7 +283,7 @@ strassen-multiplication of two squared (4x4) matrices lasted 0.236 [ms]
 inversion of a squared (4x4) matrix lasted 0.002 [ms]
 ```
 
-I will provide you with a table summarizing the speed-performance of this library.
+The table below summarizes the speed-performance of some basic operations of this library.
 
 |  SIZE   |  INVERSION  |  ADDITION   | TRANSPOSITION |  MULTIPLICATION |   STRASSEN   |
 |---------|-------------|-------------|---------------|-----------------|--------------|
@@ -302,7 +302,10 @@ In conclusion, inversion is computatioanlly expensive and is therefore not recom
 
 Assuming you are using Linux, an error-log file will be stored under the
 /tmp/LinearAlgebra/ directory. This will be helpful to detect bugs in your
-code related to *LinearAlgebra* lib.
+code related to *LinearAlgebra* lib. If you are working on an OS other than Linux
+the functions within *mylog.h* file will not work. But this problematic behaviour will 
+only occur in the case an exception is thrown. In this case a message will pop up on 
+your IDE's console anyways. So, don't worry.
 
 # DEMO
 
