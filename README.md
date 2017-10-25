@@ -173,7 +173,7 @@ int main(){
 	m2 = inv(m1);
 
 	// Confirm that m1*m2 equals to the identity matrix
-	m3 = m1 * m2;
+	m3 = find_non_zero(m1 * m2);
 
 	// print out the results
 	printf("\n");
@@ -197,27 +197,27 @@ If you run this program and see the output below, you have successfully installe
 the *LinearAlgebra* library to your project. Congratulations! Enjoy!
 
 ```
-v1 = [ 0.500 -2.000 4.700 -0.900 8.600 11.300] 
-v2 = [ -1.000 4.500 -5.900 44.000 -2.300 6.700] 
-v3 = [ -0.500 2.500 -1.200 43.100 6.300 18.000] 
+v1 = [ 0.5 -2 4.7 -0.9 8.6 11.3 ]
+v2 = [ -1 4.5 -5.9 44 -2.3 6.7 ]
+v3 = [ -0.5 2.5 -1.2 43.1 6.3 18 ]
 mean(v1) = 3.700 
 dot(v1,v2) = -20.900 
 norm(v3) = 47.215 
 
 m1 = 
-|  7.000 2.000 1.000 |
-|  0.000 3.000 -1.000 |
-|  -3.000 4.000 -2.000 |
+| 7 2 1 |
+| 0 3 -1 |
+| -3 4 -2 |
 
 inv(m1) = 
-|  -2.000 8.000 -5.000 |
-|  3.000 -11.000 7.000 |
-|  9.000 -34.000 21.000 |
+| -2 8 -5 |
+| 3 -11 7 |
+| 9 -34 21 |
 
 m1*inv(m1) = 
-|  1.000 0.000 0.000 |
-|  0.000 1.000 0.000 |
-|  0.000 -0.000 1.000 |
+| 1 0 0 |
+| 0 1 0 |
+| 0 0 1 |
 
 ```
 If for any reason an exception is thrown you can navigate to the */tmp/LinearAlgebra/* directory
