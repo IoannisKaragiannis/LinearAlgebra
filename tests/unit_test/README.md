@@ -1,10 +1,10 @@
-# DEMO
+# UNIT TEST
 
-This is a simple demo to illustrate how the *LinearAlgebra* library works. The two main features of this demo is the **lti_system** class and the **kalman** class. In this demo we will implement a Kalman filter to track the position of a free falling ball given that we measure its position with a noisy instrument. This demo is based upon [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf). All functions of this demo are selfexplanatory, so feel free to read the respective header and source files.
+This is a unit test based upon *catch.hpp* file. For more details see [CATCH](https://github.com/philsquared/Catch).
 
 ## GETTING STARTED
 
-These are the two steps to be made so that this demo can collaborate with the *LinearAlgebra* library.
+These are the two steps to be made so that the unit test can collaborate with the *LinearAlgebra* library.
 
 **_Step 1_:**
 ```
@@ -27,39 +27,37 @@ Remember: if you decide to store the *LinearAlgebra* in a directory other than *
 #include </your_path/LinearAlgebra/include/base.h>
 ```
  
-## RUN THIS DEMO
+## RUN THE UNIT TEST
 
-In order for this demo to be ran you need to store the *LinearAlgebra* library under the */usr/local/LinearAlgebra* directory as desribed in the main README.md. From your terminal type the following:
+**_Step 1_:**
+
+Download and store the *LinearAlgebra* library  under any directory you prefer as desribed in the main README file.
+
+**_Step 2_:**
+
+Navigate to the unit test folder and type the following on your terminal
 
 ```
-cd /usr/local/LinearAlgebra/demo/
+cd /your_path/LinearAlgebra/tests/unit_test
 make clean
 make all
 ```
 
-You should see:
+You should see the following:
+
 ```
-********* RUN DEMO *************
-********************************
-pos_true = [ 100 99.5 98 95.5 92 87.5 ]
-pos_meas = [ nan 100 97.9 94.4 92.7 87.3 ]
-pos_hat  = [ 95 99.625 98.4333 95.2143 92.355 87.6848 ]
+********* RUN UNIT TEST *************
+*************************************
+ 
+===============================================================================
+All tests passed (2479 assertions in 98 test cases)
 
-vel_true = [ 0 -1 -2 -3 -4 -5 ]
-vel_hat  = [ 1 0.375 -1.15833 -2.90476 -3.69447 -4.84356 ]
-
-est_err_pos = [ 10 0.916667 0.666667 0.657143 0.612546 0.552805 ]
-est_err_vel = [ 1 0.916667 0.583333 0.295238 0.151292 0.0841584 ]
 ```
 
-These results can be cross-checked by looking on the table at page 24 of the [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
+Be patient. The unit test, unlike any of your projects, is testing all the functions defined in the *vec.h* and *mat.h* files. So, it takes some time to create the executable of the unit test. It's roughly 1.1 [MB]; way larger than the respective executable of the demo which was around 136 [KB]. That's becauase the demo code only used a few functions of the *LinearAlgebra* library. Not all of them. 
 
-In case you want to manually run the binary yourself type this on your terminal:
-```
-build/bin/./KalmanFilter
-```
 
-## CROSS-COMPILE DEMO
+## CROSS-COMPILE UNIT TEST
 
 Install the ARM cross compiler toolchain on your Linux Ubuntu PC:
 ```
