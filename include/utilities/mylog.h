@@ -48,32 +48,42 @@
 #endif
 
 
-inline void create_directory(const std::string& folder_name){
+inline void create_directory(const std::string& folder_name)
+{
 	struct stat st = {0};
-	if (stat(folder_name.c_str(), &st) == -1) {
+	if (stat(folder_name.c_str(), &st) == -1)
+	{
 		mkdir(folder_name.c_str(), 0700);
 	}
 }
 
-inline bool file_exists (const std::string& name) {
-	if (FILE *file = fopen(name.c_str(), "r")) {
+inline bool file_exists (const std::string& name)
+{
+	if (FILE *file = fopen(name.c_str(), "r"))
+	{
 		fclose(file);
 		return true;
-	} else {
+	}
+	else
+	{
 		return false;
 	}
 }
 
-inline void clear_file(const std::string& file){
-	if(file_exists(file.c_str())){
-		if( remove( file.c_str() ) != 0 ){
-			perror( "Error deleting error-log file file \n");
+inline void clear_file(const std::string& file)
+{
+	if (file_exists(file.c_str()) )
+	{
+		if ( remove( file.c_str() ) != 0 )
+		{
+			std::cerr << "Error deleting error-log file file" << std::endl;
 		}
 	}
 }
 
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
-inline const std::string my_currentDateTime() {
+inline const std::string my_currentDateTime()
+{
 	time_t     now = time(0);
 	struct tm  tstruct;
 	char       buf[80];
@@ -82,11 +92,13 @@ inline const std::string my_currentDateTime() {
 	return buf;
 }
 
-inline void log_error(const char* message){
+inline void log_error(const char* message)
+{
 
 	// Create directory if it doesn't exist.
 	static uint16_t c = 0;
-	if(c == 0){
+	if ( c == 0 )
+	{
 		create_directory(LOG_FOLDER);
 		c++;
 	}
@@ -97,16 +109,19 @@ inline void log_error(const char* message){
 
 	FILE * pFile;
 	pFile = fopen(LOG_ERROR_FILE, "a+");
-	if (pFile != NULL){
+	if ( pFile != NULL )
+	{
 		fputs (message, pFile);
 		fclose (pFile);
-	}else{
+	}
+	else
+	{
 		std::cerr << "Failed to open error file." << std::endl;
 	}
 }
 
-inline void log(const char* message){
-
+inline void log(const char* message)
+{
 	// Create directory if it doesn't exist.
 	static uint16_t c = 0;
 	if(c == 0){
@@ -120,19 +135,23 @@ inline void log(const char* message){
 
 	FILE * pFile;
 	pFile = fopen(LOG_FILE, "a+");
-	if (pFile != NULL){
+	if ( pFile != NULL )
+	{
 		fputs (message, pFile);
 		fclose (pFile);
-	}else{
+	}
+	else
+	{
 		std::cerr << "Failed to open log file." << std::endl;
 	}
 }
 
-inline void warning(const char* message){
-
+inline void warning(const char* message)
+{
 	// Create directory if it doesn't exist.
 	static uint16_t c = 0;
-	if(c == 0){
+	if ( c == 0 )
+	{
 		create_directory(LOG_FOLDER);
 		c++;
 	}
@@ -143,10 +162,13 @@ inline void warning(const char* message){
 
 	FILE * pFile;
 	pFile = fopen(WARNING_FILE, "a+");
-	if (pFile != NULL){
+	if ( pFile != NULL )
+	{
 		fputs (message, pFile);
 		fclose (pFile);
-	}else{
+	}
+	else
+	{
 		std::cerr << "Failed to open warning file." << std::endl;
 	}
 }
