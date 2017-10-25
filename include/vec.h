@@ -97,7 +97,7 @@ public:
 	void set(size_t, T);
 	T get(size_t) const;
 	Vec<T> get(size_t, size_t) const;
-	void set_size(T);
+	void set_size(size_t);
 	void set_subvector(size_t, const Vec<T>&);
 	void zeros();
 	void clear();
@@ -266,7 +266,7 @@ Vec<T> Vec<T>::get(size_t i, size_t j) const
 }
 
 template <class T>
-void Vec<T>::set_size(T new_size)
+void Vec<T>::set_size(size_t new_size)
 {
 	if ( new_size > MAX_ACCEPTABLE_VECTOR_SIZE )
 	{
