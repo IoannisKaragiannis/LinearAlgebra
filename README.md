@@ -296,7 +296,7 @@ I will provide you with a table summarizing the speed-performance of this librar
 |1000x1000|    9.8 [s]  | 1.6e-2 [s]  | 1.9e-2 [s]    |    1.9 [s]      |      2.9 [s] |
 |4000x4000|    866 [s]  | 2.4e-1 [s]  | 3.8e-1 [s]    |    115 [s]      |       91 [s] |
  
-In conclusion, one should think twice before multiplying or inverting large matrices both time-wise and memory-wise speaking. Consider the memory these matrices occupy. A 4000x4000 matrix consisting of floats occupies 128MB. For a single multiplication we would need three times this memory. However, one can notice how useful Strassen multiplication becomes for large matrices. In the above example for two 4000x4000 matrices the normal multiplication lasted 22.3 minutes when it only took 14.3 for Strassen.
+In conclusion, inversion is computatioanlly expensive and is therefore not recommended for large matrices. Addition and transposition are not that heavy. Multiplication and Strassen-multiplication are also not recommended for large matrices, both time-wise and memory wise. Consider that a 4000x4000 matrix occupies 128 MB. And we would need three times this memory for a single multiplication. It is worthmentioning how the Strassen multiplication adds no value for small matrices, whereas it decreases the computational time significantly as the matrices' size grow. 
 
 ## LOG FILE
 
