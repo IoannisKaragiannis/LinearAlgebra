@@ -123,7 +123,7 @@ public:
 
 	Mat<T> operator/(T t);
 
-	void print(int precision);
+	void print();
 
 	// Declaration of friend functions
 	friend Mat<T> transpose<>(const Mat<T>&);
@@ -224,7 +224,7 @@ template <class T>
 size_t Mat<T>::cols() const noexcept{ return cols_; }
 
 template <class T>
-size_t Mat<T>::size_in_memory() const noexcept{ return (*this).size()*sizeof(double); }
+size_t Mat<T>::size_in_memory() const noexcept{ return (*this).size()*sizeof(T); }
 
 template <class T>
 void Mat<T>::set_size(size_t r, size_t c)
@@ -957,22 +957,22 @@ Mat<T> Mat<T>::operator/(T t)
 }
 
 template <class T>
-void Mat<T>::print(int precision)
+void Mat<T>::print()
 {
 	if ( (*this).size() == 0 )
 	{
-		printf("| | \n");
+		std::cout << "| |" << std::endl;
 	}
 	else
 	{
 		for (size_t i = 0; i < rows_; i++)
 		{
-			printf("| ");
+			std::cout << "| ";
 			for (size_t j = 0; j < cols_; j++)
 			{
-				printf("%.*f ", precision, data_[i][j]);
+				std::cout << data_[i][j] << " ";
 			}
-			printf("|\n");
+			std::cout << "|" << std::endl;
 		}
 	}
 }
@@ -1902,8 +1902,7 @@ inline T determinant(const Mat<T>& m)
  *
  */
 
-template <class T>
-inline Mat<T> magic_square(int n)
+inline imat magic_square(int n)
 {
 	if ( n < 0 || n > MAX_ACCEPTABLE_VECTOR_SIZE )
 	{
@@ -1919,7 +1918,7 @@ inline Mat<T> magic_square(int n)
 	}
 	else
 	{
-		Mat<T> result(n,n);
+		imat result(n,n);
 
 		// Initialize position for 1
 		int i = n/2, j = n - 1, num;

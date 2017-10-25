@@ -126,7 +126,7 @@ public:
 	T& operator()(size_t k);
 	T& operator[](size_t k);
 
-	void print(int);  // Set precision for double
+	void print();  // Set precision for double
 
 	friend Mat<T> lup_invert<T>(Mat<T>&, const Vec<T>&);
 
@@ -192,7 +192,7 @@ size_t Vec<T>::size() const noexcept { return data_.size(); }
 
 // It returns the memory the vector occupies in Bytes
 template <class T>
-size_t Vec<T>::size_in_memory() const noexcept{ return sizeof(double)*data_.capacity(); }
+size_t Vec<T>::size_in_memory() const noexcept{ return sizeof(T)*data_.capacity(); }
 
 template <class T>
 size_t Vec<T>::max_size() const noexcept{ return data_.max_size(); }
@@ -695,22 +695,22 @@ T& Vec<T>::operator[](size_t k)
 
 
 template <class T>
-void Vec<T>::print(int precision)
+void Vec<T>::print()
 {
 	if ((*this).size() == 0)
 	{
-		printf("[ ] \n");
+		std::cout << "[ ]" << std::endl;
 		return;
 	}
 	else
 	{
-		printf("[ ");
+		std::cout << "[ ";
 		size_t i;
 		for (i = 0; i < length_; i++)
 		{
-			printf("%.*f ", precision, data_[i]);
+			std::cout << data_[i] << " ";
 		}
-		printf("] \n");
+		std::cout << "]" << std::endl;
 	}
 }
 
