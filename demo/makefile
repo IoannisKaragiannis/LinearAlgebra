@@ -15,7 +15,8 @@ PLATFORM = LINUX
 ifeq ($(PLATFORM), LINUX)
 CXX = g++-4.8
 CXX_LINKER = g++-4.8
-else if ($(PLATFORM), ARM)
+else
+ifeq ($(PLATFORM), ARM)
 CXX = arm-linux-gnueabihf-g++-4.8
 CXX_LINKER = arm-linux-gnueabihf-g++-4.8
 endif
