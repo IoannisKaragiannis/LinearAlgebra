@@ -43,15 +43,15 @@ build/bin/./KalmanFilter
 
 You should see:
 ```
-pos_true = [ 100.00 99.50 98.00 95.50 92.00 87.50 ] 
-pos_meas = [ nan 100.00 97.90 94.40 92.70 87.30 ] 
-pos_hat  = [ 95.00 99.62 98.43 95.21 92.35 87.68 ] 
+pos_true = [ 100 99.5 98 95.5 92 87.5 ]
+pos_meas = [ nan 100 97.9 94.4 92.7 87.3 ]
+pos_hat  = [ 95 99.625 98.4333 95.2143 92.355 87.6848 ]
 
-vel_true = [ 0.00 -1.00 -2.00 -3.00 -4.00 -5.00 ] 
-vel_hat  = [ 1.00 0.38 -1.16 -2.90 -3.69 -4.84 ] 
+vel_true = [ 0 -1 -2 -3 -4 -5 ]
+vel_hat  = [ 1 0.375 -1.15833 -2.90476 -3.69447 -4.84356 ]
 
-est_err_pos = [ 10.00 0.92 0.67 0.66 0.61 0.55 ] 
-est_err_vel = [ 1.00 0.92 0.58 0.30 0.15 0.08 ] 
+est_err_pos = [ 10 0.916667 0.666667 0.657143 0.612546 0.552805 ]
+est_err_vel = [ 1 0.916667 0.583333 0.295238 0.151292 0.0841584 ]
 ```
 
 These results can be confirmed by looking on the table at page 24 of the [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
