@@ -36,10 +36,16 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+// This logger will only work for Linux OS
+// If you're working on Windows you should
+// use the CreateDirectory() API and modify
+// the following functions  accordingly
+#ifdef __linux__
 #define LOG_FOLDER "/tmp/LinearAlgebra"
 #define LOG_ERROR_FILE "/tmp/LinearAlgebra/error.txt"
 #define LOG_FILE "/tmp/LinearAlgebra/log.txt"
 #define WARNING_FILE "/tmp/LinearAlgebra/warning.txt"
+#endif
 
 
 inline void create_directory(const std::string& folder_name){

@@ -39,19 +39,21 @@ using namespace std::chrono;
 //    |         |       ADDITION         |
 //    | SIZE    |        (time)          |
 //    |-----------------------------------
-//    |  10x10  |       0.02  [ms]       |
+//    |   4x4   |       0.002 [ms]       |
 //    ------------------------------------
-//    |  50x50  |        0.4  [ms]       |
+//    |  10x10  |       0.002 [ms]       |
 //    ------------------------------------
-//    | 100x100 |        0.5  [ms]       |
+//    |  50x50  |       0.027 [ms]       |
+//    ------------------------------------
+//    | 100x100 |       0.141 [ms]       |
 //    |-----------------------------------
-//    | 250*250 |        3.3  [ms]       |
+//    | 250*250 |       1.203 [ms]       |
 //    |-----------------------------------
-//    | 500*500 |       11.6  [ms]       |
+//    | 500*500 |       4.644 [ms]       |
 //    ------------------------------------
-//    |1000*1000|       39.2  [ms]       |
+//    |1000*1000|      16.786 [ms]       |
 //    ------------------------------------
-//    |4000*4000|       0.43  [s]        |
+//    |4000*4000|     244.062 [ms]        |
 //    ------------------------------------
 //
 // MACHINE DETAILS: Intel® Core™ i3 CPU M 330 @ 2.13GHz × 4 (64-bit), 8GB RAM.
@@ -64,10 +66,10 @@ inline void test_matrix_addition_performance ( size_t size ){
 	algebra::mat c;
 	size_t iteration_nbr = 1;
 
-	if(size > 500){
-		iteration_nbr = 1;
+	if(size > 1000){
+		iteration_nbr = 2;
 	}else{
-		iteration_nbr = 4;
+		iteration_nbr = 8;
 	}
 
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -85,19 +87,21 @@ inline void test_matrix_addition_performance ( size_t size ){
 //    |         |     TRANSPOSITION      |
 //    | SIZE    |        (time)          |
 //    |-----------------------------------
-//    |  10x10  |       0.01  [ms]       |
+//    |   4x4   |       0.001 [ms]       |
 //    ------------------------------------
-//    |  50x50  |        0.2  [ms]       |
+//    |  10x10  |       0.003 [ms]       |
 //    ------------------------------------
-//    | 100x100 |        0.5  [ms]       |
+//    |  50x50  |       0.017 [ms]       |
+//    ------------------------------------
+//    | 100x100 |       0.053 [ms]       |
 //    |-----------------------------------
-//    | 250*250 |        3.5  [ms]       |
+//    | 250*250 |       0.533 [ms]       |
 //    |-----------------------------------
-//    | 500*500 |       11.9  [ms]       |
+//    | 500*500 |       3.238 [ms]       |
 //    ------------------------------------
-//    |1000*1000|         47  [ms]       |
+//    |1000*1000|      19.628 [ms]       |
 //    ------------------------------------
-//    |4000*4000|        0.8  [s]        |
+//    |4000*4000|     384.778 [ms]       |
 //    ------------------------------------
 //
 // MACHINE DETAILS: Intel® Core™ i3 CPU M 330 @ 2.13GHz × 4 (64-bit), 8GB RAM.
@@ -107,20 +111,20 @@ inline void test_matrix_transpose_performance ( size_t size ){
 	algebra::mat trans;
 	size_t iteration_nbr = 1;
 
-	if(size > 500){
-		iteration_nbr = 1;
+	if(size > 1000){
+		iteration_nbr = 2;
 	}else{
-		iteration_nbr = 4;
+		iteration_nbr = 8;
 	}
 
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 	for(size_t i = 0; i < iteration_nbr; i++){
-		trans = algebra::transpose<double>(a);
+		trans = algebra::transpose(a);
 	}
 	high_resolution_clock::time_point t2 = high_resolution_clock::now();
 	auto duration = duration_cast<microseconds>( t2 - t1 ).count();
 	double duration_f = (double) duration; duration_f = duration_f/iteration_nbr;
-	printf("transposed of a squared (%zux%zu) matrix lasted %.3f [ms]\n", trans.rows(), trans.cols(), duration_f/1000.0);
+	printf("transposition of a squared (%zux%zu) matrix lasted %.3f [ms]\n", trans.rows(), trans.cols(), duration_f/1000.0);
 
 }
 
@@ -132,10 +136,10 @@ inline void test_matrix_normal_multiplication_performance ( size_t size ){
 	algebra::mat c;
 	size_t iteration_nbr = 1;
 
-	if(size > 500){
-		iteration_nbr = 1;
+	if(size > 1000){
+		iteration_nbr = 2;
 	}else{
-		iteration_nbr = 4;
+		iteration_nbr = 8;
 	}
 
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -155,17 +159,21 @@ inline void test_matrix_normal_multiplication_performance ( size_t size ){
 //    |         |  NORMAL MULTIPLICATION | STRASSEN MULTIPLICATION |
 //    | SIZE    |        (time)          |        (time)           |
 //    |-------------------------------------------------------------
-//    |  50x50  |        3.14  [ms]      |      352  [ms]          |
+//    |   4x4   |        0.002 [ms]      |        0.236 [ms]       |
 //    --------------------------------------------------------------
-//    | 250x250 |        0.33  [s]       |     1.53  [s]           |
-//    --------------------------------------------------------------
-//    | 512x512 |         2.6  [s]       |        5  [s]           |
+//    |  10x10  |        0.007 [ms]      |        6.070 [ms]       |
 //    |-------------------------------------------------------------
-//    |1000*1000|          21  [s]       |       22  [s]           |
-//    |-------------------------------------------------------------
-//    |2000*2000|         170  [s]       |      129  [s]           |
+//    |  50x50  |        0.298 [ms]      |       65.528 [ms]       |
 //    --------------------------------------------------------------
-//    |4000*4000|        22.3  [min]     |     14.3  [min]         |
+//    | 100x100 |        2.155 [ms]      |      112.273 [ms]       |
+//    --------------------------------------------------------------
+//    | 250x250 |       26.642 [ms]      |     241.910 [ms]        |
+//    --------------------------------------------------------------
+//    | 500x500 |      201.615 [ms]      |     733.256 [ms]        |
+//    |-------------------------------------------------------------
+//    |1000*1000|        1.891 [s]       |        2.921 [s]        |
+//    |-------------------------------------------------------------
+//    |4000*4000|      115.820 [s]       |       91.807 [s]        |
 //    --------------------------------------------------------------
 
 // MACHINE DETAILS: Intel® Core™ i3 CPU M 330 @ 2.13GHz × 4 (64-bit), 8GB RAM.
@@ -176,15 +184,15 @@ inline void test_matrix_strassen_multiplication_performance ( size_t size ){
 	algebra::mat c;
 	size_t iteration_nbr = 1;
 
-	if(size > 500){
-		iteration_nbr = 1;
+	if(size > 1000){
+		iteration_nbr = 2;
 	}else{
-		iteration_nbr = 4;
+		iteration_nbr = 8;
 	}
 
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 	for(size_t i = 0; i < iteration_nbr; i++){
-		c = algebra::strassen<double>(a, b);
+		c = algebra::strassen(a, b);
 	}
 	high_resolution_clock::time_point t2 = high_resolution_clock::now();
 	auto duration = duration_cast<microseconds>( t2 - t1 ).count();
@@ -198,19 +206,21 @@ inline void test_matrix_strassen_multiplication_performance ( size_t size ){
 //    |         |       INVERSION        |
 //    | SIZE    |        (time)          |
 //    |-----------------------------------
-//    |  10x10  |        0.1  [ms]       |
+//    |   4x4   |       0.002 [ms]       |
 //    ------------------------------------
-//    |  50x50  |        6.4  [ms]       |
+//    |  10x10  |       0.011 [ms]       |
 //    ------------------------------------
-//    | 100x100 |         49  [ms]       |
+//    |  50x50  |       0.425 [ms]       |
+//    ------------------------------------
+//    | 100x100 |       2.999 [ms]       |
 //    |-----------------------------------
-//    | 250*250 |        0.7  [s]        |
+//    | 250*250 |      44.178 [ms]       |
 //    |-----------------------------------
-//    | 500*500 |        5.6  [s]        |
+//    | 500*500 |     471.896 [ms]       |
 //    ------------------------------------
-//    |1000*1000|         45  [s]        |
+//    |1000*1000|       9.898 [s]        |
 //    ------------------------------------
-//    |4000*4000|      50.16 [min]       |
+//    |4000*4000|      14.443 [min]       |
 //    ------------------------------------
 //
 // MACHINE DETAILS: Intel® Core™ i3 CPU M 330 @ 2.13GHz × 4 (64-bit), 8GB RAM.
@@ -221,15 +231,15 @@ inline void test_matrix_inversion_performance ( size_t size ){
 	algebra::mat b = a;
 	size_t iteration_nbr = 1;
 
-	if(size > 500){
-		iteration_nbr = 1;
+	if(size > 1000){
+		iteration_nbr = 2;
 	}else{
-		iteration_nbr = 4;
+		iteration_nbr = 8;
 	}
 
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 	for(size_t i = 0; i < iteration_nbr; i++){
-		b = algebra::inv<double>(a);
+		b = algebra::inv(a);
 	}
 	high_resolution_clock::time_point t2 = high_resolution_clock::now();
 	auto duration = duration_cast<microseconds>( t2 - t1 ).count();
