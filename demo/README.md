@@ -4,7 +4,7 @@ This is a simple demo to illustrate how the *LinearAlgebra* library works. The t
 
 ## PREREQUISITES
 
-Enable C++11 as explained in the main README file. The CFLAGS specified in the current makefile do the job in this demo case. This is what it looks like
+Enable C++11 as explained in the main README file. The CXXFLAGS variable, specified in the current makefile, does the job in this demo case. This is what it looks like:
 ```
 CXXFLAGS = -std=c++0x -D__cplusplus=201103L -O3 -Wall -fmessage-length=0
 ```
