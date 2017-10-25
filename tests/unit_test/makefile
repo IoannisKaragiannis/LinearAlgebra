@@ -54,9 +54,7 @@ CPP_SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(CPP_SRCS))
 
 # This line includes one dependency file (.d) for each source file (.cpp).
-# Remember, each .o file is both a target and a dependency. In this case,
-# if kalman.d or lti_system.d change, the target KalmanFilter needs to be
-# recompiled or relinked.
+# Remember, each .o file is both a target and a dependency.
 CPP_DEPS = $(patsubst $(OBJ_DIR)/%.o,$(OBJ_DIR)/%.d,$(OBJS))
 
 -include $(CPP_DEPS)   # include all dep files in the makefile
