@@ -261,8 +261,7 @@ int main(){
   clear_file(LOG_FILE);
   clear_file(WARNING_FILE);
   try{
-	test_speed_of_basic_operations(3);
-	test_speed_of_basic_operations(4000);
+	test_speed_of_basic_operations(4);
 
    }catch(const std::exception& e){
 	std::cerr << "EXCEPTION CAUGHT: " << e.what() << std::endl;
@@ -277,17 +276,20 @@ If you run the above mentioned script you should get something similar to this. 
 MACHINE DETAILS: Intel® Core™ i3 CPU M 330 @ 2.13GHz × 4 (64-bit), 8GB RAM.
 
 ```
-addition of two squared (3x3) matrices lasted 0.006 [ms]
-transposed of a squared (3x3) matrix lasted 0.005 [ms]
-normal-multiplication of two squared (3x3) matrices lasted 0.008 [ms]
-strassen-multiplication of two squared (3x3) matrices lasted 0.861 [ms]
-inversion of a squared (3x3) matrix lasted 0.018 [ms]
-addition of two squared (4000x4000) matrices lasted 433.425 [ms]
-transposed of a squared (4000x4000) matrix lasted 845.269 [ms]
-normal-multiplication of two squared (4000x4000) matrices lasted 1338710.784 [ms]
-strassen-multiplication of two squared (4000x4000) matrices lasted 856570.816 [ms]
-inversion of a squared (4000x4000) matrix lasted 3010656.512 [ms]
+addition of two squared (4x4) matrices lasted 0.001 [ms]
+transposition of a squared (4x4) matrix lasted 0.002 [ms]
+normal-multiplication of two squared (4x4) matrices lasted 0.002 [ms]
+strassen-multiplication of two squared (4x4) matrices lasted 0.236 [ms]
+inversion of a squared (4x4) matrix lasted 0.002 [ms]
 ```
+
+I will provide you with a table summarizing advantages and drawbacks of this library.
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
 In conclusion, one should think twice before multiplying or inverting large matrices both time-wise and memory-wise speaking. Consider the memory these matrices occupy. A 4000x4000 matrix consisting of floats occupies 128MB. For a single multiplication we would need three times this memory. However, one can notice how useful Strassen multiplication becomes for large matrices. In the above example for two 4000x4000 matrices the normal multiplication lasted 22.3 minutes when it only took 14.3 for Strassen.
 
 ## LOG FILE
