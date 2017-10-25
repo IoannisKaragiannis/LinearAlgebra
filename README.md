@@ -220,7 +220,7 @@ m1*inv(m1) =
 | 0 0 1 |
 
 ```
-If for any reason an exception is thrown you can navigate to the */tmp/LinearAlgebra/* directory
+If for any reason an exception is thrown, you can navigate to the */tmp/LinearAlgebra/* directory
 where the *error_log.txt* file will guide you to debug your code. 
 
 
