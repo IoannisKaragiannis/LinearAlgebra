@@ -1,46 +1,38 @@
 # DEMO
 
-This is a simple demo to illustrate how the *LinearAlgebra* library works. The two main features of this demo is the **lti_system** class and the **kalman** class. In this demo we will implement a Kalman filter to track the position of a free falling ball given that we measure its position with a noisy instrument. This demo is based upon [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf). All functions of this demo are selfexplanatory, so feel free to read the respective header and source files.
+This is a simple demo to illustrate how the *LinearAlgebra* library works. The two main features of this demo is the **lti_system** class and the **kalman** class. In this demo we will implement a Kalman filter to track the position of a free falling ball given that we measure its position with a noisy instrument. This demo is based upon [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf). All functions of this demo are self-explanatory, so feel free to read the respective header and source files to understand what's under the hood.
 
-## GETTING STARTED
+## PREREQUISITES
 
-These are the two steps to be made so that this demo can collaborate with the *LinearAlgebra* library.
-
-**_Step 1_:**
+Enable C++11 as explained in the main README file. The CFLAGS specified in the current makefile do the job in this demo case. This is what it looks like
 ```
-Enabled C++11 and introduced the g++-4.8 compiler as explained in the LinearAlgebra README.md. 
-```
-**_Step 2_:**
-```
-Linked demo with the base.h file.
-```
-
-I did that only once in the *lti_system.h* file:
-
-```c++
-#include </usr/local/LinearAlgebra/include/base.h>
-```
-
-Remember: if you decide to store the *LinearAlgebra* in a directory other than */usr/local/* then you should change the *include* accordingly.
-
-```c++
-#include </your_path/LinearAlgebra/include/base.h>
+CXXFLAGS = -std=c++0x -D__cplusplus=201103L -O3 -Wall -fmessage-length=0
 ```
  
-## RUN THIS DEMO
+The first two settings are responsible for enabling C++11 together with the proper compiler choice (g++-4.8 in this case).
 
-In order for this demo to be ran you need to store the *LinearAlgebra* library under the */usr/local/LinearAlgebra* directory as desribed in the main README.md. From your terminal type the following:
+## RUN THE DEMO
+
+**_Step 1_:**
+
+Download and store the *LinearAlgebra* library  under any directory you prefer as desribed in the main README file.
+
+**_Step 2_:**
+
+Navigate to the unit test folder and type the following on your terminal
 
 ```
-cd /usr/local/LinearAlgebra/demo/
+cd /your_path/LinearAlgebra/demo
 make clean
 make all
 ```
 
-You should see:
+You should see the following:
+
 ```
 ********* RUN DEMO *************
 ********************************
+ 
 pos_true = [ 100 99.5 98 95.5 92 87.5 ]
 pos_meas = [ nan 100 97.9 94.4 92.7 87.3 ]
 pos_hat  = [ 95 99.625 98.4333 95.2143 92.355 87.6848 ]
@@ -50,8 +42,8 @@ vel_hat  = [ 1 0.375 -1.15833 -2.90476 -3.69447 -4.84356 ]
 
 est_err_pos = [ 10 0.916667 0.666667 0.657143 0.612546 0.552805 ]
 est_err_vel = [ 1 0.916667 0.583333 0.295238 0.151292 0.0841584 ]
-```
 
+```
 These results can be cross-checked by looking on the table at page 24 of the [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
 
 In case you want to manually run the binary yourself type this on your terminal:
