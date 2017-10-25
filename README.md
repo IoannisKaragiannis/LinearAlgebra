@@ -222,9 +222,6 @@ m1*inv(m1) =
 | 0 0 1 |
 
 ```
-If for any reason an exception is thrown, you can navigate to the */tmp/LinearAlgebra/* directory
-where the *error_log.txt* file will guide you to debug your code. 
-
 
 ## RUNNING TESTS
 
@@ -257,8 +254,7 @@ int main(){
 }
 ```
 
-If you run the above mentioned script you should get something similar to this. It depends on your machine.
-MACHINE DETAILS: Intel® Core™ i3 CPU M 330 @ 2.13GHz × 4 (64-bit), 8GB RAM.
+If you run the above mentioned script you should get something similar to this. 
 
 ```
 addition of two squared (4x4) matrices lasted 0.001 [ms]
@@ -267,6 +263,9 @@ normal-multiplication of two squared (4x4) matrices lasted 0.002 [ms]
 strassen-multiplication of two squared (4x4) matrices lasted 0.236 [ms]
 inversion of a squared (4x4) matrix lasted 0.002 [ms]
 ```
+
+Of course it depends on your machine.
+MY MACHINE DETAILS: Intel® Core™ i3 CPU M 330 @ 2.13GHz × 4 (64-bit), 8GB RAM.
 
 The table below summarizes the speed-performance of some basic operations of this library.
 
@@ -281,7 +280,7 @@ The table below summarizes the speed-performance of some basic operations of thi
 |1000x1000|    9.8 [s]  | 1.6e-2 [s]  | 1.9e-2 [s]    |    1.9 [s]      |      2.9 [s] |
 |4000x4000|    866 [s]  | 2.4e-1 [s]  | 3.8e-1 [s]    |    115 [s]      |       91 [s] |
  
-In conclusion, inversion is computatioanlly expensive and is therefore not recommended for large matrices. Addition and transposition are not that heavy. Multiplication and Strassen-multiplication are also not recommended for large matrices, both time-wise and memory wise. Consider that a 4000x4000 matrix occupies 128 MB. And we would need three times this memory for a single multiplication. It is worthmentioning how the Strassen multiplication adds no value for small matrices, whereas it decreases the computational time significantly as the matrices' size grow. 
+In conclusion, inversion is computatioanlly expensive and is therefore not recommended for large matrices. Addition and transposition are not that heavy. Multiplication and Strassen-multiplication are also not recommended for large matrices, both time-wise and memory wise. Consider that a 4000x4000 matrix occupies 128 MB. And we would need three times this memory for a single multiplication. However, it is worth-mentioning how the Strassen multiplication adds no value for small matrices, whereas it decreases the computational time significantly as the matrices' size grow. 
 
 ## LOG FILE
 
@@ -296,7 +295,7 @@ or Mac OS, I cannot guarantee anything.
 Look at the [demo](https://github.com/IoannisKaragiannis/LinearAlgebra/tree/master/demo) folder.
 
 
-So, now you must have familiriazed yourself with the LinearAlgebra library. Start your exciting project using this library and don't forget to say a good word for me.
+So, now you must have familiriazed yourself with the *LinearAlgebra* library. Start your exciting project and don't forget to say a good word for me.
 
 P.S.: There are several linear algebra libraries out there way more complete and probably better performing than mine (e.g.: itpp, armadillo, eigen, etc.). But this is just a project I wanted to work on and share it with you. Cheers.
 
