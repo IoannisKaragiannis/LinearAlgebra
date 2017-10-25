@@ -44,7 +44,9 @@ est_err_pos = [ 10 0.916667 0.666667 0.657143 0.612546 0.552805 ]
 est_err_vel = [ 1 0.916667 0.583333 0.295238 0.151292 0.0841584 ]
 
 ```
-These results can be cross-checked by looking on the table at page 24 of the [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
+These results can be cross-checked by looking on the table at page 24 of the [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf). For the impatient reader, this is the aforementioned table:
+
+![Screenshot](../images/LinearAlgebraLibrary/c++11_in_eclipse.png)
 
 In case you want to manually run the binary yourself type this on your terminal:
 ```
