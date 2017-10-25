@@ -104,7 +104,7 @@ Unzip the file. Make sure you are root so you have all transferring/deleting per
 $ sudo su
 $ cd /home/user_name/Downloads
 $ sudo unzip LinearAlgebra-master.zip 
-$ cp -r LinearAlgebra-master/. /usr/local/LinearAlgebra/
+$ cp -r LinearAlgebra-master/. /your_path/LinearAlgebra/
 ```
 Clean your *Downloads* folder
 
@@ -113,25 +113,21 @@ $ rm -r LinearAlgebra-master
 $ rm -r LinearAlgebra-master.zip
 ```
 
-Now the *LinearAlgebra*  containing all the necessary header files should lay under the */usr/local/LinearAlgebra* directory. Could it be more simple? You can always store the LinearAlgebra anywhere you prefer. Even in your project's directory. It's totally up to you.
+Now the *LinearAlgebra*  containing all the necessary header files should lay under the */your_path/LinearAlgebra* directory. Could it be more simple? You can always store the LinearAlgebra anywhere you prefer. Even in your project's directory. It's totally up to you.
 
 ### LINK YOUR PROJECT WITH *LinearAlgebra* LIBRARY.
 
-
-Remember that this is a header-only library based on templates. Therefore, there is no need to compile anything at this step. Go to your main project and include this line 
-
-```c++
-#include </usr/local/LinearAlgebra/include/base.h>
-```
-That was it. Enjoy!
-
-P.S.: If you stored the *LinearAlgebra* in a directory other than */usr/local/* you should make the approriate change like this:
+In your project, add where necessary this line:
 
 ```c++
 #include </your_path/LinearAlgebra/include/base.h>
 ```
+That was it. Enjoy!
+
 
 ## TUTORIAL EXAMPLE
+
+I have saved the *LinearAlgebra* under */usr/local/LinearAlgebra* directory.
 
 ```c++
 #include <iostream>
@@ -232,6 +228,8 @@ where the *error_log.txt* file will guide you to debug your code.
 
 ## RUNNING TESTS
 
+### UNIT TEST
+
 Look at the [unit test](https://github.com/IoannisKaragiannis/LinearAlgebra/tree/master/tests/unit_test) folder.
 
 
@@ -291,7 +289,7 @@ Assuming you are using Linux, an error-log file will be stored under the
 /tmp/LinearAlgebra/ directory. This will be helpful to detect bugs in your
 code related to *LinearAlgebra* lib. If you are working on an OS other than Linux
 the functions within *mylog.h* file will not work. As I haven't tested this library on Windows
-or Mac OS I cannot guarantee anything.
+or Mac OS, I cannot guarantee anything.
 
 # DEMO
 
