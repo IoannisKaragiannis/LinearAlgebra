@@ -36,13 +36,11 @@ cd /usr/local/LinearAlgebra/demo/
 make clean
 make all
 ```
-The binary you need to run is under the *build/bin/* directory, so type this on your terminal.
-```
-build/bin/./KalmanFilter
-```
 
 You should see:
 ```
+********* RUN DEMO *************
+********************************
 pos_true = [ 100 99.5 98 95.5 92 87.5 ]
 pos_meas = [ nan 100 97.9 94.4 92.7 87.3 ]
 pos_hat  = [ 95 99.625 98.4333 95.2143 92.355 87.6848 ]
@@ -55,6 +53,11 @@ est_err_vel = [ 1 0.916667 0.583333 0.295238 0.151292 0.0841584 ]
 ```
 
 These results can be cross-checked by looking on the table at page 24 of the [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
+
+In case you want to remotely run the binary yourself type this on your terminal.
+```
+build/bin/./KalmanFilter
+```
 
 ## CROSS-COMPILE DEMO
 
