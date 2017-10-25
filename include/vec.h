@@ -139,7 +139,7 @@ private:
 	size_t length_ = NaN(size_t);
 };
 
-// DEFAULT CONSTUCTOR
+// DEFAULT CONSTRUCTOR
 template <class T>
 Vec<T>::Vec()
 {
@@ -151,14 +151,18 @@ Vec<T>::Vec()
 template <class T>
 Vec<T>::Vec(size_t n)
 {
-	if( n > MAX_ACCEPTABLE_VECTOR_SIZE ){
+	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in vec(size_t n): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		data_.resize(n);
 		length_ = data_.size();
-		for(size_t i = 0; i < n; i++){
+		for (size_t i = 0; i < n; i++)
+		{
 			data_[i] = T(0);
 		}
 	}
@@ -206,11 +210,14 @@ size_t Vec<T>::capacity() const noexcept{ return data_.capacity(); }
 template <class T>
 void Vec<T>::set(size_t i, T k)
 {
-	if(i >= length_){
+	if (i >= length_)
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in set(size_t k, double v)";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else{
+	}
+	else
+	{
 		data_[i] = k;
 	}
 }
@@ -218,11 +225,14 @@ void Vec<T>::set(size_t i, T k)
 template <class T>
 T Vec<T>::get(size_t r) const
 {
-	if(length_ == 0){
+	if (length_ == 0)
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in get(size_t r):: tried to access NULL VECTOR";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else{
+	}
+	else
+	{
 		return data_.at(r); // at(r) from vector class will throw exception if r is larger than the size of vector
 	}
 }
@@ -230,17 +240,23 @@ T Vec<T>::get(size_t r) const
 template <class T>
 Vec<T> Vec<T>::get(size_t i, size_t j) const
 {
-	if(i >= length_ || j >= length_){
+	if (i >= length_ || j >= length_)
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in get(size_t i, size_t j)";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else if(j < i){
+	}
+	else if(j < i)
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in get(size_t i, size_t j) ==> j < i";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result(j - i + 1);
-		for(size_t m = i; m < j+1; m++){
+		for(size_t m = i; m < j+1; m++)
+		{
 			result.data_[m - i] = data_.at(m);
 		}
 		return result;
@@ -250,14 +266,17 @@ Vec<T> Vec<T>::get(size_t i, size_t j) const
 template <class T>
 void Vec<T>::set_size(T new_size)
 {
-	if( new_size > MAX_ACCEPTABLE_VECTOR_SIZE ){
+	if ( new_size > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in set_size(size_t new_size): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
-	if(length_ == new_size){
+	else if(length_ == new_size){
 		return;
-	}else{
+	}
+	else
+	{
 		data_.resize(new_size);
 		length_ = data_.size();
 	}
@@ -266,13 +285,17 @@ void Vec<T>::set_size(T new_size)
 template <class T>
 void Vec<T>::set_subvector(size_t start, const Vec<T>& v)
 {
-	if(start >= length_ || length_ - start < v.size()){
+	if (start >= length_ || length_ - start < v.size())
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in set_subvector(size_t start, const vec& v)";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else{
+	}
+	else
+	{
 		size_t i, size = v.size();
-		for(i = size; i--;){
+		for(i = size; i--;)
+		{
 			data_[i+start] = v.data_[i];
 		}
 	}
@@ -293,7 +316,8 @@ void Vec<T>::clear(){ zeros(); }
 template <class T>
 void Vec<T>::ones(){
 	size_t i = 0;
-	for(i = length_; i--;){
+	for (i = length_; i--;)
+	{
 		data_[i] = T(1);
 	}
 }
@@ -301,14 +325,18 @@ void Vec<T>::ones(){
 template <class T>
 Vec<T> Vec<T>::add(const Vec<T>& v1)
 {
-	if(this->length_ != v1.length_){
+	if (this->length_ != v1.length_)
+	{
 		std::string msg = FILE_LINE_ERROR + " dimension mismatch in add(const vec& v1)";
 		log_error(msg.c_str());
 		throw std::length_error(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result(v1.length_);
 		size_t i, size = result.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result.data_[i] = data_[i] + v1.data_[i];
 		}
 		return result;
@@ -318,14 +346,18 @@ Vec<T> Vec<T>::add(const Vec<T>& v1)
 template <class T>
 Vec<T> Vec<T>::sub(const Vec<T>& v1)
 {
-	if(this->length_ != v1.length_){
+	if (this->length_ != v1.length_)
+	{
 		std::string msg = FILE_LINE_ERROR + " dimension mismatch in sub(const vec& v1)";
 		log_error(msg.c_str());
 		throw std::length_error(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result(v1.length_);
 		size_t i, size = result.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result.data_[i] = data_[i] - v1.data_[i];
 		}
 		return result;
@@ -335,14 +367,18 @@ Vec<T> Vec<T>::sub(const Vec<T>& v1)
 template <class T>
 T Vec<T>::dot(const Vec<T>& v1)
 {
-	if(this->length_ != v1.length_){
+	if (this->length_ != v1.length_)
+	{
 		std::string msg = FILE_LINE_ERROR + " dimension mismatch in dot(const vec& v1)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		T result = 0;
 		size_t i = 0, length = v1.length_;
-		for(i = length; i--;){
+		for (i = length; i--;)
+		{
 			result += data_[i] * v1.data_[i];
 		}
 		return result;
@@ -358,13 +394,16 @@ T Vec<T>::dot(const Vec<T>& v1)
 template <class T>
 Vec<T> Vec<T>::cross(const Vec<T>& v1)
 {
-	if( this->length_ == 3 && v1.length_ == 3 ){
+	if ( this->length_ == 3 && v1.length_ == 3 )
+	{
 		Vec<T> result(3);
 		result.data_[0] = data_[1] * v1.data_[2] - v1.data_[1] * data_[2];
 		result.data_[1] = data_[2] * v1.data_[0] - v1.data_[2] * data_[0];
 		result.data_[2] = data_[0] * v1.data_[1] - v1.data_[0] * data_[1];
 		return result;
-	}else{
+	}
+	else
+	{
 		std::string msg = FILE_LINE_ERROR + " Vectors should be of size 3 in cross(const vec& v1)";
 		log_error(msg.c_str());
 		throw std::length_error(msg);
@@ -382,11 +421,14 @@ void Vec<T>::sort(){ std::sort(data_.begin(), data_.end()); }
 template <class T>
 void Vec<T>::swap(size_t i, size_t j)
 {
-	if(i < length_ && j < length_ && i >= 0 && j >= 0){
+	if (i < length_ && j < length_ && i >= 0 && j >= 0)
+	{
 		T tmp = data_[i];
 		data_[i] = data_[j];
 		data_[j] = tmp;
-	}else{
+	}
+	else
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in vec::swap(size_t i, size_t j): out of range indices.";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
@@ -402,7 +444,8 @@ template <class T>
 void Vec<T>::operator=(const char* a)
 {
 	// Clear vector from any previous values
-	if( (*this).size() != 0 ){
+	if ( (*this).size() != 0 )
+	{
 		data_.resize(0);
 		length_ = 0;
 	}
@@ -411,10 +454,12 @@ void Vec<T>::operator=(const char* a)
 	std::string str = std::string(a);
 
 	// Remove brackets if there are any.
-	if(str.size() >= 1){
+	if (str.size() >= 1)
+	{
 		std::string start = str.substr(0,1);
 		std::string end = str.substr(str.size()-1, str.size());
-		if( start.compare("[") == 0 && end.compare("]") == 0){
+		if ( start.compare("[") == 0 && end.compare("]") == 0)
+		{
 			str.erase(0,1);
 			str.erase(str.size()-1, str.size());
 		}
@@ -422,7 +467,8 @@ void Vec<T>::operator=(const char* a)
 
 	// Check if str has only numbers. If not, an exception should be thrown.
 	std::string acceptable_characters = " 0123456789.+-";
-	if (str.find_first_not_of(acceptable_characters) != std::string::npos){
+	if (str.find_first_not_of(acceptable_characters) != std::string::npos)
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in operator =(const char* a): vec can contain only numbers.";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
@@ -430,7 +476,8 @@ void Vec<T>::operator=(const char* a)
 
 	// Check if it's an empty string (if there is no number in the string, consider it an empty vector)
 	std::string numbers = "0123456789";
-	if( str.find_first_of(numbers) == std::string::npos ){
+	if ( str.find_first_of(numbers) == std::string::npos )
+	{
 		data_.resize(0);
 		length_ = 0;
 		return;
@@ -442,7 +489,8 @@ void Vec<T>::operator=(const char* a)
 	std::string tmp_str = str;
 
 	// Determine vector size
-	while ((pos = tmp_str.find(delimiter)) != std::string::npos) {
+	while ((pos = tmp_str.find(delimiter)) != std::string::npos)
+	{
 		tmp_str.erase(0, pos + delimiter.length());
 		k++;
 	}
@@ -456,7 +504,8 @@ void Vec<T>::operator=(const char* a)
 	std::string token;
 
 	// Pass each number into the vector
-	while ((pos = str.find(delimiter)) != std::string::npos) {
+	while ((pos = str.find(delimiter)) != std::string::npos)
+	{
 		token = str.substr(0, pos);
 		data_[k] = strtof((token).c_str(),0);
 		str.erase(0, pos + delimiter.length());
@@ -469,14 +518,18 @@ void Vec<T>::operator=(const char* a)
 template <class T>
 Vec<T> Vec<T>::operator+(const Vec<T>& v)
 {
-	if(this->length_ != v.length_){
+	if (this->length_ != v.length_)
+	{
 		std::string msg = FILE_LINE_ERROR + " Dimension mismatch for operator+(const vec& v1)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result = *this;
 		size_t i = 0, size = result.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result.data_[i] += v.data_[i];
 		}
 		return result;
@@ -487,14 +540,18 @@ Vec<T> Vec<T>::operator+(const Vec<T>& v)
 template <class T>
 Vec<T> Vec<T>::operator+(T t)
 {
-	if((*this).size() == 0){
+	if ( (*this).size() == 0 )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in operator+(double t): NULL VECTOR";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result = *this;
 		size_t i = 0, size = result.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result.data_[i] += t;
 		}
 		return result;
@@ -503,14 +560,18 @@ Vec<T> Vec<T>::operator+(T t)
 template <class T>
 Vec<T> Vec<T>::operator-(const Vec<T>& v)
 {
-	if(this->length_ != v.length_){
+	if (this->length_ != v.length_)
+	{
 		std::string msg = FILE_LINE_ERROR + " Dimension mismatch for operator-(const vec& v1)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result = *this;
 		size_t i = 0, size = result.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result.data_[i] -= v.data_[i];
 		}
 		return result;
@@ -520,14 +581,18 @@ Vec<T> Vec<T>::operator-(const Vec<T>& v)
 template <class T>
 Vec<T> Vec<T>::operator-(T t)
 {
-	if((*this).size() == 0){
+	if ( (*this).size() == 0 )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in operator-(double t): NULL VECTOR";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result = *this;
 		size_t i = 0, size = result.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result.data_[i] -= t;
 		}
 		return result;
@@ -537,12 +602,15 @@ Vec<T> Vec<T>::operator-(T t)
 template <class T>
 T Vec<T>::operator*(const Vec<T>& v)
 {
-	if(length_ != v.length_){
+	if (length_ != v.length_)
+	{
 		std::string msg = FILE_LINE_ERROR + " Dimension mismatch for operator*(const vec& v1)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 
-	}else{
+	}
+	else
+	{
 		return this->dot(v);
 	}
 }
@@ -552,7 +620,8 @@ Vec<T> Vec<T>::operator*(T x)
 {
 	Vec<T> result = *this;
 	size_t i = 0, size = result.size();
-	for(i = size; i--;){
+	for (i = size; i--;)
+	{
 		result.data_[i] *= x;
 	}
 	return result;
@@ -561,17 +630,21 @@ Vec<T> Vec<T>::operator*(T x)
 template <class T>
 Vec<T> Vec<T>::operator/(T t)
 {
-	if(t == 0){
+	if (t == 0)
+	{
 		// Division by zero has undefined behaviour for integers
 		// If not following the IEEE doubleing point standard then the doubleing point division by zero is also undefined.
 		// In order to avoid any kind of dependencies, I strictly forbid division by zero.
 		std::string msg = FILE_LINE_ERROR + " 'std::invalid_argument' thrown in operator/(double t): DIVISION BY ZERO ";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result = *this;
 		size_t i = 0, size = result.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result.data_[i] /= t;
 		}
 		return result;
@@ -581,15 +654,20 @@ Vec<T> Vec<T>::operator/(T t)
 template <class T>
 T& Vec<T>::operator()(size_t k)
 {
-	if ( (*this).size() == 0 ){
+	if ( (*this).size() == 0 )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in operator()(const size_t k): tried to access NULL VECTOR ";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else if (k >= length_){
+	}
+	else if (k >= length_)
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in operator()(const size_t k): index > vector size ";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		return data_.at(k);
 	}
 }
@@ -597,15 +675,20 @@ T& Vec<T>::operator()(size_t k)
 template <class T>
 T& Vec<T>::operator[](size_t k)
 {
-	if ( (*this).size() == 0 ){
+	if ( (*this).size() == 0 )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in operator[](const size_t k): tried to access NULL VECTOR ";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else if (k >= length_){
+	}
+	else if (k >= length_)
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in operator[](const size_t k): index > vector size ";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		return data_.at(k);
 	}
 }
@@ -614,13 +697,17 @@ T& Vec<T>::operator[](size_t k)
 template <class T>
 void Vec<T>::print(int precision)
 {
-	if((*this).size() == 0){
+	if ((*this).size() == 0)
+	{
 		printf("[ ] \n");
 		return;
-	}else{
+	}
+	else
+	{
 		printf("[ ");
 		size_t i;
-		for(i = 0; i < length_; i++){
+		for (i = 0; i < length_; i++)
+		{
 			printf("%.*f ", precision, data_[i]);
 		}
 		printf("] \n");
@@ -633,14 +720,18 @@ void Vec<T>::print(int precision)
 
 inline vec zeros(size_t n)
 {
-	if( n > MAX_ACCEPTABLE_VECTOR_SIZE ){
+	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in vec::zeros(size_t n): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		vec a(n);
 		size_t i;
-		for(i = n; i--;){
+		for (i = n; i--;)
+		{
 			a(i) = 0.0;
 		}
 		return a;
@@ -649,14 +740,18 @@ inline vec zeros(size_t n)
 
 inline ivec zeros_i(size_t n)
 {
-	if( n > MAX_ACCEPTABLE_VECTOR_SIZE ){
+	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in vec::zeros(size_t n): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		ivec a(n);
 		size_t i;
-		for(i = n; i--;){
+		for (i = n; i--;)
+		{
 			a(i) = 0;
 		}
 		return a;
@@ -665,14 +760,18 @@ inline ivec zeros_i(size_t n)
 
 inline vec ones(size_t n)
 {
-	if( n > MAX_ACCEPTABLE_VECTOR_SIZE ){
+	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in ones(size_t n): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		vec a(n);
 		size_t i;
-		for(i = n; i--;){
+		for (i = n; i--;)
+		{
 			a(i) = 1.0;
 		}
 		return a;
@@ -681,14 +780,18 @@ inline vec ones(size_t n)
 
 inline ivec ones_i(size_t n)
 {
-	if( n > MAX_ACCEPTABLE_VECTOR_SIZE ){
+	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in ones(size_t n): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		ivec a(n);
 		size_t i;
-		for(i = n; i--;){
+		for (i = n; i--;)
+		{
 			a(i) = 1;
 		}
 		return a;
@@ -702,10 +805,14 @@ inline Vec<T> find_non_zero(const Vec<T>& v)
 {
 	size_t i, size = v.size();
 	Vec<T> result(size);
-	for(i = size; i--;){
-		if(v.get(i) != 0){
+	for (i = size; i--;)
+	{
+		if (v.get(i) != 0)
+		{
 			result.set(i, 1.0);
-		}else{
+		}
+		else
+		{
 			result.set(i, 0);
 		}
 	}
@@ -719,10 +826,14 @@ inline Vec<T> find_zero(const Vec<T>& v)
 {
 	size_t i, size = v.size();
 	Vec<T> result(size);
-	for(i = size; i--;){
-		if(v.get(i) == 0){
+	for (i = size; i--;)
+	{
+		if (v.get(i) == 0)
+		{
 			result.set(i, 1.0);
-		}else{
+		}
+		else
+		{
 			result.set(i, 0);
 		}
 	}
@@ -731,11 +842,14 @@ inline Vec<T> find_zero(const Vec<T>& v)
 
 inline vec rand(size_t n)
 {
-	if( n > MAX_ACCEPTABLE_VECTOR_SIZE ){
+	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in vec::rand(size_t n, size_t m): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		vec a(n);
 		size_t i = 0;
 
@@ -748,7 +862,8 @@ inline vec rand(size_t n)
 		double min = -10, max = 10;
 
 		std::uniform_real_distribution<double> dis(0, 2*max);
-		for(i = n; i--;){
+		for (i = n; i--;)
+		{
 			// Generate random number within the range [-10 10]
 			a(i) = min + (double) dis(gen);
 		}
@@ -758,11 +873,14 @@ inline vec rand(size_t n)
 
 inline ivec rand_i(size_t n)
 {
-	if( n > MAX_ACCEPTABLE_VECTOR_SIZE ){
+	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
 		std::string msg = FILE_LINE_ERROR + " exception in vec::rand(size_t n, size_t m): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		ivec a(n);
 		size_t i = 0;
 
@@ -775,7 +893,8 @@ inline ivec rand_i(size_t n)
 		int min = -10, max = 10;
 
 		std::uniform_int_distribution<int> dis(0, 2*max);
-		for(i = n; i--;){
+		for (i = n; i--;)
+		{
 			// Generate random number within the range [-10 10]
 			a(i) = min + (int) dis(gen);
 		}
@@ -792,14 +911,18 @@ inline ivec rand_i(size_t n)
 template <class T>
 inline T dot(const Vec<T>& v1, const Vec<T>& v2)
 {
-	if(v1.size() != v1.size()){
+	if ( v1.size() != v1.size() )
+	{
 		std::string msg = FILE_LINE_ERROR + " dimension mismatch in dot(const vec& v1, const vec& v2)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		T result = 0;
 		size_t i = 0, size = v1.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result += v1.get(i)*v2.get(i);
 		}
 		return result;
@@ -810,14 +933,18 @@ inline T dot(const Vec<T>& v1, const Vec<T>& v2)
 template <class T>
 inline double mean(const Vec<T>& v)
 {
-	if(v.size() == 0){
+	if (v.size() == 0)
+	{
 		std::string msg = FILE_LINE_ERROR + " NULL VECTOR in mean(const vec& v)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		double result = 0;
 		size_t i = 0, size = v.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result += v.get(i);
 		}
 		result /= size;
@@ -829,96 +956,120 @@ inline double mean(const Vec<T>& v)
 template <class T>
 inline T min(const Vec<T>& v)
 {
-	if(v.size() == 0){
+	if (v.size() == 0)
+	{
 		std::string msg = FILE_LINE_ERROR + " NULL VECTOR in min(const vec& v)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
-	T min = MAX(T);
-	size_t i = 0, size = v.size();
-	for (i = size; i--;){
-		if(v.get(i) < min ){
-			min = v.get(i);
+	else
+	{
+		T min = MAX(T);
+		size_t i = 0, size = v.size();
+		for (i = size; i--;)
+		{
+			if (v.get(i) < min )
+			{
+				min = v.get(i);
+			}
 		}
+		return min;
 	}
-	return min;
 }
 
 // Calculate the min value of a vector together with its index
 template <class T>
 inline T min(const Vec<T>& v, size_t &index)
 {
-	if(v.size() == 0){
+	if (v.size() == 0)
+	{
 		std::string msg = FILE_LINE_ERROR + " NULL VECTOR in min(const vec& v, size_t &index)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
-	index = 0;
-	T min = MAX(T);;
-	// Calculate the index of the minimum value
-	size_t i = 0, size = v.size();
-	for (i = size; i--;){
-		if(v.get(i) < min ){
-			min = v.get(i);
-			index = i;
+	else
+	{
+		index = 0;
+		T min = MAX(T);;
+		// Calculate the index of the minimum value
+		size_t i = 0, size = v.size();
+		for (i = size; i--;)
+		{
+			if (v.get(i) < min )
+			{
+				min = v.get(i);
+				index = i;
+			}
 		}
+		return v.get(index);
 	}
-	return v.get(index);
 }
 
 // Calculate the max value of a vector
 template <class T>
 inline T max(const Vec<T>& v)
 {
-	if(v.size() == 0){
+	if (v.size() == 0)
+	{
 		std::string msg = FILE_LINE_ERROR + " NULL VECTOR in max(const vec& v)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
-	T max = 0;
-	// Calculate the index of the maximum value
-	size_t i = 0, size = v.size();
-	for (i = size; i--;){
-		if(v.get(i) > max ){
-			max = v.get(i);
+	else
+	{
+		T max = 0;
+		size_t i = 0, size = v.size();
+		for (i = size; i--;){
+			if(v.get(i) > max ){
+				max = v.get(i);
+			}
 		}
+		return max;
 	}
-	return max;
 }
 
 // Calculate the max value of a vector together with its index
 template <class T>
 inline T max(const Vec<T>& v, size_t &index)
 {
-	if(v.size() == 0){
+	if (v.size() == 0)
+	{
 		std::string msg = FILE_LINE_ERROR + " NULL VECTOR in max(const vec& v, size_t &index)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
-	index = 0;
-	T max = 0;
-	// Calculate the index of the maximum value
-	size_t i = 0, size = v.size();
-	for (i = size; i--;){
-		if(v.get(i) > max ){
-			max = v.get(i);
-			index = i;
+	else
+	{
+		index = 0;
+		T max = 0;
+		// Calculate the index of the maximum value
+		size_t i = 0, size = v.size();
+		for (i = size; i--;)
+		{
+			if (v.get(i) > max )
+			{
+				max = v.get(i);
+				index = i;
+			}
 		}
+		return max;
 	}
-	return max;
 }
 
 // Caluclate cross product. Vectors must be of size 3
 template <class T>
 inline Vec<T> cross(const Vec<T>& v1, const Vec<T>& v2)
 {
-	if( v1.size() == 3 && v2.size() == 3 ){
+	if ( v1.size() == 3 && v2.size() == 3 )
+	{
 		vec result(3);
 		result.set(0, v1.get(1)*v2.get(2) - v2.get(1)*v1.get(2));
 		result.set(1, v1.get(2)*v2.get(0) - v2.get(2)*v1.get(0));
 		result.set(2, v1.get(0)*v2.get(1) - v2.get(0)*v1.get(1));
 		return result;
-	}else{
+	}
+	else
+	{
 		std::string msg = FILE_LINE_ERROR + " Vectors should be of size 3 in cross(const vec& v1, const vec& v2)";
 		log_error(msg.c_str());
 		throw std::length_error(msg);
@@ -928,19 +1079,26 @@ inline Vec<T> cross(const Vec<T>& v1, const Vec<T>& v2)
 template <class T>
 inline Vec<T> concat(const Vec<T>& v, double t)
 {
-	Vec<T> result;
-	if( v.size() == 0 ){
+	if ( v.size() == 0 )
+	{
+		Vec<T> result;
 		result.set_size(1);
 		result.set(0, t);
 		return result;
-	}else if( v.size() == MAX_ACCEPTABLE_VECTOR_SIZE ){
+	}
+	else if ( v.size() == MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
 		std::string msg = FILE_LINE_ERROR + " Inputs define out of range vector in concat(const vec& v, double t)";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else{
+	}
+	else
+	{
+		Vec<T> result;
 		result.set_size(v.size() + 1);
 		size_t i = 0, size = result.size();
-		for(i = size - 1; i--;){
+		for (i = size - 1; i--;)
+		{
 			result(i) = v.get(i);
 		}
 		result(size - 1) = t;
@@ -951,20 +1109,27 @@ inline Vec<T> concat(const Vec<T>& v, double t)
 template <class T>
 inline Vec<T> concat(double t, const Vec<T>& v)
 {
-	Vec<T> result;
-	if( v.size() == 0 ){
+	if ( v.size() == 0 )
+	{
+		Vec<T> result;
 		result.set_size(1);
 		result.set(0, t);
 		return result;
-	}else if( v.size() == MAX_ACCEPTABLE_VECTOR_SIZE ){
+	}
+	else if ( v.size() == MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
 		std::string msg = FILE_LINE_ERROR + " Inputs define out of range vector in concat(double t, const vec& v)";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else{
+	}
+	else
+	{
+		Vec<T> result;
 		result.set_size(v.size() + 1);
 		size_t i = 0, size = result.size();
 		result(0) = t;
-		for(i = size - 1; i--;){
+		for (i = size - 1; i--;)
+		{
 			result(i+1) = v.get(i);
 		}
 		return result;
@@ -972,22 +1137,32 @@ inline Vec<T> concat(double t, const Vec<T>& v)
 }
 
 template <class T>
-inline Vec<T> concat(const Vec<T>& v1, const Vec<T>& v2){
-	if(v1.size() == 0 && v2.size() == 0){
+inline Vec<T> concat(const Vec<T>& v1, const Vec<T>& v2)
+{
+	if (v1.size() == 0 && v2.size() == 0)
+	{
 		// Concatenation of null vectors should yield back a null vector
-		return T(0);
-	}else if(v1.size() + v2.size() > MAX_ACCEPTABLE_VECTOR_SIZE){
+		return Vec<T>(0);
+	}
+	else if (v1.size() + v2.size() > MAX_ACCEPTABLE_VECTOR_SIZE)
+	{
 		std::string msg = FILE_LINE_ERROR + " Inputs define out of range vector in concat(const vec& v1, const vec& v2)";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result(v1.size() + v2.size());
 		size_t i = 0;
 		size_t size = result.size(), size_v1 = v1.size();
-		for(i = size; i--;){
-			if(i < size_v1){
+		for (i = size; i--;)
+		{
+			if (i < size_v1)
+			{
 				result(i) = v1.get(i);
-			}else{
+			}
+			else
+			{
 				result(i) = v2.get(i - size_v1);
 			}
 		}
@@ -997,20 +1172,27 @@ inline Vec<T> concat(const Vec<T>& v1, const Vec<T>& v2){
 
 // It works in the same manner as from:step:to in MATLAB.
 template <class T>
-inline Vec<T> linspace(T from, T to, size_t step){
+inline Vec<T> linspace(T from, T to, size_t step)
+{
 	size_t size = (size_t) (std::floor((to -from)/step) + 1);
-	if( (to - from) < 0 || step < 0 ){
+	if ( (to - from) < 0 || step < 0 )
+	{
 		std::string msg = FILE_LINE_ERROR + " Invalid arguments in linspace(double from, double to, size_t step)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else if(size > MAX_ACCEPTABLE_VECTOR_SIZE){
+	}
+	else if (size > MAX_ACCEPTABLE_VECTOR_SIZE)
+	{
 		std::string msg = FILE_LINE_ERROR + " Inputs define out of range vector in linspace(double from, double to, size_t step)";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result(size);
 		size_t i = 0, size = result.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result.set(i, from + step*i);
 		}
 		return result;
@@ -1019,15 +1201,20 @@ inline Vec<T> linspace(T from, T to, size_t step){
 
 // Element-wise vector multiplication
 template <class T>
-inline Vec<T> elem_mult(const Vec<T>& v1, const Vec<T>& v2){
-	if(v1.size() != v2.size()){
+inline Vec<T> elem_mult(const Vec<T>& v1, const Vec<T>& v2)
+{
+	if (v1.size() != v2.size())
+	{
 		std::string msg = FILE_LINE_ERROR + " Dimension mismatch in elem_mult(const vec& v1, const vec& v2)";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
-	}else{
+	}
+	else
+	{
 		Vec<T> result(v1.size());
 		size_t i = 0, size = result.size();
-		for(i = size; i--;){
+		for (i = size; i--;)
+		{
 			result.set(i, v1.get(i)*v2.get(i));
 		}
 		return result;
@@ -1035,24 +1222,31 @@ inline Vec<T> elem_mult(const Vec<T>& v1, const Vec<T>& v2){
 }
 
 template <class T>
-inline double sum(const Vec<T>& v){
+inline double sum(const Vec<T>& v)
+{
 	T result = 0;
 	size_t i = 0, size = v.size();
-	for(i = size; i--;){
+	for (i = size; i--;)
+	{
 		result += v.get(i);
 	}
 	return result;
 }
 
 template <class T>
-inline Vec<T> cumsum(const Vec<T>& v1){
-	Vec<T> result(v1.size());
-	if(v1.size() == 0){
-		return result;
-	}else{
+inline Vec<T> cumsum(const Vec<T>& v1)
+{
+	if (v1.size() <= 1)
+	{
+		return Vec<T>(v1.size());
+	}
+	else
+	{
+		Vec<T> result(v1.size());
 		result.set(0, v1.get(0));
 		size_t i = 0, size = result.size();
-		for(i = 1; i < size; i++){
+		for (i = 1; i < size; i++)
+		{
 			result(i) = result(i-1) + v1.get(i);
 		}
 		return result;
@@ -1060,20 +1254,24 @@ inline Vec<T> cumsum(const Vec<T>& v1){
 }
 
 template <class T>
-inline double norm(const Vec<T>& v){
+inline double norm(const Vec<T>& v)
+{
 	double result = 0;
 	size_t i = 0, size = v.size();
-	for(i = size; i--;){
+	for (i = size; i--;)
+	{
 		result += v.get(i)*v.get(i);
 	}
 	return std::sqrt(result);
 }
 
 template <class T>
-inline Vec<T> abs(const Vec<T>& v){
+inline Vec<T> abs(const Vec<T>& v)
+{
 	Vec<T> result(v.size());
 	size_t i = 0, size = v.size();
-	for(i = size; i--;){
+	for (i = size; i--;)
+	{
 		result(i) = std::abs(v.get(i));
 	}
 	return result;
