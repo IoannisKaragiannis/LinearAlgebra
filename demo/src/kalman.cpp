@@ -28,7 +28,8 @@
 
 namespace algebra {
 
-kalman::kalman() {
+kalman::kalman()
+{
 	x_hat.set_size(0,0);
 	u.set_size(0,0);
 	F.set_size(0,0);
@@ -43,14 +44,12 @@ kalman::kalman() {
 	K.set_size(0,0);
 	initialize = false;
 	initial_conditions = false;
-
 }
 
-kalman::~kalman() {
-	// TODO Auto-generated destructor stub
-}
+kalman::~kalman() {}
 
-void kalman::set_initial_conditions(const vec& x0, const mat& P0){
+void kalman::set_initial_conditions(const vec& x0, const mat& P0)
+{
 	x_hat.set_size(x0.size(), 1);
 	x_hat.set_col(0, x0);
 	P.set_size(x0.size(), x0.size());
@@ -58,16 +57,18 @@ void kalman::set_initial_conditions(const vec& x0, const mat& P0){
 	initial_conditions = true;
 }
 
-void kalman::update( lti_system &sys, const vec& input, const vec& measurement ){
-
+void kalman::update( lti_system &sys, const vec& input, const vec& measurement )
+{
 	// Initialize filter
-	if(!initialize){
+	if (!initialize)
+	{
 		initialize_filter(sys);
 	}
 
 	// Set default initial conditions x_hat[0] = 0, P_hat[0] = 0
 	// Without them the algorithm cannot start
-	if(!initial_conditions){
+	if (!initial_conditions)
+	{
 		size_t size = sys.get_state_transition_matrix().rows();
 		// Set default initial conditions to zero
 		vec x0 = zeros(size);
@@ -101,32 +102,41 @@ void kalman::update( lti_system &sys, const vec& input, const vec& measurement )
 	P = (P + transpose(P)) * 0.5;
 }
 
-vec kalman::get_estimate(){
-	if(x_hat.cols() == 1){
+vec kalman::get_estimate()
+{
+	if ( x_hat.cols() == 1 )
+	{
 		return mat2vec(x_hat);
-	}else{
+	}
+	else
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in kalman::get_estimate(): x_hat must be a vector => x_hat.cols() = 1 ";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
 }
 
-vec kalman::get_cov_error(){
-	return diag(P);
-}
+vec kalman::get_cov_error() { return diag(P); }
 
-void kalman::update_input_and_measurement(const vec& input, const vec& measurement){
-	if( input.size() == u.rows()){
+void kalman::update_input_and_measurement(const vec& input, const vec& measurement)
+{
+	if ( input.size() == u.rows() )
+	{
 		u.set_col(0, input);
-	}else{
+	}
+	else
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in kalman::update(...): Erroneous input dimension ";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
 
-	if(measurement.size() == z.rows()){
+	if ( measurement.size() == z.rows() )
+	{
 		z.set_col(0, measurement);
-	}else{
+	}
+	else
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in kalman::update(...): Erroneous measurement dimension ";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
@@ -134,8 +144,8 @@ void kalman::update_input_and_measurement(const vec& input, const vec& measureme
 }
 
 
-void kalman::initialize_filter(lti_system& sys){
-
+void kalman::initialize_filter(lti_system& sys)
+{
 	F = sys.get_state_transition_matrix();
 	B = sys.get_control_matrix();
 	Q = sys.get_process_noise_variance();
@@ -150,7 +160,6 @@ void kalman::initialize_filter(lti_system& sys){
 	I = eye(F.rows());
 
 	initialize = true;
-
 }
 
 } /* namespace algebra */

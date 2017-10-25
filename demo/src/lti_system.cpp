@@ -28,7 +28,8 @@
 
 namespace algebra {
 
-lti_system::lti_system() {
+lti_system::lti_system()
+{
 	x = zeros(0,0);
 	F = zeros(0,0);
 	B = zeros(0,0);
@@ -41,49 +42,40 @@ lti_system::lti_system() {
 	initial_conditions = false;
 }
 
-lti_system::~lti_system() {
-	// TODO Auto-generated destructor stub
-}
+lti_system::~lti_system() {}
 
 
 mat lti_system::get_state_transition_matrix(){
 	return F;
 }
 
-mat lti_system::get_control_matrix(){
-	return B;
-}
+mat lti_system::get_control_matrix() { return B; }
 
 
-mat lti_system::get_process_noise_variance(){
-	return Q;
-}
+mat lti_system::get_process_noise_variance() { return Q; }
 
-mat lti_system::get_observation_matrix(){
-	return H;
-}
+mat lti_system::get_observation_matrix() { return H; }
 
-mat lti_system::get_observation_noise_variance(){
-	return R;
-}
+mat lti_system::get_observation_noise_variance() { return R; }
 
-double lti_system::get_sampling_period(){
-	return dt;
-}
+double lti_system::get_sampling_period() { return dt; }
 
 
 // The order of how you set your lti system is very important.
 // If you're not sure, write down the equations describing your
 // system and you will figure out what the right dimensions should be.
 void lti_system::set_system(const mat& m1, const mat& m2, const mat& m3,
-		const mat& m4, const mat& m5, double sampling_period){
+		const mat& m4, const mat& m5, double sampling_period)
+{
 	F = m1; B = m2; Q = m3;
 	H = m4; R = m5;
 
-
-	if(sampling_period > 0 && std::abs(sampling_period) != Inf(double)){
+	if( sampling_period > 0 && std::abs(sampling_period) != Inf(double) )
+	{
 		dt = sampling_period;
-	}else{
+	}
+	else
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in lti_system::set_system(...): frequency has to be positive";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
@@ -96,26 +88,29 @@ void lti_system::set_system(const mat& m1, const mat& m2, const mat& m3,
 
 }
 
-void lti_system::check_dimension_mismatch(){
-
+void lti_system::check_dimension_mismatch()
+{
 	// =====  SYSTEM DYNAMIC MODEL ========
 
 	// Check that transition matrix F is square
-	if( F.rows() != F.cols() ){
+	if ( F.rows() != F.cols() )
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in lti_system::set_system(...): F has to be square";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
 
 	// Check that input matrix has correct columns
-	if( B.rows() != F.rows() ){
+	if ( B.rows() != F.rows() )
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in lti_system::set_system(...): B.rows() != F.rows()";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
 
 	// Check that Q is square and has dimensions equal to F
-	if( Q.rows() != Q.cols() || Q.rows() != F.rows() ){
+	if ( Q.rows() != Q.cols() || Q.rows() != F.rows() )
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in lti_system::set_system(...): Q.rows() != Q.cols() || Q.rows() ! F.rows()";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
@@ -126,14 +121,16 @@ void lti_system::check_dimension_mismatch(){
 	// check that the observation matrix has the right dimensions
 	// Usually in most systems we can only observe a number of states
 	// from the state vector; not all of them.
-	if(H.cols() != F.rows() || H.rows() > F.rows()){
+	if ( H.cols() != F.rows() || H.rows() > F.rows() )
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in lti_system::set_system(...): H.cols() != F.rows() || H.rows() > F.rows()";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
 
 	// Check observation noise matrix. It has to be square
-	if(R.rows() != R.cols() || R.rows() != H.rows()){
+	if ( R.rows() != R.cols() || R.rows() != H.rows() )
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in lti_system::set_system(...): R.rows() != R.cols() || R.rows() != H.rows()";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
@@ -141,30 +138,38 @@ void lti_system::check_dimension_mismatch(){
 }
 
 
-void lti_system::run_model(const vec& x0, const vec& input){
-
-	if(!initial_conditions){
+void lti_system::run_model(const vec& x0, const vec& input)
+{
+	if ( !initial_conditions )
+	{
 		set_initial_conditions(x0);
 	}
 
-	if( input.size() == u.rows()){
+	if ( input.size() == u.rows() )
+	{
 		u.set_col(0, input);
 		x = F*x + B*u;
 		z = H*x;
-	}else{
+	}
+	else
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in lti_system::run_deterministic_model(const vec& input): Erroneous input dimension ";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
 }
 
-void lti_system::set_initial_conditions(const vec& x0){
+void lti_system::set_initial_conditions(const vec& x0)
+{
 	//Set initial conditions of the state
-	if( x0.size() == F.rows() ){
+	if ( x0.size() == F.rows() )
+	{
 		x.set_size(x0.size(), 1);
 		x.set_col(0, x0);
 		initial_conditions = true;
-	}else{
+	}
+	else
+	{
 		std::string msg = FILE_LINE_ERROR + "exception in lti_system::set_system(...): erroneous dimensions of initial conditions x0";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
@@ -172,13 +177,9 @@ void lti_system::set_initial_conditions(const vec& x0){
 }
 
 
-vec lti_system::get_state(){
-	return mat2vec(x);
-}
+vec lti_system::get_state() { return mat2vec(x); }
 
-vec lti_system::get_output(){
-	return mat2vec(z);
-}
+vec lti_system::get_output() { return mat2vec(z); }
 
 
 } /* namespace algebra */
