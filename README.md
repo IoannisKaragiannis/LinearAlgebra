@@ -133,14 +133,16 @@ P.S.: If you stored the *LinearAlgebra* in a directory other than */usr/local/* 
 #include <iostream>
 #include </usr/local/LinearAlgebra/include/base.h>
 
+using namespace aglebra;
+
 int main(){
   clear_file(LOG_ERROR_FILE);
   clear_file(LOG_FILE);
   clear_file(WARNING_FILE);
   try{
 	//Vectors' and matricies' declaration:
-	algebra::vec v1, v2, v3;
-	algebra::mat m1, m2, m3;
+	vec v1, v2, v3;
+	mat m1, m2, m3;
 	
 	//Use a string of values to define a vector:
 	v1 = "[0.5 -2 4.7 -0.9 8.6 11.3]";
@@ -150,13 +152,13 @@ int main(){
 	v3 = v1 + v2;
 
 	//Calculate the mean value of v1
-	float mean_v1 = algebra::mean(v1);
+	float mean_v1 = mean(v1);
 
 	//Calculate the dot product of v1, v2
-	float dot_v1v2 = algebra::dot(v1, v2);
+	float dot_v1v2 = dot(v1, v2);
 		
 	//Calculate the norm of v3
-	float norm_v3 = algebra::norm(v3);
+	float norm_v3 = norm(v3);
 
 	// print out the results
 	printf("v1 = "); v1.print();
