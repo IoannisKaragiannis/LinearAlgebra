@@ -54,7 +54,7 @@ est_err_pos = [ 10 0.916667 0.666667 0.657143 0.612546 0.552805 ]
 est_err_vel = [ 1 0.916667 0.583333 0.295238 0.151292 0.0841584 ]
 ```
 
-These results can be confirmed by looking on the table at page 24 of the [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
+These results can be cross-checked by looking on the table at page 24 of the [Kalman](http://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated3/kleeman_kalman_basics.pdf).
 
 ## CROSS-COMPILE DEMO
 
