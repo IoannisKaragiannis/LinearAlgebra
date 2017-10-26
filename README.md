@@ -68,8 +68,8 @@ you have at least this version on your linux-machine.
 $ sudo apt-get install python-software-properties
 $ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 $ sudo apt-get update
-$ sudo apt-get install gcc-4.8
-$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
+$ sudo apt-get install gcc-4.8 g++-4.8
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 60
 ```
 
 **_Step 2_:**
