@@ -25,15 +25,6 @@
  * 				ioanniskaragiannis1987@gmail.com
 ================================================================================*/
 
-/* This library helps the user to write code as if it were in MATLAB environment.
- * The most common functions among vectors and matrices are introduced. In order
- * to avoid bad memory allocation exceptions the MAX_ACCEPTABLE_VECTOR_SIZE is introduced
- * Therefore, for MAX_ACCEPTABLE_VECTOR_SIZE = 16000:
- * a) max_vec_size = 128 [KB]
- * b) max_mat_size =   2 [GB]
- *
- * IT IS STRONGLY RECOMMENDED TO ONLY INSTANTIATE VECTORS WITH SIZE LESS THAN 16000.
- * */
 
 #ifndef VEC_H_
 #define VEC_H_
@@ -60,8 +51,12 @@
 
 
 #define M_PI 3.14159265358979323846
-#define SIZE_T_MAX std::numeric_limits<size_t>::max()-1 // At the matrix inversion function we have: size_t P[size + 1];
-#define MAX_ACCEPTABLE_VECTOR_SIZE 16000 // Don't increase that unless you have lots of RAM available.
+
+// At the matrix inversion function we have: size_t P[size + 1];
+#define SIZE_T_MAX std::numeric_limits<size_t>::max()-1
+
+// Don't increase that unless you have lots of RAM available.
+#define MAX_ACCEPTABLE_VECTOR_SIZE 16000
 
 #define MAX(a) ( std::numeric_limits<a>::max() )
 #define NaN(a) ( std::numeric_limits<a>::quiet_NaN() )
@@ -69,7 +64,7 @@
 
 #define EPSILON 1e-10  // This will be used for comparison with zero in find_zero() and find_non_zero()
 
-
+// String to be used for logging errors.
 #define FILE_LINE_ERROR std::string(__FILE__) + std::string(":") + std::to_string(__LINE__) + std::string(": ")
 
 namespace algebra {
@@ -130,6 +125,8 @@ public:
 
 	void print();  // Set precision for double
 
+	// Friend function for lu-decomposition. It will be defined
+	// in class Mat.
 	friend Mat<T> lup_invert<T>(Mat<T>&, const Vec<T>&);
 
 protected:
@@ -186,29 +183,23 @@ typedef Vec<int> ivec;
 // ############################ FRIENDS AND MEMBER FUNCTIONS DECLARATION ############################
 
 
-// The noexcept specifier indicates that the function won't throw an exception
-// If it does, the program will terminate abruptly. The only function it calls
-// is the size() function from the vector class which also has this specifier.
+// It computes the number of elements of the vector.
 template <class T>
 size_t Vec<T>::size() const noexcept { return data_.size(); }
 
-// It returns the memory the vector occupies in Bytes
+// It computes the memory the vector occupies in Bytes
 template <class T>
 size_t Vec<T>::size_in_memory() const noexcept{ return sizeof(T)*data_.capacity(); }
 
+// It computes the maximum number of elements vector can contain
 template <class T>
 size_t Vec<T>::max_size() const noexcept{ return data_.max_size(); }
 
-// it returns the size of allocated storage capacity
-// This capacity is not necessarily equal to the vector size.
-// It can be equal or greater, with the extra space allowing
-// to accommodate for growth without the need to reallocate on
-// each insertion. However, I don't use the reserve function of
-// the std::vector to allocate memory in advance, therefore,
-// capacity should be equal to the size.
+// It computes the size of the vector's allocated storage capacity
 template <class T>
 size_t Vec<T>::capacity() const noexcept{ return data_.capacity(); }
 
+// It assigns the i^th element of the vector the value k
 template <class T>
 void Vec<T>::set(size_t i, T k)
 {
@@ -224,6 +215,9 @@ void Vec<T>::set(size_t i, T k)
 	}
 }
 
+// It returns the value of the r^th element of the vector
+// at(r) from vector class will throw exception if r is
+// larger than the size of vector
 template <class T>
 T Vec<T>::get(size_t r) const
 {
@@ -235,10 +229,12 @@ T Vec<T>::get(size_t r) const
 	}
 	else
 	{
-		return data_.at(r); // at(r) from vector class will throw exception if r is larger than the size of vector
+		return data_.at(r);
 	}
 }
 
+// It returns a vector containing the elements
+// from i to j of the current vector.
 template <class T>
 Vec<T> Vec<T>::get(size_t i, size_t j) const
 {
@@ -265,6 +261,7 @@ Vec<T> Vec<T>::get(size_t i, size_t j) const
 	}
 }
 
+// It sets the size of the vector
 template <class T>
 void Vec<T>::set_size(size_t new_size)
 {
@@ -284,12 +281,14 @@ void Vec<T>::set_size(size_t new_size)
 	}
 }
 
+// Substitutes elements of vector from start-element with
+// vector v. They should fit.
 template <class T>
 void Vec<T>::set_subvector(size_t start, const Vec<T>& v)
 {
 	if (start >= length_ || length_ - start < v.size())
 	{
-		std::string msg = FILE_LINE_ERROR + " exception in set_subvector(size_t start, const vec& v)";
+		std::string msg = FILE_LINE_ERROR + " exception in set_subvector(size_t start, const Vec<T>& v)";
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
 	}
@@ -303,6 +302,7 @@ void Vec<T>::set_subvector(size_t start, const Vec<T>& v)
 	}
 }
 
+// It sets all elements of vector to 0.
 template <class T>
 void Vec<T>::zeros()
 {
@@ -312,9 +312,11 @@ void Vec<T>::zeros()
 	}
 }
 
+// It sets all elements of vector to 0.
 template <class T>
 void Vec<T>::clear(){ zeros(); }
 
+// It sets all elements of vector to 1.
 template <class T>
 void Vec<T>::ones(){
 	size_t i = 0;
@@ -324,6 +326,7 @@ void Vec<T>::ones(){
 	}
 }
 
+// It adds two vectors.
 template <class T>
 Vec<T> Vec<T>::add(const Vec<T>& v1)
 {
@@ -345,6 +348,7 @@ Vec<T> Vec<T>::add(const Vec<T>& v1)
 	}
 }
 
+//It subtracts two vectors.
 template <class T>
 Vec<T> Vec<T>::sub(const Vec<T>& v1)
 {
@@ -366,6 +370,7 @@ Vec<T> Vec<T>::sub(const Vec<T>& v1)
 	}
 }
 
+// It computes the inner product of the vectors.
 template <class T>
 T Vec<T>::dot(const Vec<T>& v1)
 {
@@ -387,11 +392,8 @@ T Vec<T>::dot(const Vec<T>& v1)
 	}
 }
 
-// Using the orientation and metric structure just as for the traditional 3-dimensional cross product,
-// one can in n dimensions take the product of n − 1 vectors to produce a vector perpendicular to all
-// of them. But if the product is limited to non-trivial binary products with vector results, it exists
-// only in three and seven dimensions. One can include the 7D case as well, but it is out of the scope
-// of this project.
+// It computes the outer product of two vectors. The size of the
+// vectors has to be 3 or 7. I only consider the trivial case of 3.
 // For more details see: https://en.wikipedia.org/wiki/Cross_product
 template <class T>
 Vec<T> Vec<T>::cross(const Vec<T>& v1)
@@ -413,13 +415,11 @@ Vec<T> Vec<T>::cross(const Vec<T>& v1)
 }
 
 
-// QuickSort or IntroSort are most likely used from
-// std::sort. Complexity: O(N log(N)) comparisons.
-// Look at https://en.wikipedia.org/wiki/Sorting_algorithm
+// It computes a vector with sorted elements.
 template <class T>
 void Vec<T>::sort(){ std::sort(data_.begin(), data_.end()); }
 
-// swap elements i and j
+// It swaps elements i and j of the vector
 template <class T>
 void Vec<T>::swap(size_t i, size_t j)
 {
@@ -439,9 +439,8 @@ void Vec<T>::swap(size_t i, size_t j)
 
 /********** OVERLOAD OPERATORS ***********/
 
-
-// The input must be of the form "1 2 3" or "[1 2 3]", i.e. with or without
-// brackets. Therefore, the delimiter has to be the space (" ").
+// It pass the values of the string in a vector.
+// The input must be of the form "1 2 3" or "[1 2 3]".
 template <class T>
 void Vec<T>::operator=(const char* a)
 {
@@ -509,14 +508,14 @@ void Vec<T>::operator=(const char* a)
 	while ((pos = str.find(delimiter)) != std::string::npos)
 	{
 		token = str.substr(0, pos);
-		data_[k] = strtof((token).c_str(),0);
+		data_[k] = (T) strtod((token).c_str(),0);
 		str.erase(0, pos + delimiter.length());
 		k++;
 	}
-	data_[k] = strtof((str).c_str(),0);
+	data_[k] = (T) strtod((str).c_str(),0);
 }
 
-// The order does not matter as v1 + v2 = v2 + v1 (Commutative property)
+// It adds vectors v to the current vector (Commutative property holds)
 template <class T>
 Vec<T> Vec<T>::operator+(const Vec<T>& v)
 {
@@ -538,7 +537,7 @@ Vec<T> Vec<T>::operator+(const Vec<T>& v)
 	}
 }
 
-// The order matters. Vector should be first and double comes second
+// It adds the value 't' to each and every element of the vector.
 template <class T>
 Vec<T> Vec<T>::operator+(T t)
 {
@@ -559,6 +558,8 @@ Vec<T> Vec<T>::operator+(T t)
 		return result;
 	}
 }
+
+// It subtracts vector v from the current vector
 template <class T>
 Vec<T> Vec<T>::operator-(const Vec<T>& v)
 {
@@ -580,6 +581,7 @@ Vec<T> Vec<T>::operator-(const Vec<T>& v)
 	}
 }
 
+// It subtracts the value 't' from each and every element of the vector.
 template <class T>
 Vec<T> Vec<T>::operator-(T t)
 {
@@ -601,6 +603,7 @@ Vec<T> Vec<T>::operator-(T t)
 	}
 }
 
+// It returns the inner product of the vectors
 template <class T>
 T Vec<T>::operator*(const Vec<T>& v)
 {
@@ -617,6 +620,7 @@ T Vec<T>::operator*(const Vec<T>& v)
 	}
 }
 
+// It multiplies each elements of the vector with x
 template <class T>
 Vec<T> Vec<T>::operator*(T x)
 {
@@ -629,15 +633,14 @@ Vec<T> Vec<T>::operator*(T x)
 	return result;
 }
 
+// It devides each element of the vector with t.
+// I throw exception if t = 0 (undefined behavior in some cases)
 template <class T>
 Vec<T> Vec<T>::operator/(T t)
 {
 	if (t == 0)
 	{
-		// Division by zero has undefined behaviour for integers
-		// If not following the IEEE doubleing point standard then the doubleing point division by zero is also undefined.
-		// In order to avoid any kind of dependencies, I strictly forbid division by zero.
-		std::string msg = FILE_LINE_ERROR + " 'std::invalid_argument' thrown in operator/(double t): DIVISION BY ZERO ";
+		std::string msg = FILE_LINE_ERROR + " 'std::invalid_argument' thrown in operator/(T t): DIVISION BY ZERO ";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
@@ -653,6 +656,7 @@ Vec<T> Vec<T>::operator/(T t)
 	}
 }
 
+// It returns the k^th element of the vector.
 template <class T>
 T& Vec<T>::operator()(size_t k)
 {
@@ -674,6 +678,7 @@ T& Vec<T>::operator()(size_t k)
 	}
 }
 
+// It returns the k^th element of the vector.
 template <class T>
 T& Vec<T>::operator[](size_t k)
 {
@@ -695,7 +700,7 @@ T& Vec<T>::operator[](size_t k)
 	}
 }
 
-
+// It prints the elements of the vector
 template <class T>
 void Vec<T>::print()
 {
@@ -720,6 +725,8 @@ void Vec<T>::print()
 // ##################################################################################################
 // ############################ MISCELLANEOUS OPERATIONS AND FUNCTIONS ##############################
 
+
+// It returns a 'double'-vector of size n with all elements equal to 0.
 inline vec zeros(size_t n)
 {
 	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -740,6 +747,7 @@ inline vec zeros(size_t n)
 	}
 }
 
+// It returns an 'integer'-vector of size n with all elements equal to 0.
 inline ivec zeros_i(size_t n)
 {
 	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -760,6 +768,7 @@ inline ivec zeros_i(size_t n)
 	}
 }
 
+// It returns a 'double'-vector of size n with all elements equal to 1.
 inline vec ones(size_t n)
 {
 	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -780,6 +789,7 @@ inline vec ones(size_t n)
 	}
 }
 
+// It returns a 'integer'-vector of size n with all elements equal to 1.
 inline ivec ones_i(size_t n)
 {
 	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -800,7 +810,7 @@ inline ivec ones_i(size_t n)
 	}
 }
 
-// This will return a mask with ones where the input vector
+// It computes a mask with ones where the input vector
 // has non-zero elements and zero elsewhere.
 template <class T>
 inline Vec<T> find_non_zero(const Vec<T>& v)
@@ -821,7 +831,7 @@ inline Vec<T> find_non_zero(const Vec<T>& v)
 	return result;
 }
 
-// This will return a mask with ones where the input vector
+// It computes a mask with ones where the input vector
 // has zero elements and zero elsewhere.
 template <class T>
 inline Vec<T> find_zero(const Vec<T>& v)
@@ -842,6 +852,8 @@ inline Vec<T> find_zero(const Vec<T>& v)
 	return result;
 }
 
+// It calculates a 'double'-vector with elements taking
+// random values within the range [-10, 10].
 inline vec rand(size_t n)
 {
 	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -873,6 +885,8 @@ inline vec rand(size_t n)
 	}
 }
 
+// It calculates an 'integer'-vector with elements taking
+// random values within the range [-10, 10].
 inline ivec rand_i(size_t n)
 {
 	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -904,12 +918,7 @@ inline ivec rand_i(size_t n)
 	}
 }
 
-// The reason we pass the inputs by reference is to avoid
-// reinstantiating copies of v1,v2 which already exist in memory
-// For this reason we also need to make size(), get(), and set()
-// const functions. In general member functions that do not modify
-// the class instance should be declared as const
-
+// It computes the inner product of v1, v2.
 template <class T>
 inline T dot(const Vec<T>& v1, const Vec<T>& v2)
 {
@@ -931,7 +940,7 @@ inline T dot(const Vec<T>& v1, const Vec<T>& v2)
 	}
 }
 
-// Calculate the mean value of the vector
+// It computes the mean value of the vector
 template <class T>
 inline double mean(const Vec<T>& v)
 {
@@ -954,7 +963,7 @@ inline double mean(const Vec<T>& v)
 	}
 }
 
-// Calculate the min value of a vector
+// It computes the min value of a vector
 template <class T>
 inline T min(const Vec<T>& v)
 {
@@ -979,7 +988,7 @@ inline T min(const Vec<T>& v)
 	}
 }
 
-// Calculate the min value of a vector together with its index
+// It computes the min value of a vector together with its index
 template <class T>
 inline T min(const Vec<T>& v, size_t &index)
 {
@@ -1007,7 +1016,7 @@ inline T min(const Vec<T>& v, size_t &index)
 	}
 }
 
-// Calculate the max value of a vector
+// It computes the max value of a vector
 template <class T>
 inline T max(const Vec<T>& v)
 {
@@ -1030,7 +1039,7 @@ inline T max(const Vec<T>& v)
 	}
 }
 
-// Calculate the max value of a vector together with its index
+// It computes the max value of a vector together with its index
 template <class T>
 inline T max(const Vec<T>& v, size_t &index)
 {
@@ -1058,7 +1067,7 @@ inline T max(const Vec<T>& v, size_t &index)
 	}
 }
 
-// Caluclate cross product. Vectors must be of size 3
+// It computes the cross product of v1, v2. Vectors must be of size 3
 template <class T>
 inline Vec<T> cross(const Vec<T>& v1, const Vec<T>& v2)
 {
@@ -1078,13 +1087,13 @@ inline Vec<T> cross(const Vec<T>& v1, const Vec<T>& v2)
 	}
 }
 
+// It concatenates the current vector with t.
 template <class T>
 inline Vec<T> concat(const Vec<T>& v, double t)
 {
 	if ( v.size() == 0 )
 	{
-		Vec<T> result;
-		result.set_size(1);
+		Vec<T> result(1);
 		result.set(0, t);
 		return result;
 	}
@@ -1096,8 +1105,7 @@ inline Vec<T> concat(const Vec<T>& v, double t)
 	}
 	else
 	{
-		Vec<T> result;
-		result.set_size(v.size() + 1);
+		Vec<T> result(v.size() + 1);
 		size_t i = 0, size = result.size();
 		for (i = size - 1; i--;)
 		{
@@ -1108,13 +1116,13 @@ inline Vec<T> concat(const Vec<T>& v, double t)
 	}
 }
 
+// It concatenates t with the current vector.
 template <class T>
 inline Vec<T> concat(double t, const Vec<T>& v)
 {
 	if ( v.size() == 0 )
 	{
-		Vec<T> result;
-		result.set_size(1);
+		Vec<T> result(1);
 		result.set(0, t);
 		return result;
 	}
@@ -1126,8 +1134,7 @@ inline Vec<T> concat(double t, const Vec<T>& v)
 	}
 	else
 	{
-		Vec<T> result;
-		result.set_size(v.size() + 1);
+		Vec<T> result(v.size() + 1);
 		size_t i = 0, size = result.size();
 		result(0) = t;
 		for (i = size - 1; i--;)
@@ -1138,6 +1145,7 @@ inline Vec<T> concat(double t, const Vec<T>& v)
 	}
 }
 
+// It concatenates vectors v1 and v2.
 template <class T>
 inline Vec<T> concat(const Vec<T>& v1, const Vec<T>& v2)
 {
@@ -1172,7 +1180,8 @@ inline Vec<T> concat(const Vec<T>& v1, const Vec<T>& v2)
 	}
 }
 
-// It works in the same manner as from:step:to in MATLAB.
+// It returns a vector with elements equally spaced by step.
+// E.g.: linspace(0, 5 , 1) = [0 1 2 3 4 5]
 template <class T>
 inline Vec<T> linspace(T from, T to, size_t step)
 {
@@ -1201,7 +1210,7 @@ inline Vec<T> linspace(T from, T to, size_t step)
 	}
 }
 
-// Element-wise vector multiplication
+// It computes the element-wise vector multiplication
 template <class T>
 inline Vec<T> elem_mult(const Vec<T>& v1, const Vec<T>& v2)
 {
@@ -1223,6 +1232,7 @@ inline Vec<T> elem_mult(const Vec<T>& v1, const Vec<T>& v2)
 	}
 }
 
+// It computes the sum of all elements of vector v
 template <class T>
 inline double sum(const Vec<T>& v)
 {
@@ -1235,6 +1245,7 @@ inline double sum(const Vec<T>& v)
 	return result;
 }
 
+// It computes the cumulative sum of v1
 template <class T>
 inline Vec<T> cumsum(const Vec<T>& v1)
 {
@@ -1255,6 +1266,7 @@ inline Vec<T> cumsum(const Vec<T>& v1)
 	}
 }
 
+// It computes the 2-norm or Euclidean norm of vector v
 template <class T>
 inline double norm(const Vec<T>& v)
 {
@@ -1267,6 +1279,8 @@ inline double norm(const Vec<T>& v)
 	return std::sqrt(result);
 }
 
+// It returns a vector whose i^th element equals
+// to the absolute value of i^th element of vector v
 template <class T>
 inline Vec<T> abs(const Vec<T>& v)
 {

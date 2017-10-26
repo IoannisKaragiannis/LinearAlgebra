@@ -31,15 +31,15 @@
 
 #include "vec.h"
 
-// The absolute value of the determinant should
-//be above that threshold for a matrix to be invertible.
+// The absolute value of the determinant should be
+// above that threshold to consider a matrix invertible.
 #define SINGULARITY_THRESHOLD 1e-9
 
 namespace algebra {
 
-// Declaration of vec
+// Declaration of Vec
 template<class T> class Vec;
-// Declaration of mat
+// Declaration of Mat
 template<class T> class Mat;
 
 // Declaration of friend functions
@@ -57,6 +57,7 @@ template <class T>
 Mat<T> strassen_algorithm(const Mat<T>& , const Mat<T>&, size_t leafsize );
 template <class T>
 Mat<T> strassen(const Mat<T>&, const Mat<T>& );
+
 
 template <class T>
 class Mat {
@@ -193,6 +194,7 @@ Mat<T>::Mat(size_t r, size_t c)
 template <class T>
 Mat<T>::~Mat() {}
 
+// It returns the (r1,c1) element of the matrix
 template <class T>
 T Mat<T>::get(size_t r1, size_t c1) const
 {
@@ -214,18 +216,23 @@ T Mat<T>::get(size_t r1, size_t c1) const
 	}
 }
 
+// It computes the number of elements of the matrix.
 template <class T>
 size_t Mat<T>::size() const noexcept { return rows_*cols_; }
 
+// It returns the number of rows of the matrix.
 template <class T>
 size_t Mat<T>::rows() const noexcept { return rows_; }
 
+// It returns the number of columns of the matrix.
 template <class T>
 size_t Mat<T>::cols() const noexcept{ return cols_; }
 
+// It computes the memory the matrix occupies in Bytes
 template <class T>
 size_t Mat<T>::size_in_memory() const noexcept{ return (*this).size()*sizeof(T); }
 
+// It sets the size of the matrix.
 template <class T>
 void Mat<T>::set_size(size_t r, size_t c)
 {
@@ -257,6 +264,7 @@ void Mat<T>::set_size(size_t r, size_t c)
 	}
 }
 
+// It assigns the (r,c) element of the matrix the value 'value'.
 template <class T>
 void Mat<T>::set(size_t r, size_t c, T value)
 {
@@ -272,6 +280,7 @@ void Mat<T>::set(size_t r, size_t c, T value)
 	}
 }
 
+// It sets the r^th rows of the matrix with the vector v1.
 template <class T>
 void Mat<T>::set_row(size_t r, const Vec<T>& v1)
 {
@@ -291,6 +300,7 @@ void Mat<T>::set_row(size_t r, const Vec<T>& v1)
 	}
 }
 
+// It sets the c^th column of the matrix with the vector v1.
 template <class T>
 void Mat<T>::set_col(size_t c, const Vec<T>& v1)
 {
@@ -310,6 +320,7 @@ void Mat<T>::set_col(size_t c, const Vec<T>& v1)
 	}
 }
 
+// Starting from r0 row it stores matrix m1 in the current matrix.
 template <class T>
 void Mat<T>::set_rows(size_t r0, const Mat<T>& m1)
 {
@@ -332,6 +343,7 @@ void Mat<T>::set_rows(size_t r0, const Mat<T>& m1)
 	}
 }
 
+// Starting from c0 column it stores matrix m1 in the current matrix.
 template <class T>
 void Mat<T>::set_cols(size_t c0, const Mat<T>& m1)
 {
@@ -354,6 +366,7 @@ void Mat<T>::set_cols(size_t c0, const Mat<T>& m1)
 	}
 }
 
+// Starting from (r0,c0) element it stores matrix m in the current matrix.
 template <class T>
 void Mat<T>::set_submatrix(size_t r0, size_t c0, const Mat<T>& m)
 {
@@ -376,6 +389,7 @@ void Mat<T>::set_submatrix(size_t r0, size_t c0, const Mat<T>& m)
 	}
 }
 
+// It returns the c^th column of the matrix as a vector.
 template <class T>
 Vec<T> Mat<T>::get_col(size_t c) const
 {
@@ -397,6 +411,7 @@ Vec<T> Mat<T>::get_col(size_t c) const
 	}
 }
 
+// It returns the matrix defined between columns c1 and c2.
 template <class T>
 Mat<T> Mat<T>::get_cols(size_t c1, size_t c2) const
 {
@@ -421,6 +436,7 @@ Mat<T> Mat<T>::get_cols(size_t c1, size_t c2) const
 	}
 }
 
+// It returns the r^th row of the matrix as a vector.
 template <class T>
 Vec<T> Mat<T>::get_row(size_t r) const
 {
@@ -442,6 +458,7 @@ Vec<T> Mat<T>::get_row(size_t r) const
 	}
 }
 
+// It returns the matrix defined between rows r1 and r2.
 template <class T>
 Mat<T> Mat<T>::get_rows(size_t r1, size_t r2) const
 {
@@ -466,6 +483,7 @@ Mat<T> Mat<T>::get_rows(size_t r1, size_t r2) const
 	}
 }
 
+// It returns the matrix defined between rows r1, r2 and columns c1, c2.
 template <class T>
 Mat<T> Mat<T>::get(size_t r1, size_t r2, size_t c1, size_t c2) const
 {
@@ -496,7 +514,8 @@ Mat<T> Mat<T>::get(size_t r1, size_t r2, size_t c1, size_t c2) const
 	}
 }
 
-// vec r is the vector with the row-indices and c is the vector with col-indices
+// It returns a matrix based on row-indices
+// vector r and column-indices vector c.
 template <class T>
 Mat<T> Mat<T>::get(const Vec<T>& r, const Vec<T>& c) const
 {
@@ -560,6 +579,7 @@ Mat<T> Mat<T>::get(const Vec<T>& r, const Vec<T>& c) const
 	return result;
 }
 
+// It sets all elements of matrix to 0.
 template <class T>
 void Mat<T>::zeros()
 {
@@ -573,9 +593,11 @@ void Mat<T>::zeros()
 	}
 }
 
+// It sets all elements of matrix to 0.
 template <class T>
 void Mat<T>::clear() { zeros(); }
 
+// It sets all elements of matrix to 1.
 template <class T>
 void Mat<T>::ones()
 {
@@ -589,7 +611,7 @@ void Mat<T>::ones()
 	}
 }
 
-// swap rows i and j
+// It swaps rows i and j.
 template <class T>
 void Mat<T>::swap_rows(size_t i, size_t j)
 {
@@ -607,7 +629,7 @@ void Mat<T>::swap_rows(size_t i, size_t j)
 	}
 }
 
-// swap columns i and j
+// It swaps columns i and j.
 template <class T>
 void Mat<T>::swap_cols(size_t i, size_t j)
 {
@@ -626,13 +648,15 @@ void Mat<T>::swap_cols(size_t i, size_t j)
 }
 
 // ========= Overload basic operators ===========
+// It pass the values of the string in a matrix.
+// The input must be of the form "1 2 3;4 5 6" or "[1 2 3;4 5 6]".
 template <class T>
 void Mat<T>::operator=(const char* a)
 {
 	// Clear matrix from any previous values
 	if( (*this).size() != 0 )
 	{
-		data_.resize(0, std::vector<double> (0));
+		data_.resize(0, std::vector<T> (0));
 		rows_ = 0;
 		cols_ = 0;
 	}
@@ -677,7 +701,7 @@ void Mat<T>::operator=(const char* a)
 	size_t mat_col = first_row.size();
 
 	// Initialize matrix
-	data_.resize(mat_row, std::vector<double> (mat_col));
+	data_.resize(mat_row, std::vector<T> (mat_col));
 	rows_ = mat_row;
 	cols_ = mat_col;
 	size_t i, j;
@@ -708,6 +732,7 @@ void Mat<T>::operator=(const char* a)
 	}
 }
 
+// It returns the (i, j) element of the matrix.
 template <class T>
 T& Mat<T>::operator()(size_t i, size_t j)
 {
@@ -729,9 +754,14 @@ T& Mat<T>::operator()(size_t i, size_t j)
 	}
 }
 
+// It returns a sub-matrix defined in rows [r1,r2] and cols [c1,c2].
 template <class T>
-Mat<T> Mat<T>::operator()(size_t r1, size_t r2, size_t c1, size_t c2) { return (*this).get(r1, r2, c1, c2); }
+Mat<T> Mat<T>::operator()(size_t r1, size_t r2, size_t c1, size_t c2)
+{
+	return (*this).get(r1, r2, c1, c2);
+}
 
+// It returns the result of addition of matrix m with the current matrix.
 template <class T>
 Mat<T> Mat<T>::operator+(const Mat<T>& m)
 {
@@ -762,6 +792,7 @@ Mat<T> Mat<T>::operator+(const Mat<T>& m)
 	}
 }
 
+// It adds 't' to each element of the matrix.
 template <class T>
 Mat<T> Mat<T>::operator+(T t)
 {
@@ -786,6 +817,7 @@ Mat<T> Mat<T>::operator+(T t)
 	}
 }
 
+// It returns the result of subtraction of matrix m from the current matrix.
 template <class T>
 Mat<T> Mat<T>::operator-(const Mat<T>& m)
 {
@@ -816,6 +848,7 @@ Mat<T> Mat<T>::operator-(const Mat<T>& m)
 	}
 }
 
+// It subtracts 't' from each element of the current matrix.
 template <class T>
 Mat<T> Mat<T>::operator-(T t)
 {
@@ -840,7 +873,7 @@ Mat<T> Mat<T>::operator-(T t)
 	}
 }
 
-
+// It multiplies each element of the matrix with 't'.
 template <class T>
 Mat<T> Mat<T>::operator*(T t)
 {
@@ -865,6 +898,7 @@ Mat<T> Mat<T>::operator*(T t)
 	}
 }
 
+// It multiplies matrix m with the current matrix.
 template <class T>
 Mat<T> Mat<T>::operator*(const Mat<T>& m)
 {
@@ -901,6 +935,7 @@ Mat<T> Mat<T>::operator*(const Mat<T>& m)
 	}
 }
 
+// It multiplies vector v with the current matrix.
 template <class T>
 Vec<T> Mat<T>::operator*(const Vec<T>& v){
 	//convert vec into an v.size()x1 matrix depending
@@ -932,6 +967,7 @@ Vec<T> Mat<T>::operator*(const Vec<T>& v){
 	}
 }
 
+// It devides each element by 't'.
 template <class T>
 Mat<T> Mat<T>::operator/(T t)
 {
@@ -941,9 +977,14 @@ Mat<T> Mat<T>::operator/(T t)
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
 	}
+	else if (t == 0){
+		std::string msg = FILE_LINE_ERROR + " 'std::invalid_argument' thrown in operator/(T t): DIVISION BY ZERO ";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
 	else
 	{
-		Mat result = *this;
+		Mat<T> result = *this;
 		size_t rows = result.rows(), cols = result.cols(), i = 0, j = 0;
 		for (i = rows; i--;)
 		{
@@ -956,6 +997,7 @@ Mat<T> Mat<T>::operator/(T t)
 	}
 }
 
+// It prints the elements of the matrix.
 template <class T>
 void Mat<T>::print()
 {
@@ -982,7 +1024,6 @@ void Mat<T>::print()
 // Implementation of the algorithm described in https://en.wikipedia.org/wiki/Strassen_algorithm
 // This algorithm is beneficial for large square matrices only.
 // ATTENTION: the Strassen multiplication algorithm requires more memory than the traditional one.
-
 template <class T>
 Mat<T> strassen_algorithm(const Mat<T> &a, const Mat<T> &b, size_t leafsize )
 {
@@ -1124,6 +1165,7 @@ Mat<T> strassen(const Mat<T> &a, const Mat<T> &b)
 	}
 }
 
+// It computes the transposed of the matrix m.
 template <class T>
 Mat<T> transpose(const Mat<T>& m)
 {
@@ -1139,7 +1181,7 @@ Mat<T> transpose(const Mat<T>& m)
 	return result;
 }
 
-// LU-Decomposition taken from: https://en.wikipedia.org/wiki/LU_decomposition
+// It computes the LU-Decomposition taken from: https://en.wikipedia.org/wiki/LU_decomposition
 template <class T>
 Vec<T> lup_decompose(Mat<T>& a, bool& is_singular)
 {
@@ -1226,11 +1268,6 @@ Mat<T> lup_invert(Mat<T>& a, const Vec<T>& pivot)
 				a_inv.data_[i][j] -= a.data_[i][k] * a_inv.data_[k][j];
 			}
 		}
-		// this was initially the first loop
-		// for (int i =  N - 1; i >= 0; i--)
-		// But with unsigned integers like size_t there is
-		// no point expecting i to get less than 0 since it
-		// will wrap around and jump to the size_t_MAX
 		for (size_t i =  N - 1; i < SIZE_T_MAX; i--)
 		{
 			for (size_t k = i + 1; k < N; k++)
@@ -1244,6 +1281,7 @@ Mat<T> lup_invert(Mat<T>& a, const Vec<T>& pivot)
 	return a_inv;
 }
 
+// It computes the inverse of the matrix a.
 template <class T>
 Mat<T> inv(const Mat<T>& a)
 {
@@ -1282,7 +1320,7 @@ Mat<T> inv(const Mat<T>& a)
 // PseudoInverse: calculates the inverse of a non-square matrix
 // Based on Moore–Penrose pseudoinverse
 //
-// Some info for intuition:
+// Some info for clarification:
 // Thin matrix case A(m,n) with m > n:
 // a) rank(A) <= n
 // b) The homogeneous system of equations Ax = 0 has a unique (trivial) solution
@@ -1326,7 +1364,7 @@ Mat<T> pinv(Mat<T>& a)
 
 /* zeros(), ones(), eye(), concat_hor(), concat_ver(), outer_prod(), diag(), inv(), eig(), det() */
 
-// it returns the vectorized version of the matrix
+// It returns the vectorized version of the matrix m.
 template <class T>
 inline Vec<T> mat2vec(const Mat<T>& m)
 {
@@ -1346,12 +1384,15 @@ inline Vec<T> mat2vec(const Mat<T>& m)
 	}
 }
 
+// It computes the maximum value of matrix m.
 template <class T>
 inline T max(const Mat<T>& m) {return max(mat2vec(m)); }
 
+// It computes the minimum value of matrix m.
 template <class T>
 inline T min(const Mat<T>& m) { return min(mat2vec(m)); }
 
+// It returns the absolute value of matrix m.
 template <class T>
 inline Mat<T> abs(const Mat<T>& m)
 {
@@ -1367,7 +1408,7 @@ inline Mat<T> abs(const Mat<T>& m)
 	return result;
 }
 
-// This will return a mask with ones where the input matrix
+// It returns a mask with ones where the input matrix
 // has non-zero elements and zero elsewhere.
 template <class T>
 inline Mat<T> find_non_zero(const Mat<T>& m)
@@ -1391,7 +1432,7 @@ inline Mat<T> find_non_zero(const Mat<T>& m)
 	return result;
 }
 
-// This will return a mask with ones where the input
+// It returns a mask with ones where the input
 // matrix has zero elements and zero elsewhere.
 template <class T>
 inline Mat<T> find_zero(const Mat<T>& m)
@@ -1415,6 +1456,8 @@ inline Mat<T> find_zero(const Mat<T>& m)
 	return result;
 }
 
+// It returns a 'double'-matrix with
+// random elements within the range [-10, 10].
 inline mat rand(size_t m, size_t n)
 {
 	if ( (n*m) > MAX_ACCEPTABLE_VECTOR_SIZE*MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -1448,6 +1491,7 @@ inline mat rand(size_t m, size_t n)
 	}
 }
 
+// It returns an 'integer'-matrix with random elements within the range [-10, 10].
 inline imat rand_i(size_t m, size_t n)
 {
 	if ( (n*m) > MAX_ACCEPTABLE_VECTOR_SIZE*MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -1482,6 +1526,8 @@ inline imat rand_i(size_t m, size_t n)
 	}
 }
 
+// It returns a 'double' symmetric matrix
+// with random elements within the range [-10, 10].
 inline mat rand_symmetric(size_t n)
 {
 	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -1526,6 +1572,8 @@ inline mat rand_symmetric(size_t n)
 	}
 }
 
+// It returns an 'integer' symmetric matrix with
+// random elements within the range [-10, 10].
 inline imat rand_symmetric_i(size_t n)
 {
 	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -1571,6 +1619,8 @@ inline imat rand_symmetric_i(size_t n)
 	}
 }
 
+
+// It sets all elements of Mat<double> to zero.
 inline mat zeros(size_t n, size_t m)
 {
 	if ( (n*m) > (MAX_ACCEPTABLE_VECTOR_SIZE*MAX_ACCEPTABLE_VECTOR_SIZE) )
@@ -1594,6 +1644,7 @@ inline mat zeros(size_t n, size_t m)
 	}
 }
 
+// It sets all elements of Mat<int> to zero.
 inline imat zeros_i(size_t n, size_t m)
 {
 	if ( (n*m) > (MAX_ACCEPTABLE_VECTOR_SIZE*MAX_ACCEPTABLE_VECTOR_SIZE) )
@@ -1617,6 +1668,7 @@ inline imat zeros_i(size_t n, size_t m)
 	}
 }
 
+// It sets all elements of Mat<double> to one.
 inline mat ones(size_t n, size_t m)
 {
 	if ( (n*m) > MAX_ACCEPTABLE_VECTOR_SIZE*MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -1640,6 +1692,7 @@ inline mat ones(size_t n, size_t m)
 	}
 }
 
+// It sets all elements of Mat<int> to one.
 inline imat ones_i(size_t n, size_t m)
 {
 	if ( (n*m) > MAX_ACCEPTABLE_VECTOR_SIZE*MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -1663,6 +1716,7 @@ inline imat ones_i(size_t n, size_t m)
 	}
 }
 
+// It returns the identity matrix.
 inline mat eye(size_t k)
 {
 	if ( k > MAX_ACCEPTABLE_VECTOR_SIZE)
@@ -1683,6 +1737,7 @@ inline mat eye(size_t k)
 	}
 }
 
+// It returns the identity matrix.
 inline imat eye_i(size_t k)
 {
 	if ( k > MAX_ACCEPTABLE_VECTOR_SIZE )
@@ -1703,7 +1758,7 @@ inline imat eye_i(size_t k)
 	}
 }
 
-// It returns a vector containing the diagonal elements of a matrix
+// It returns a vector containing the diagonal elements of matrix m.
 template <class T>
 inline Vec<T> diag(const Mat<T>& m)
 {
@@ -1725,7 +1780,8 @@ inline Vec<T> diag(const Mat<T>& m)
 	}
 }
 
-// It returns a matrix with diagonal elements the elements of the input-vector and zero all the rest
+// It returns a matrix with diagonal elements
+// the elements of the input-vector and zero all the rest
 template <class T>
 inline Mat<T> diag(const Vec<T>& v)
 {
@@ -1738,6 +1794,7 @@ inline Mat<T> diag(const Vec<T>& v)
 	return result;
 }
 
+// It concatenates horizontally matrices m1, m2.
 template <class T>
 inline Mat<T> concat_hor(const Mat<T>& m1, const Mat<T>& m2)
 {
@@ -1766,6 +1823,7 @@ inline Mat<T> concat_hor(const Mat<T>& m1, const Mat<T>& m2)
 	}
 }
 
+// It concatenates vertically matrices m1, m2.
 template <class T>
 inline Mat<T> concat_ver(const Mat<T>& m1, const Mat<T>& m2)
 {
@@ -1793,6 +1851,8 @@ inline Mat<T> concat_ver(const Mat<T>& m1, const Mat<T>& m2)
 	}
 }
 
+// It computes the outer product of vectors v1, v2
+// see: https://en.wikipedia.org/wiki/Outer_product
 template <class T>
 inline Mat<T> outer_product(const Vec<T>& v1, const Vec<T>& v2)
 {
@@ -1817,6 +1877,7 @@ inline Mat<T> outer_product(const Vec<T>& v1, const Vec<T>& v2)
 	}
 }
 
+// It computes the determinant of matrix m.
 template <class T>
 inline T determinant(const Mat<T>& m)
 {
