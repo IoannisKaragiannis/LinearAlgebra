@@ -76,7 +76,7 @@ $ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60
 ```
 In your Eclipse project force the compiler and the linker to be g++-4.9 as shown below
 ```
-![Screenshot](/images/LinearAlgebraLibrary/g++-4.9_compiler.png)
+![Screenshot](/images/LinearAlgebraLibrary/g++4.9_compiler.png)
 ![Screenshot](/images/LinearAlgebraLibrary/g++-4.9_linker.png)
 
 
