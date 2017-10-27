@@ -43,6 +43,8 @@ Right click on your project:
 Properties -> C/C++ Build -> Settings -> Tool Settings -> GCC C++ Compiler -> Dialect
 Put -std=c++14 into text box entitled 'other dialect flags'as shown below:
 ```
+![Screenshot](/images/LinearAlgebraLibrary/c++14_in_project.png)
+
 
 ### COMPILE AT LEAST WITH g++-4.9
 
