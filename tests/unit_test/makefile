@@ -13,17 +13,17 @@ PLATFORM = LINUX
 # In case you need to use different cross-compiler for your
 # platform, then extend the code below with an extra else if()
 ifeq ($(PLATFORM), LINUX)
-CXX = g++-4.8
-CXX_LINKER = g++-4.8
+CXX = g++-4.9
+CXX_LINKER = g++-4.9
 else
 ifeq ($(PLATFORM), ARM)
-CXX = arm-linux-gnueabihf-g++-4.8
-CXX_LINKER = arm-linux-gnueabihf-g++-4.8
+CXX = arm-linux-gnueabihf-g++-4.9
+CXX_LINKER = arm-linux-gnueabihf-g++-4.9
 endif
 endif
 
 # Define the flags for your compiler
-CXXFLAGS = -std=c++0x -D__cplusplus=201103L -O3 -Wall -fmessage-length=0
+CXXFLAGS = -std=c++14 -D__cplusplus=201403L -O3 -Wall -fmessage-length=0
 
 # Define the build folder where the objects and 
 # the binary file will be stored.
