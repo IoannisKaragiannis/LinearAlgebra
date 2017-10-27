@@ -49,6 +49,8 @@
 #include <memory>       // for smart pointer: unique_ptr
 #include <random>       // C++11 feature for random number generation
 
+#include <complex>      // C++14 feature for complex numbers
+
 
 #define M_PI 3.14159265358979323846
 

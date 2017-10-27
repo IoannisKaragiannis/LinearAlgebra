@@ -19,10 +19,10 @@ CXX_LINKER = g++-4.9
 CXXFLAGS = -std=c++14 -O3 -Wall -fmessage-length=0
 else
 ifeq ($(PLATFORM), ARM)
-CXX = arm-linux-gnueabihf-g++-4.8
-CXX_LINKER = arm-linux-gnueabihf-g++-4.8
+CXX = arm-linux-gnueabihf-g++-4.9
+CXX_LINKER = arm-linux-gnueabihf-g++-4.9
 # Define the flags for your compiler
-CXXFLAGS = -std=c++1y -O3 -Wall -fmessage-length=0
+CXXFLAGS = -std=c++14 -O3 -Wall -fmessage-length=0
 endif
 endif
 
