@@ -14,7 +14,7 @@ To clear things out, this library is intended to be used on Linux OS. I cannot g
 
 ## GETTING STARTED
 
-I have only been working on Eclipse running on Ubuntu, thus I will only provide you with instructions
+I have only been working on Eclipse running on Ubuntu 14.04, thus I will only provide you with instructions
 assuming your IDE is Eclipse. You should find it out yourself how to adopt
 these instructions for different IDE.
 
