@@ -20,65 +20,64 @@ these instructions for different IDE.
 
 ### PREREQUISITES
 
-At least g++-4.8 and C++11 enabled.
+At least g++-4.9 and C++14 enabled.
  
 
-### ENABLE C++11
+### ENABLE C++14
 
 **_Step 1_:**
 ```
 On your Eclipse environment, configure syntax parser:
 
 Window -> Preferences -> C/C++ -> Build -> Settings -> Discovery -> CDT GCC Build-in Compiler Settings
-In the text box entitled "Command to get compiler specs" append -std=c++11
+In the text box entitled "Command to get compiler specs" append -std=c++14
 The following screenshot displays the above mentioned settings
 ```
 
-![Screenshot](/images/LinearAlgebraLibrary/c++11_in_eclipse.png)
+![Screenshot](/images/LinearAlgebraLibrary/c++14_in_eclipse.png)
 
 **_Step 2_:**
 ```
 Right click on your project:
 
 Properties -> C/C++ Build -> Settings -> Tool Settings -> GCC C++ Compiler -> Dialect
-Put -std=c++11 into text box entitled 'other dialect flags' or select ISO C++11 from the 
-language standard drop down as shown below:
+Put -std=c++14 into text box entitled 'other dialect flags'as shown below:
 ```
 
-![Screenshot](/images/LinearAlgebraLibrary/c++11_in_project.png "con comment")
+![Screenshot](/images/LinearAlgebraLibrary/c++14_in_project.png "con comment")
 
 **_Step 3_:**
 ```
 
 Right click on your project
 Properties -> C/C++ General -> Path and symbols (Tab) -> GNU C++ and press add
-Remember to add symbol '__cplusplus' with value '201103L' as shown below:
+Remember to add symbol '__cplusplus' with value '201403L' as shown below:
 
 ```
 ![Screenshot](/images/LinearAlgebraLibrary/cplusplus_in_project.png)
 
 
-### COMPILE AT LEAST WITH g++-4.8
+### COMPILE AT LEAST WITH g++-4.9
 
 **_Step 1_:**
 
-This library was compiled with a g++-4.8 compiler (which includes C++11), so make sure
-you have at least this version on your linux-machine. 
+Compile your project with at least g++-4.9 compiler (which includes C++14), so make sure
+you have this compiler version on your linux-machine. 
 ```
 $ sudo apt-get install python-software-properties
 $ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 $ sudo apt-get update
-$ sudo apt-get install gcc-4.8 g++-4.8
-$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 60
+$ sudo apt-get install gcc-4.9 g++-4.9
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60
 ```
 
 **_Step 2_:**
 
 ```
-In your Eclipse project force the compiler and the linker to be g++-4.8 as shown below
+In your Eclipse project force the compiler and the linker to be g++-4.9 as shown below
 ```
-![Screenshot](/images/LinearAlgebraLibrary/g++-48_compiler.png)
-![Screenshot](/images/LinearAlgebraLibrary/g++-4.8_linker.png)
+![Screenshot](/images/LinearAlgebraLibrary/g++-4.9_compiler.png)
+![Screenshot](/images/LinearAlgebraLibrary/g++-4.9_linker.png)
 
 
 ### DOWNLOAD AND INSTALL *LinearAlgebra* LIB ON YOUR MACHINE
