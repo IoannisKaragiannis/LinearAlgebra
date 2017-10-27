@@ -44,19 +44,6 @@ Properties -> C/C++ Build -> Settings -> Tool Settings -> GCC C++ Compiler -> Di
 Put -std=c++14 into text box entitled 'other dialect flags'as shown below:
 ```
 
-![Screenshot](/images/LinearAlgebraLibrary/c++14_in_project.png "con comment")
-
-**_Step 3_:**
-```
-
-Right click on your project
-Properties -> C/C++ General -> Path and symbols (Tab) -> GNU C++ and press add
-Remember to add symbol '__cplusplus' with value '201403L' as shown below:
-
-```
-![Screenshot](/images/LinearAlgebraLibrary/cplusplus_in_project.png)
-
-
 ### COMPILE AT LEAST WITH g++-4.9
 
 **_Step 1_:**
