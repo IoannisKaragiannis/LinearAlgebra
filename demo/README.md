@@ -6,10 +6,10 @@ This is a simple demo to illustrate how the *LinearAlgebra* library works. The t
 
 Enable C++14 as explained in the main README file. The CXXFLAGS variable, specified in the current makefile, does the job in this demo case. This is what it looks like:
 ```
-CXXFLAGS = -std=c++14 -D__cplusplus=201403L -O3 -Wall -fmessage-length=0
+CXXFLAGS = -std=c++14 -O3 -Wall -fmessage-length=0
 ```
  
-The first two settings are responsible for enabling C++11 together with the proper compiler choice (g++-4.8 in this case).
+-std=c++14 is responsible for enabling C++14 together with the proper compiler choice (g++-4.9 in this case).
 
 ## RUN THE DEMO
 
@@ -25,6 +25,7 @@ Navigate to the demo folder and type the following on your terminal
 cd /your_path/LinearAlgebra/demo
 make clean
 make all
+make run
 ```
 
 You should see the following:
@@ -72,7 +73,7 @@ $ sudo apt-get install gcc-arm-linux-gnueabihf
 $ sudo apt-get install g++-arm-linux-gnueabihf
 ```
 
-Now, you can simply edit the makefile and modify line 11 accordingly.
+Now, you can simply edit the makefile and modify line 11 accordingly. In order to be able to compile with arm-linux-gnueabihf-g++-4.9 you need to work on Ubuntu 16.06. If you are working on Ubuntu 14.04, like I do for instance, you will only be able to install arm-linux-gnueabihf-g++-4.8 which will complain if you try for example to exploit specific C++14 features.
 
 
 ## AUTHORS
