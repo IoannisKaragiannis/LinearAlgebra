@@ -15,15 +15,16 @@ PLATFORM = LINUX
 ifeq ($(PLATFORM), LINUX)
 CXX = g++-4.9
 CXX_LINKER = g++-4.9
-else
-ifeq ($(PLATFORM), ARM)
-CXX = arm-linux-gnueabihf-g++-4.9
-CXX_LINKER = arm-linux-gnueabihf-g++-4.9
-endif
-endif
-
 # Define the flags for your compiler
 CXXFLAGS = -std=c++14 -D__cplusplus=201403L -O3 -Wall -fmessage-length=0
+else
+ifeq ($(PLATFORM), ARM)
+CXX = arm-linux-gnueabihf-g++-4.8
+CXX_LINKER = arm-linux-gnueabihf-g++-4.8
+# Define the flags for your compiler
+CXXFLAGS = -std=c++1y -O3 -Wall -fmessage-length=0
+endif
+endif
 
 # Define the build folder where the objects and 
 # the binary file will be stored.
