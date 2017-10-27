@@ -73,7 +73,7 @@ $ sudo apt-get install gcc-arm-linux-gnueabihf
 $ sudo apt-get install g++-arm-linux-gnueabihf
 ```
 
-Now, you can simply edit the makefile and modify line 11 accordingly. In order to be able to compile with arm-linux-gnueabihf-g++-4.9 you need to work on Ubuntu 16.06. If you are working on Ubuntu 14.04, like I do for instance, you will only be able to install arm-linux-gnueabihf-g++-4.8 which will complain if you try for example to exploit specific C++14 features.
+Now, you can simply edit the makefile and modify line 11 accordingly. In order to be able to compile with arm-linux-gnueabihf-g++-4.9 you need to work on Ubuntu 16.06. If you are working on Ubuntu 14.04, like I do for instance, you will only be able to install arm-linux-gnueabihf-g++-4.8 which will complain if you try for example to exploit specific C++14 features. I prefer compiling my project directly on the machine, but that's just how I do it. Cross compilers might restrict you some times.
 
 
 ## AUTHORS
