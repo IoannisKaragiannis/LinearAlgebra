@@ -16,7 +16,7 @@ ifeq ($(PLATFORM), LINUX)
 CXX = g++-4.9
 CXX_LINKER = g++-4.9
 # Define the flags for your compiler
-CXXFLAGS = -std=c++14 -D__cplusplus=201403L -O3 -Wall -fmessage-length=0
+CXXFLAGS = -std=c++14 -O3 -Wall -fmessage-length=0
 else
 ifeq ($(PLATFORM), ARM)
 CXX = arm-linux-gnueabihf-g++-4.8
@@ -84,17 +84,21 @@ $(TARGET): $(OBJS)
 	$(CXX_LINKER) -o $(TARGET_FULL_PATH) $(OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
-	@echo '********* RUN DEMO *************'
-	@echo '********************************'
-	@echo ' '
-	@build/bin/./KalmanFilter
-
 
 # Other Targets
 clean:
 	-$(RM) $(OBJS) $(CPP_DEPS) $(TARGET_FULL_PATH) 
 	-$(RM) $(BUILD_FOLDER)
 	-@echo ' '
+
+# Run executable	
+run:
+	@echo '********* RUN DEMO *************'
+	@echo '********************************'
+	@echo ' '
+	@build/bin/./KalmanFilter
+	@echo ' '
+	
 
 .PHONY: all clean dependents
 .SECONDARY:
