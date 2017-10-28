@@ -268,7 +268,7 @@ The table below summarizes the speed-performance of some basic operations of thi
 |1000x1000|    9.8 [s]  | 1.6e-2 [s]  | 1.9e-2 [s]    |    1.9 [s]      |      2.9 [s] |
 |4000x4000|    866 [s]  | 2.4e-1 [s]  | 3.8e-1 [s]    |    115 [s]      |       91 [s] |
  
-In conclusion, inversion is computatioanlly expensive and is therefore not recommended for large matrices. Addition and transposition are not that heavy. Multiplication and Strassen-multiplication are also not recommended for large matrices, both time-wise and memory wise. Consider that a 4000x4000 matrix occupies 128 MB. And we would need three times this memory for a single multiplication. It is worth-mentioning that although the Strassen multiplication adds no value for small matrices, it decreases the computational time significantly as the matrices' size grow. 
+In conclusion, inversion is computatioanlly expensive and is therefore not recommended for large matrices. Addition and transposition are not that heavy. Multiplication and Strassen-multiplication are also not recommended for large matrices, both time-wise and memory wise. Consider that a 4000x4000 matrix occupies 128 MB. And we would need three times this memory for a single multiplication. It is worth-mentioning that although the Strassen multiplication adds no value for small matrices, it decreases the computational time significantly as the matrices' size grow. I implemented the Strassen multiplication algorithm based on [Strassen](https://en.wikipedia.org/wiki/Strassen_algorithm).
 
 ## LOG FILE
 
