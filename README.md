@@ -149,9 +149,9 @@ int main(){
 	float norm_v3 = norm(v3);
 
 	// print out the results
-	printf("v1 = "); v1.print();
-	printf("v2 = "); v2.print();
-	printf("v3 = "); v3.print();
+	printf("v1 = "); print(v1);
+	printf("v2 = "); print(v2);
+	printf("v3 = "); print(v3);
 	printf("mean(v1) = %.3f \n", mean_v1);
 	printf("dot(v1,v2) = %.3f \n", dot_v1v2);
 	printf("norm(v3) = %.3f \n", norm_v3);
@@ -167,11 +167,11 @@ int main(){
 
 	// print out the results
 	printf("\n");
-	printf("m1 = \n"); m1.print();
+	printf("m1 = \n"); print(m1);
 	printf("\n");
-	printf("inv(m1) = \n"); m2.print();
+	printf("inv(m1) = \n"); print(m2);
 	printf("\n");
-	printf("m1*inv(m1) = \n"); m3.print();
+	printf("m1*inv(m1) = \n"); print(m3);
 
    }catch(const std::exception& e){
 	std::cerr << "EXCEPTION CAUGHT: " << e.what() << std::endl;
