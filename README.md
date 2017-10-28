@@ -20,7 +20,7 @@ these instructions for different IDE.
 
 ### PREREQUISITES
 
-At least g++-4.9 and C++14 enabled.
+At least g++-4.9 compiler and C++14 enabled.
  
 
 ### ENABLE C++14
