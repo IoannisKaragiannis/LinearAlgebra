@@ -1546,10 +1546,7 @@ inline double norm(const cvec& v)
 	return sqrt( (tmp*conj(tmp)).real() );
 }
 
-
-
-
-
+// It prints out in a descent way a complex vector
 inline void print(const cvec& v)
 {
 	if (v.size() == 0)
