@@ -124,8 +124,6 @@ public:
 
 	Mat<T> operator/(T t);
 
-	void print();
-
 	// Declaration of friend functions
 	friend Mat<T> transpose<>(const Mat<T>&);
 	friend Vec<T> lup_decompose<>(Mat<T>&, bool& is_singular);
@@ -145,10 +143,11 @@ private:
 
 
 // ##################################################################################################
-// #################################### DEFINITIONS OF vec, ivec ####################################
+// ################################# DEFINITIONS OF mat, imat, cmat #################################
 
 typedef Mat<double> mat;
 typedef Mat<int> imat;
+typedef Mat<std::complex<double>> cmat;
 
 
 // ##################################################################################################
@@ -916,10 +915,10 @@ Mat<T> Mat<T>::operator*(const Mat<T>& m)
 	}
 	else
 	{
-		mat result(rows_, m.cols());
+		Mat<T> result(rows_, m.cols());
 		size_t rows = result.rows(), cols = result.cols(), i = 0, j = 0, k = 0;
 		size_t common_dimension = cols_;
-		double tmp = 0;
+		T tmp = T(0);
 		for (i = rows; i--;)
 		{
 			for (k = common_dimension; k--;)
@@ -994,28 +993,6 @@ Mat<T> Mat<T>::operator/(T t)
 			}
 		}
 		return result;
-	}
-}
-
-// It prints the elements of the matrix.
-template <class T>
-void Mat<T>::print()
-{
-	if ( (*this).size() == 0 )
-	{
-		std::cout << "| |" << std::endl;
-	}
-	else
-	{
-		for (size_t i = 0; i < rows_; i++)
-		{
-			std::cout << "| ";
-			for (size_t j = 0; j < cols_; j++)
-			{
-				std::cout << data_[i][j] << " ";
-			}
-			std::cout << "|" << std::endl;
-		}
 	}
 }
 
@@ -2021,6 +1998,94 @@ inline imat magic_square(int n)
 			j++; i--; // 1st condition
 		}
 		return result;
+	}
+}
+
+// It prints the elements of the matrix.
+template <class T>
+inline void print(const Mat<T>& m)
+{
+	if ( m.size() == 0 )
+	{
+		std::cout << "| |" << std::endl;
+	}
+	else
+	{
+		for (size_t i = 0; i < m.rows(); i++)
+		{
+			std::cout << "| ";
+			for (size_t j = 0; j < m.cols(); j++)
+			{
+				std::cout << m.get(i,j) << " ";
+			}
+			std::cout << "|" << std::endl;
+		}
+	}
+}
+
+// ##################################################################################################
+// ########################### COMPLEX NUMBER OPERATIONS AND FUNCTIONS ##############################
+
+// It computes the conjugate of a complex matrix
+inline cmat conj(const cmat& m)
+{
+	size_t i, j, rows = m.rows(), cols = m.cols();
+	cmat result = m;
+	for (i = rows; i--;)
+	{
+		for(j = cols; j--;)
+		{
+			result(i,j).imag(result(i,j).imag()*-1);
+		}
+	}
+	return result;
+}
+
+// It computes the conjugate transpose of a complex matrix
+inline cmat conj_transpose(const cmat& m)
+{
+	return transpose(conj(m));
+}
+
+
+
+
+
+
+
+// It prints the elements of the matrix.
+inline void print(const cmat& m)
+{
+	if ( m.size() == 0 )
+	{
+		std::cout << "| |" << std::endl;
+	}
+	else
+	{
+		for (size_t i = 0; i < m.rows(); i++)
+		{
+			std::cout << "| ";
+			for (size_t j = 0; j < m.cols()-1; j++)
+			{
+				if(m.get(i,j).imag() >= 0)
+				{
+					std::cout << m.get(i,j).real() << "+" << std::abs(m.get(i,j).imag())<<"i" << "  ";
+				}
+				else
+				{
+					std::cout << m.get(i,j).real() << "-" << std::abs(m.get(i,j).imag())<<"i" << "  ";
+				}
+			}
+			if(m.get(i, m.cols()-1).imag() >= 0)
+			{
+				std::cout << m.get(i,m.cols()-1).real() << "+" << std::abs(m.get(i,m.cols()-1).imag())<<"i" << " ";
+			}
+			else
+			{
+				std::cout << m.get(i,m.cols()-1).real() << "-" << std::abs(m.get(i,m.cols()-1).imag())<<"i" << " ";
+			}
+			std::cout << "|" << std::endl;
+		}
 	}
 }
 

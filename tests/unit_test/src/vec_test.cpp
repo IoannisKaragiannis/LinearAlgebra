@@ -1,5 +1,6 @@
-/*====================================================================================================
- * Name         : vec_test.cpp implements a unit-test for the 'vec' class of the LinearAlgebra library.
+/*==============================================================================
+ * Name         : vec_test.cpp implements a unit-test for
+ *                the 'vec' class of the LinearAlgebra library.
  * Version      : 1.0.0, 23 Sep 2017
  *
  * Copyright (c) 2017 Ioannis Karagiannis
@@ -22,7 +23,7 @@
  *
  * Contact info: https://www.linkedin.com/in/ioannis-karagiannis-7129394a/
  * 				ioanniskaragiannis1987@gmail.com
-=====================================================================================================*/
+===================================================================================*/
 
 
 // The catch.hpp file was taken from: https://raw.githubusercontent.com/philsquared/Catch/master/single_include/catch.hpp
@@ -105,6 +106,11 @@ TEST_CASE( " Test 'vec::get(size_t i, size_t j) const' function." ){
 		REQUIRE(v2.get(0) == Approx(4));
 		REQUIRE(v2.get(1) == Approx(5));
 	}
+	SECTION(" Test for normal index for complex vector"){
+		cvec v3(2); v3(0) = 6. + 2i; v3(1) = 3. - 1i;
+		REQUIRE(v3.get(0).real() == 6); REQUIRE(v3.get(0).imag() == 2);
+		REQUIRE(v3.get(1).real() == 3); REQUIRE(v3.get(1).imag() == -1);
+	}
 	SECTION(" Test for boundary conditions."){
 		REQUIRE_THROWS(v1.get(1, -3));     // case j < 0
 		REQUIRE_THROWS(v1.get(2, 4));      // case j > v1.size()
@@ -146,27 +152,54 @@ TEST_CASE( " Test 'vec::set_subvector(size_t start, const vec& v)' ." ){
 }
 
 TEST_CASE( " Test 'vec::zeros()' " ){
-	vec v(2);
-	v.set(0,44); v.set(1,55);
-	v.zeros();
-	REQUIRE(v.get(0) == 0);
-	REQUIRE(v.get(1) == 0);
+	SECTION("Test for double vector"){
+		vec v(2);
+		v.set(0,44); v.set(1,55);
+		v.zeros();
+		REQUIRE(v.get(0) == 0);
+		REQUIRE(v.get(1) == 0);
+	}
+	SECTION("Test for complex vector"){
+		cvec v(2);
+		v.set(0, 6. + 2i); v.set(1, 3. - 0.5i);
+		v.zeros();
+		REQUIRE(v.get(0).real() == 0); REQUIRE(v.get(0).imag() == 0);
+		REQUIRE(v.get(1).real() == 0); REQUIRE(v.get(1).imag() == 0);
+	}
 }
 
 TEST_CASE( " Test 'vec::clear()' " ){
-	vec v(2);
-	v.set(0,44); v.set(1,55);
-	v.clear();
-	REQUIRE(v.get(0) == 0);
-	REQUIRE(v.get(1) == 0);
+	SECTION("Test for double vector"){
+		vec v(2);
+		v.set(0,44); v.set(1,55);
+		v.clear();
+		REQUIRE(v.get(0) == 0);
+		REQUIRE(v.get(1) == 0);
+	}
+	SECTION("Test for complex vector"){
+		cvec v(2);
+		v.set(0, 6. + 2i); v.set(1, 3. - 0.5i);
+		v.clear();
+		REQUIRE(v.get(0).real() == 0); REQUIRE(v.get(0).imag() == 0);
+		REQUIRE(v.get(1).real() == 0); REQUIRE(v.get(1).imag() == 0);
+	}
 }
 
 TEST_CASE( " Test vec::ones() function" ){
-	vec v(2);
-	v.set(0,44); v.set(1,55);
-	v.ones();
-	REQUIRE(v.get(0) == 1);
-	REQUIRE(v.get(1) == 1);
+	SECTION("Test for double vector"){
+		vec v(2);
+		v.set(0,44); v.set(1,55);
+		v.ones();
+		REQUIRE(v.get(0) == 1);
+		REQUIRE(v.get(1) == 1);
+	}
+	SECTION("Test for complex vector"){
+		cvec v(2);
+		v.set(0, 6. + 2i); v.set(1, 3. - 0.5i);
+		v.ones();
+		REQUIRE(v.get(0).real() == 1); REQUIRE(v.get(0).imag() == 0);
+		REQUIRE(v.get(1).real() == 1); REQUIRE(v.get(1).imag() == 0);
+	}
 }
 
 TEST_CASE( " Test vec::add(const vec& v1) function" ){
@@ -180,6 +213,16 @@ TEST_CASE( " Test vec::add(const vec& v1) function" ){
 		REQUIRE(c.size() == 2);
 		REQUIRE(c.get(0) == 3);
 		REQUIRE(c.get(1) == Approx(5.1));
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v3 = v1 + v2 = [6+2i  3-0.5i] + [3-1i  -3-2.5i] = [9+1i  0-3i]
+		cvec v1(2), v2(2), v3;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+		v2(0) = 3. - 1i; v2(1) = -3. - 2.5i;
+		v3 = v1.add(v2);
+		REQUIRE(v3.size() == 2);
+		REQUIRE(v3.get(0).real() == 9); REQUIRE(v3.get(0).imag() == 1);
+		REQUIRE(v3.get(1).real() == 0); REQUIRE(v3.get(1).imag() == -3);
 	}
 	SECTION(" Test boundary conditions. "){
 		vec b(3);
@@ -202,6 +245,16 @@ TEST_CASE( " Test vec::sub(const vec& v1) function" ){
 		REQUIRE(c.get(0) == -3);
 		REQUIRE(c.get(1) == Approx(1.8));
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v3 = v1 - v2 = [6+2i  3-0.5i] - [3-1i  -3-2.5i] = [3+3i  6+2i]
+		cvec v1(2), v2(2), v3;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+		v2(0) = 3. - 1i; v2(1) = -3. - 2.5i;
+		v3 = v1.sub(v2);
+		REQUIRE(v3.size() == 2);
+		REQUIRE(v3.get(0).real() == 3); REQUIRE(v3.get(0).imag() == 3);
+		REQUIRE(v3.get(1).real() == 6); REQUIRE(v3.get(1).imag() == 2);
+	}
 	SECTION(" Test boundary conditions. "){
 		vec b(3);
 		a.set(0,2); a.set(1,3);
@@ -214,11 +267,19 @@ TEST_CASE( " Test vec::sub(const vec& v1) function" ){
 TEST_CASE( " Test vec::dot(const vec& v1) function" ){
 	vec a(3), b(3);
 	SECTION(" Test normal conditions. "){
-		// c = a + b = [1 2 3] * [1 -2 5] = 1*1 + 2*(-2) + 3*5 = 12
+		// c = a * b = [1 2 3] * [1 -2 5] = 1*1 + 2*(-2) + 3*5 = 12
 		a.set(0,1); a.set(1,2); a.set(2,3);
 		b.set(0,1); b.set(1,-2); b.set(2,5);
 		REQUIRE(a.dot(b) == 12);
 		REQUIRE(b.dot(a) == 12);
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v3 = v1 * v2 = [6+2i  3-0.5i] * [3-1i  -3-2.5i] = 9.75-6i
+		cvec v1(2), v2(2), v3;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+		v2(0) = 3. - 1i; v2(1) = -3. - 2.5i;
+		REQUIRE(v1.dot(v2).real() == 9.75);
+		REQUIRE(v1.dot(v2).imag() == -6);
 	}
 	SECTION(" Test boundary conditions. "){
 		vec c(4);
@@ -278,6 +339,15 @@ TEST_CASE( " Test vec::swap(size_t i, size_t j) function" ){
 		REQUIRE(tmp(0) == a(0)); REQUIRE(tmp(1) == a(3)); REQUIRE(tmp(2) == a(2));
 		REQUIRE(tmp(3) == a(1)); REQUIRE(tmp(4) == a(4)); REQUIRE(tmp(5) == a(5));
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		cvec b, c;
+		b = rand_c(3);
+		c = b;
+		b.swap(1, 2);
+
+		REQUIRE(c(0).real() == b(0).real()); REQUIRE(c(1).real() == b(2).real()); REQUIRE(c(2).real() == b(1).real());
+		REQUIRE(c(0).imag() == b(0).imag()); REQUIRE(c(1).imag() == b(2).imag()); REQUIRE(c(2).imag() == b(1).imag());
+	}
 
 	SECTION(" Test normal conditions. "){
 		a = rand(6);
@@ -325,7 +395,7 @@ TEST_CASE( " Test vec::overload=(const char* a) function" ){
 	}
 }
 
-TEST_CASE( " Test vec::overload+(const char* a) function" ){
+TEST_CASE( " Test vec::overload+(const vec& a) function" ){
 	vec a ,b;
 	SECTION(" Test normal conditions. "){
 		// a = [3 -5 9], b = [4 3 8] ==> c = a + b = b + a = [7 -2 17]
@@ -339,6 +409,16 @@ TEST_CASE( " Test vec::overload+(const char* a) function" ){
 		REQUIRE(c.get(1) == d.get(1));
 		REQUIRE(c.get(2) == d.get(2));
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v3 = v1 + v2 = [6+2i  3-0.5i] + [3-1i  -3-2.5i] = [9+1i  0-3i]
+		cvec v1(2), v2(2), v3;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+		v2(0) = 3. - 1i; v2(1) = -3. - 2.5i;
+		v3 = v1 + v2;
+		REQUIRE(v3.size() == 2);
+		REQUIRE(v3.get(0).real() == 9); REQUIRE(v3.get(0).imag() == 1);
+		REQUIRE(v3.get(1).real() == 0); REQUIRE(v3.get(1).imag() == -3);
+	}
 	SECTION(" Test boundary conditions. "){
 		REQUIRE((a + b).size() == 0);
 		// a = [3 -5 9], b = [4 3]
@@ -347,7 +427,7 @@ TEST_CASE( " Test vec::overload+(const char* a) function" ){
 	}
 }
 
-TEST_CASE( " Test vec::overload+(float t) function" ){
+TEST_CASE( " Test vec::overload+(T t) function" ){
 	vec a;
 	float p;
 	SECTION(" Test normal conditions. "){
@@ -358,13 +438,23 @@ TEST_CASE( " Test vec::overload+(float t) function" ){
 		REQUIRE(c.get(1) == Approx(-1.5));
 		REQUIRE(c.get(2) == Approx(12.5));
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v2 = v1 + t = [6+2i  3-0.5i] + 1+2i = [7+4i  4+1.5i]
+		cvec v1(2), v2;
+		std::complex<double> t = 1. + 2i;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+		v2 = v1 + t;
+		REQUIRE(v2.size() == 2);
+		REQUIRE(v2.get(0).real() == 7); REQUIRE(v2.get(0).imag() == 4);
+		REQUIRE(v2.get(1).real() == 4); REQUIRE(v2.get(1).imag() == 1.5);
+	}
 	SECTION(" Test boundary conditions. "){
 		p = 3.5;
 		REQUIRE_THROWS(a + p);
 	}
 }
 
-TEST_CASE( " Test vec::overload-(const char* a) function" ){
+TEST_CASE( " Test vec::overload-(const vec& a) function" ){
 	vec a ,b;
 	SECTION(" Test normal conditions. "){
 		// a = [3 -5 9], b = [4 3 8] ==> c = a - b = [-1 -8 1]
@@ -374,6 +464,16 @@ TEST_CASE( " Test vec::overload-(const char* a) function" ){
 		REQUIRE(c.get(1) == -8);
 		REQUIRE(c.get(2) == 1);
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v3 = v1 - v2 = [6+2i  3-0.5i] - [3-1i  -3-2.5i] = [3+3i  6+2i]
+		cvec v1(2), v2(2), v3;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+		v2(0) = 3. - 1i; v2(1) = -3. - 2.5i;
+		v3 = v1 - v2;
+		REQUIRE(v3.size() == 2);
+		REQUIRE(v3.get(0).real() == 3); REQUIRE(v3.get(0).imag() == 3);
+		REQUIRE(v3.get(1).real() == 6); REQUIRE(v3.get(1).imag() == 2);
+	}
 	SECTION(" Test boundary conditions. "){
 		REQUIRE((a + b).size() == 0);
 		// a = [3 -5 9], b = [4 3]
@@ -382,7 +482,7 @@ TEST_CASE( " Test vec::overload-(const char* a) function" ){
 	}
 }
 
-TEST_CASE( " Test vec::overload-(float t) function" ){
+TEST_CASE( " Test vec::overload-(T t) function" ){
 	vec a;
 	float p;
 	SECTION(" Test normal conditions. "){
@@ -393,6 +493,16 @@ TEST_CASE( " Test vec::overload-(float t) function" ){
 		REQUIRE(c.get(1) == Approx(-8.5));
 		REQUIRE(c.get(2) == Approx(5.5));
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v2 = v1 - t = [6+2i  3-0.5i] - 1+2i = [5+0i  2-2.5i]
+		cvec v1(2), v2;
+		std::complex<double> t = 1. + 2i;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+		v2 = v1 - t;
+		REQUIRE(v2.size() == 2);
+		REQUIRE(v2.get(0).real() == 5); REQUIRE(v2.get(0).imag() == 0);
+		REQUIRE(v2.get(1).real() == 2); REQUIRE(v2.get(1).imag() == -2.5);
+	}
 	SECTION(" Test boundary conditions. "){
 		p = 3.5;
 		REQUIRE_THROWS(a - p);
@@ -400,7 +510,7 @@ TEST_CASE( " Test vec::overload-(float t) function" ){
 }
 
 
-TEST_CASE( " Test vec::overload*(const char* a) function" ){
+TEST_CASE( " Test vec::overload*(const vec& a) function" ){
 	vec a ,b;
 	SECTION(" Test normal conditions. "){
 		// c = a + b = [1 2 3] * [1 -2 5] = 1*1 + 2*(-2) + 3*5 = 12
@@ -410,6 +520,16 @@ TEST_CASE( " Test vec::overload*(const char* a) function" ){
 		REQUIRE(c == 12);
 		REQUIRE(d == c); // Commutative property
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v3 = v1 * v2 = [6+2i  3-0.5i] * [3-1i  -3-2.5i] = 9.75-6i
+		cvec v1(2), v2(2);
+		std::complex<double> tmp;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+		v2(0) = 3. - 1i; v2(1) = -3. - 2.5i;
+		tmp = v1 * v2;
+		REQUIRE(tmp.real() == 9.75);
+		REQUIRE(tmp.imag() == -6);
+	}
 	SECTION(" Test boundary conditions. "){
 		REQUIRE((a + b).size() == 0);
 		// a = [3 -5 9], b = [4 3]
@@ -418,7 +538,7 @@ TEST_CASE( " Test vec::overload*(const char* a) function" ){
 	}
 }
 
-TEST_CASE( " Test vec::overload*(float t) function" ){
+TEST_CASE( " Test vec::overload*(T t) function" ){
 	vec a,c;
 	float p;
 	SECTION(" Test normal conditions. "){
@@ -439,6 +559,16 @@ TEST_CASE( " Test vec::overload*(float t) function" ){
 		REQUIRE(c.get(1) == Approx(-2.5));
 		REQUIRE(c.get(2) == Approx(4.5));
 		REQUIRE(c.get(3) == Approx(3.5));
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v2 = v1 * t = [6+2i  3-0.5i] * 1+2i = [2+16i  4+5.5i]
+		cvec v1(2), v2;
+		std::complex<double> t = 1. + 2i;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+		v2 = v1 * t;
+		REQUIRE(v2.size() == 2);
+		REQUIRE(v2.get(0).real() == 2); REQUIRE(v2.get(0).imag() == 14);
+		REQUIRE(v2.get(1).real() == 4); REQUIRE(v2.get(1).imag() == 5.5);
 	}
 	SECTION(" Test vec::boundary conditions. "){
 		// Try to multiply with null vector.
@@ -465,6 +595,31 @@ TEST_CASE( " Test vec::overload/(float t) function" ){
 		REQUIRE(c.get(1) == Approx(-10));
 		REQUIRE(c.get(2) == Approx(18));
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v2 = v1 / t = [6+2i  3-0.5i] / 1+2i
+		cvec v1(2), v2, test(2);
+		std::complex<double> t = 1. + 2i;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+
+		// Polar coordinates according to Euler's formula
+		// if z = a + ib ==> z = |z|( cos(phi)+isin(phi) )
+		// where |z| = abs(z) = sqrt(a^2+b^2)
+		// and phi = arg(z) = arctan(b/a)
+
+		double magn_0, magn_1, magn_t, arg_0, arg_1, arg_t;
+		magn_0 = std::abs(v1(0)); arg_0 = atan2(v1(0).imag(), v1(0).real());
+		magn_1 = std::abs(v1(1)); arg_1 = atan2(v1(1).imag(), v1(1).real());
+		magn_t = std::abs(t); arg_t = atan2(t.imag(), t.real());
+		test(0).real( (magn_0/magn_t)*(cos(arg_0-arg_t)) );
+		test(0).imag( (magn_0/magn_t)*(sin(arg_0-arg_t)) );
+		test(1).real( (magn_1/magn_t)*(cos(arg_1-arg_t)) );
+		test(1).imag( (magn_1/magn_t)*(sin(arg_1-arg_t)) );
+
+		v2 = v1 / t;
+		REQUIRE(v2.size() == 2);
+		REQUIRE(v2(0).real() == Approx( test(0).real()) ); REQUIRE(v2(0).imag() == Approx( test(0).imag()) );
+		REQUIRE(v2(1).real() == Approx( test(1).real()) ); REQUIRE(v2(1).imag() == Approx( test(1).imag()) );
+	}
 	SECTION(" Test boundary conditions. "){
 		p = 3.5;
 		// Try to access null vector.
@@ -486,6 +641,15 @@ TEST_CASE( " Test vec::overload()(const size_t) function" ){
 		REQUIRE(a(1) == a.get(1));
 		REQUIRE(a(2) == a.get(2));
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [3+i  -1+2i]
+		cvec b(2);
+		b(0).real(3); b(0).imag(1);
+		b(1).real(-1); b(0).imag(2);
+
+		REQUIRE(b(0).real() == b.get(0).real()); REQUIRE(b(0).imag() == b.get(0).imag());
+		REQUIRE(b(1).real() == b.get(1).real()); REQUIRE(b(1).imag() == b.get(1).imag());
+	}
 	SECTION(" Test boundary conditions. "){
 		// Try to access null vector.
 		REQUIRE_THROWS(a(1));
@@ -503,6 +667,15 @@ TEST_CASE( " Test vec::overload[](const size_t) function" ){
 		REQUIRE(a[0] == a.get(0));
 		REQUIRE(a[1] == a.get(1));
 		REQUIRE(a[2] == a.get(2));
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [3+i  -1+2i]
+		cvec b(2);
+		b(0).real(3); b(0).imag(1);
+		b(1).real(-1); b(0).imag(2);
+
+		REQUIRE(b[0].real() == b.get(0).real()); REQUIRE(b[0].imag() == b.get(0).imag());
+		REQUIRE(b[1].real() == b.get(1).real()); REQUIRE(b[1].imag() == b.get(1).imag());
 	}
 	SECTION(" Test boundary conditions. "){
 		// Try to access null vector.
@@ -583,6 +756,14 @@ TEST_CASE( " Test algebra::dot(const vec& v1, const vec& v2) function" ){
 		REQUIRE(c == 12);
 		REQUIRE(d == c);
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v3 = v1 * v2 = [6+2i  3-0.5i] * [3-1i  -3-2.5i] = 9.75-6i
+		cvec v1(2), v2(2), v3;
+		v1(0) = 6. + 2i; v1(1) = 3. -0.5i;
+		v2(0) = 3. - 1i; v2(1) = -3. - 2.5i;
+		REQUIRE(dot(v1, v2).real() == 9.75);
+		REQUIRE(dot(v1, v2).imag() == -6);
+	}
 	SECTION(" Test boundary conditions. "){
 		a = "[1 2 3]"; b = "[1 -2]";
 		REQUIRE_THROWS(dot(a,b));
@@ -592,13 +773,28 @@ TEST_CASE( " Test algebra::dot(const vec& v1, const vec& v2) function" ){
 }
 
 
-TEST_CASE( " Test algebra::mean(const vec& v1) function" ){
+TEST_CASE( " Test algebra::mean(const Vec<T>& v1) function" ){
 	vec a;
 	SECTION(" Test normal conditions. "){
 		// a = [2 1 4 3] ==> mean(a) = 2.5
 		a = "[2 1 4 3]";
 		float c = mean(a);
 		REQUIRE(c == Approx(2.5));
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		cvec b = rand_c(4);
+		std::complex<double> c = mean(b);
+		double real = 0 , imaginary = 0;
+		for(size_t i = 0; i < b.size(); i++)
+		{
+			real += b(i).real();
+			imaginary += b(i).imag();
+		}
+		real /= b.size();
+		imaginary /= b.size();
+
+		REQUIRE(c.real() == Approx(real));
+		REQUIRE(c.imag() == Approx(imaginary));
 	}
 	SECTION(" Test boundary conditions. "){
 		REQUIRE_THROWS(mean(a));
@@ -612,6 +808,31 @@ TEST_CASE( " Test algebra::min(const vec& v1) function" ){
 		a = "[2 -1 4 -3]";
 		float c = min(a);
 		REQUIRE(c == Approx(-3));
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [3-2i  -3+2i  4+i]
+
+		// b(0) = 3-2i = |b(0)|*exp(i*phi) = sqrt(13)*exp(i*(-0.588))
+		// b(1) =-3+2i = |b(1)|*exp(i*phi) = sqrt(13)*exp(i*(-0.588+pi))
+		//                                 = sqrt(13)*exp(i*2.553)
+		// b(2) = 4+i  = |b(2)|*exp(i*phi) = sqrt(15)*exp(i*0.2449)
+
+		// So, it should be min(b) = b(0)
+
+		cvec b(3);
+		b(0).real(3); b(0).imag(-2);
+		b(1).real(-3); b(1).imag(2);
+		b(2).real(4); b(2).imag(1);
+
+		// Remember that for a complex number z = x + yi
+
+		//             | arctan(y/x)      , x > 0
+		// atan2(y,x)= | arctan(y/x) + pi , x < 0, y >= 0
+		//             | arctan(y/x) - pi , x < 0, y < 0
+
+		// see: https://en.wikipedia.org/wiki/Atan2
+
+		REQUIRE( min(b) == b(0) );
 	}
 	SECTION(" Test boundary conditions. "){
 		REQUIRE_THROWS(min(a));
@@ -628,13 +849,41 @@ TEST_CASE( " Test algebra::min(const vec& v, size_t &index) function" ){
 		REQUIRE(minimum_value == Approx(-3));
 		REQUIRE(minimum_index == 3);
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [3-2i  -3+2i  4+i]
+
+		// b(0) = 3-2i = |b(0)|*exp(i*phi) = sqrt(13)*exp(i*(-0.588))
+		// b(1) =-3+2i = |b(1)|*exp(i*phi) = sqrt(13)*exp(i*(-0.588+pi))
+		//                                 = sqrt(13)*exp(i*2.553)
+		// b(2) = 4+i  = |b(2)|*exp(i*phi) = sqrt(15)*exp(i*0.2449)
+
+		// So, it should be min(b, ind) = b(0) and ind = 0
+
+		cvec b(3);
+		b(0).real(3); b(0).imag(-2);
+		b(1).real(-3); b(1).imag(2);
+		b(2).real(4); b(2).imag(1);
+
+		// Remember that for a complex number z = x + yi
+
+		//             | arctan(y/x)      , x > 0
+		// atan2(y,x)= | arctan(y/x) + pi , x < 0, y >= 0
+		//             | arctan(y/x) - pi , x < 0, y < 0
+
+		// see: https://en.wikipedia.org/wiki/Atan2
+
+		std::complex<double> minimum_value; size_t minimum_index;
+		minimum_value = min(b, minimum_index);
+
+		REQUIRE( minimum_value == b(0) );
+		REQUIRE( minimum_index == 0 );
+	}
 	SECTION(" Test boundary conditions. "){
 		size_t minimum_index;
 		REQUIRE_THROWS(min(a, minimum_index));
 	}
 }
 
-/////
 
 TEST_CASE( " Test algebra::max(const vec& v1) function" ){
 	vec a;
@@ -643,6 +892,31 @@ TEST_CASE( " Test algebra::max(const vec& v1) function" ){
 		a = "[2 -1 4 -3]";
 		float c = max(a);
 		REQUIRE(c == Approx(4));
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [3-2i  -3+2i  4+i]
+
+		// b(0) = 3-2i = |b(0)|*exp(i*phi) = sqrt(13)*exp(i*(-0.588))
+		// b(1) =-3+2i = |b(1)|*exp(i*phi) = sqrt(13)*exp(i*(-0.588+pi))
+		//                                 = sqrt(13)*exp(i*2.553)
+		// b(2) = 4+i  = |b(2)|*exp(i*phi) = sqrt(15)*exp(i*0.2449)
+
+		// So, it should be max(b) = b(2)
+
+		cvec b(3);
+		b(0).real(3); b(0).imag(-2);
+		b(1).real(-3); b(1).imag(2);
+		b(2).real(4); b(2).imag(1);
+
+		// Remember that for a complex number z = x + yi
+
+		//             | arctan(y/x)      , x > 0
+		// atan2(y,x)= | arctan(y/x) + pi , x < 0, y >= 0
+		//             | arctan(y/x) - pi , x < 0, y < 0
+
+		// see: https://en.wikipedia.org/wiki/Atan2
+
+		REQUIRE( max(b) == b(2) );
 	}
 	SECTION(" Test boundary conditions. "){
 		REQUIRE_THROWS(max(a));
@@ -658,6 +932,35 @@ TEST_CASE( " Test algebra::max(const vec& v, size_t &index) function" ){
 		maximum_value = max(a, maximum_index);
 		REQUIRE(maximum_value == Approx(4));
 		REQUIRE(maximum_index == 2);
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [3-2i  -3+2i  4+i]
+
+		// b(0) = 3-2i = |b(0)|*exp(i*phi) = sqrt(13)*exp(i*(-0.588))
+		// b(1) =-3+2i = |b(1)|*exp(i*phi) = sqrt(13)*exp(i*(-0.588+pi))
+		//                                 = sqrt(13)*exp(i*2.553)
+		// b(2) = 4+i  = |b(2)|*exp(i*phi) = sqrt(15)*exp(i*0.2449)
+
+		// So, it should be max(b, ind) = b(2) and ind = 2
+
+		cvec b(3);
+		b(0).real(3); b(0).imag(-2);
+		b(1).real(-3); b(1).imag(2);
+		b(2).real(4); b(2).imag(1);
+
+		// Remember that for a complex number z = x + yi
+
+		//             | arctan(y/x)      , x > 0
+		// atan2(y,x)= | arctan(y/x) + pi , x < 0, y >= 0
+		//             | arctan(y/x) - pi , x < 0, y < 0
+
+		// see: https://en.wikipedia.org/wiki/Atan2
+
+		std::complex<double> maximum_value; size_t maximum_index;
+		maximum_value = max(b, maximum_index);
+
+		REQUIRE( maximum_value == b(2) );
+		REQUIRE( maximum_index == 2 );
 	}
 	SECTION(" Test boundary conditions. "){
 		size_t maximum_index;
@@ -687,8 +990,8 @@ TEST_CASE( " Test algebra::cross(const vec& v1, const vec& v2) function" ){
 	}
 }
 
-TEST_CASE( " Test algebra::concat(const vec& v1, float t) function" ){
-	vec a; float t;
+TEST_CASE( " Test algebra::concat(const Vec<T>& v1, T t) function" ){
+	vec a; double t;
 	SECTION(" Test normal conditions. "){
 		// a = [2 -1 4 -3], t = 99: a = concat(a, t) = [2 -1 4 -3 99]
 		a = "[2 -1 4 -3]"; t = 99;
@@ -699,6 +1002,18 @@ TEST_CASE( " Test algebra::concat(const vec& v1, float t) function" ){
 		REQUIRE(a(2) == 4);
 		REQUIRE(a(3) == -3);
 		REQUIRE(a(4) == 99);
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [-2+5i  3-4i], k = 1+88i, b = concat(b, k) = [-2+5i  3-4i  1+88i]
+		cvec b(2); std::complex<double> k = 1. + 88i;
+		b(0).real(-2); b(0).imag(5);
+		b(1).real(3); b(1).imag(-4);
+		b = concat(b, k);
+		REQUIRE( b.size() == 3 );
+		REQUIRE( b(0).real() == -2 ); REQUIRE( b(0).imag() == 5 );
+		REQUIRE( b(1).real() == 3 ); REQUIRE( b(1).imag() == -4 );
+		REQUIRE( b(2).real() == 1 ); REQUIRE( b(2).imag() == 88 );
+
 	}
 	SECTION(" Test boundary conditions. "){
 		t = 3;
@@ -711,7 +1026,7 @@ TEST_CASE( " Test algebra::concat(const vec& v1, float t) function" ){
 }
 
 TEST_CASE( " Test algebra::concat(float t, const vec& v) function" ){
-	vec a; float t;
+	vec a; double t;
 	SECTION(" Test normal conditions. "){
 		// a = [2 -1 4 -3], t = 99: a = concat(t, a) = [99 2 -1 4 -3]
 		a = "[2 -1 4 -3]"; t = 99;
@@ -722,6 +1037,18 @@ TEST_CASE( " Test algebra::concat(float t, const vec& v) function" ){
 		REQUIRE(a(2) == -1);
 		REQUIRE(a(3) == 4);
 		REQUIRE(a(4) == -3);
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [-2+5i  3-4i], k = 1+88i, b = concat(k, b) = [1+88i  -2+5i  3-4i]
+		cvec b(2); std::complex<double> k = 1. + 88i;
+		b(0).real(-2); b(0).imag(5);
+		b(1).real(3); b(1).imag(-4);
+		b = concat(k, b);
+		REQUIRE( b.size() == 3 );
+		REQUIRE( b(0).real() == 1 ); REQUIRE( b(0).imag() == 88 );
+		REQUIRE( b(1).real() == -2 ); REQUIRE( b(1).imag() == 5 );
+		REQUIRE( b(2).real() == 3 ); REQUIRE( b(2).imag() == -4 );
+
 	}
 	SECTION(" Test boundary conditions. "){
 		a = concat(t, a);
@@ -745,6 +1072,22 @@ TEST_CASE( " Test algebra::concat(const vec& v1, const vec& v2) function" ){
 		REQUIRE(c(3) == -3);
 		REQUIRE(c(4) == 44);
 		REQUIRE(c(5) == 55);
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [-2+5i  3-4i], k = [1+88i  9-12i], b = concat(b, k) = [-2+5i  3-4i  1+88i  9-12i]
+		cvec b(2), k(2);
+		b(0).real(-2); b(0).imag(5);
+		b(1).real(3); b(1).imag(-4);
+		k(0).real(1); k(0).imag(88);
+		k(1).real(9); k(1).imag(-12);
+
+		b = concat(b, k);
+
+		REQUIRE( b.size() == 4 );
+		REQUIRE( b(0).real() == -2 ); REQUIRE( b(0).imag() == 5 );
+		REQUIRE( b(1).real() == 3 ); REQUIRE( b(1).imag() == -4 );
+		REQUIRE( b(2).real() == 1 ); REQUIRE( b(2).imag() == 88 );
+		REQUIRE( b(3).real() == 9 ); REQUIRE( b(3).imag() == -12 );
 	}
 	SECTION(" Test boundary conditions. "){
 		c = concat(a,b);
@@ -787,6 +1130,16 @@ TEST_CASE( " Test algebra::elem_mult(const vec& v1, const vec& v2) function" ){
 		REQUIRE(c(2) == 3);
 		REQUIRE(c(3) == 9);
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [2+i  3-i], c = [2-i 3+i], d = elem_mult(b, c) = [5 10]
+		cvec b(2), c(2), d;
+		b(0).real(2); b(0).imag(1); b(1).real(3); b(1).imag(-1);
+		c(0).real(2); c(0).imag(-1); c(1).real(3); c(1).imag(1);
+		d = elem_mult(b, c);
+		REQUIRE( d.size() == 2 );
+		REQUIRE( d(0).real() == 5 ); REQUIRE( d(0).imag() == 0 );
+		REQUIRE( d(1).real() == 10 ); REQUIRE( d(1).imag() == 0 );
+	}
 	SECTION(" Test boundary conditions. "){
 		a = "[2 -1 4 -3]"; b = "[4 5]";
 		REQUIRE_THROWS( c = elem_mult(a, b) );
@@ -802,6 +1155,13 @@ TEST_CASE( " Test algebra::sum(const vec& v1) function" ){
 		a = "[2 -1 4 -3]";
 		REQUIRE( sum(a) == 2);
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [2+i  3-i] ==> sum(b) = 5
+		cvec b(2);
+		b(0).real(2); b(0).imag(1); b(1).real(3); b(1).imag(-1);
+		REQUIRE( sum(b).real() == 5 );
+		REQUIRE( sum(b).imag() == 0 );
+	}
 }
 
 TEST_CASE( " Test algebra::cumsum(const vec& v1) function" ){
@@ -814,6 +1174,21 @@ TEST_CASE( " Test algebra::cumsum(const vec& v1) function" ){
 		REQUIRE( b(1) == 1);
 		REQUIRE( b(2) == 5);
 		REQUIRE( b(3) == 2);
+	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// v = [1 3i 2+4i -6+8i 9-2i] ==> cumsum(v) = [1  1+3i  3+7i  -3+15i  6+13i]
+		cvec v(5), v2;
+		v(0).real(1); v(0).imag(0);
+		v(1).real(0); v(1).imag(3);
+		v(2).real(2); v(2).imag(4);
+		v(3).real(-6); v(3).imag(8);
+		v(4).real(9); v(4).imag(-2);
+		v2 = cumsum(v);
+		REQUIRE( v2(0).real() == 1 ); REQUIRE( v2(0).imag() == 0 );
+		REQUIRE( v2(1).real() == 1 ); REQUIRE( v2(1).imag() == 3 );
+		REQUIRE( v2(2).real() == 3 ); REQUIRE( v2(2).imag() == 7 );
+		REQUIRE( v2(3).real() == -3 ); REQUIRE( v2(3).imag() == 15 );
+		REQUIRE( v2(4).real() == 6 ); REQUIRE( v2(4).imag() == 13 );
 	}
 	SECTION(" Test boundary conditions. "){
 		b = cumsum(a);
@@ -831,9 +1206,27 @@ TEST_CASE( " Test algebra::norm(const vec& v) function" ){
 		a = "[2 -1 4 -3]";
 		REQUIRE( norm(a) == Approx(5.477).epsilon(0.001));
 	}
+	SECTION(" Test normal conditions for complex vectors. "){
+		// b = [2+i  3-2i  -1-i], norm(b) = sqrt(20)
+		cvec b(3);
+		b(0).real(2); b(0).imag(1);
+		b(1).real(3); b(1).imag(-2);
+		b(2).real(-1); b(2).imag(-1);
+		REQUIRE( norm(b) == sqrt(20) );
+	}
 	SECTION(" Test boundary conditions. "){
 		REQUIRE( norm(a) == 0 );
 	}
+}
+
+TEST_CASE(" Test algebra::conj(const cvec& v) function" ){
+	// a = [1+2i  -4-5i], conj(a) = [1-2i  -4+5i]
+	cvec a(2), a2;
+	a(0).real(1); a(0).imag(2);
+	a(1).real(-4); a(1).imag(-5);
+	a2 = conj(a);
+	REQUIRE( a2(0).real() == a(0).real() ); REQUIRE( a2(0).imag() == -a(0).imag() );
+	REQUIRE( a2(1).real() == a(1).real() ); REQUIRE( a2(1).imag() == -a(1).imag() );
 }
 
 TEST_CASE( " Test algebra::abs(const vec& v) function" ){

@@ -51,6 +51,7 @@
 
 #include <complex>      // C++14 feature for complex numbers
 
+using namespace std::complex_literals;
 
 #define M_PI 3.14159265358979323846
 
@@ -125,8 +126,6 @@ public:
 	T& operator()(size_t k);
 	T& operator[](size_t k);
 
-	void print();  // Set precision for double
-
 	// Friend function for lu-decomposition. It will be defined
 	// in class Mat.
 	friend Mat<T> lup_invert<T>(Mat<T>&, const Vec<T>&);
@@ -175,10 +174,11 @@ Vec<T>::~Vec() {}
 
 
 // ##################################################################################################
-// #################################### DEFINITIONS OF vec, ivec ####################################
+// ################################# DEFINITIONS OF vec, ivec, cvec #################################
 
 typedef Vec<double> vec;
 typedef Vec<int> ivec;
+typedef Vec<std::complex<double>> cvec;
 
 
 // ##################################################################################################
@@ -397,6 +397,7 @@ T Vec<T>::dot(const Vec<T>& v1)
 // It computes the outer product of two vectors. The size of the
 // vectors has to be 3 or 7. I only consider the trivial case of 3.
 // For more details see: https://en.wikipedia.org/wiki/Cross_product
+// Cross product is not defined for complex vectors.
 template <class T>
 Vec<T> Vec<T>::cross(const Vec<T>& v1)
 {
@@ -640,7 +641,7 @@ Vec<T> Vec<T>::operator*(T x)
 template <class T>
 Vec<T> Vec<T>::operator/(T t)
 {
-	if (t == 0)
+	if (t == T(0))
 	{
 		std::string msg = FILE_LINE_ERROR + " 'std::invalid_argument' thrown in operator/(T t): DIVISION BY ZERO ";
 		log_error(msg.c_str());
@@ -676,7 +677,7 @@ T& Vec<T>::operator()(size_t k)
 	}
 	else
 	{
-		return data_.at(k);
+		return data_.at(k);;
 	}
 }
 
@@ -698,31 +699,9 @@ T& Vec<T>::operator[](size_t k)
 	}
 	else
 	{
-		return data_.at(k);
+		return data_.at(k);;
 	}
 }
-
-// It prints the elements of the vector
-template <class T>
-void Vec<T>::print()
-{
-	if ((*this).size() == 0)
-	{
-		std::cout << "[ ]" << std::endl;
-		return;
-	}
-	else
-	{
-		std::cout << "[ ";
-		size_t i;
-		for (i = 0; i < length_; i++)
-		{
-			std::cout << data_[i] << " ";
-		}
-		std::cout << "]" << std::endl;
-	}
-}
-
 
 // ##################################################################################################
 // ############################ MISCELLANEOUS OPERATIONS AND FUNCTIONS ##############################
@@ -860,7 +839,7 @@ inline vec rand(size_t n)
 {
 	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
 	{
-		std::string msg = FILE_LINE_ERROR + " exception in vec::rand(size_t n, size_t m): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
+		std::string msg = FILE_LINE_ERROR + " exception in rand(size_t n): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
@@ -893,7 +872,7 @@ inline ivec rand_i(size_t n)
 {
 	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
 	{
-		std::string msg = FILE_LINE_ERROR + " exception in vec::rand(size_t n, size_t m): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
+		std::string msg = FILE_LINE_ERROR + " exception in rand_i(size_t n): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
 	}
@@ -1091,7 +1070,7 @@ inline Vec<T> cross(const Vec<T>& v1, const Vec<T>& v2)
 
 // It concatenates the current vector with t.
 template <class T>
-inline Vec<T> concat(const Vec<T>& v, double t)
+inline Vec<T> concat(const Vec<T>& v, T t)
 {
 	if ( v.size() == 0 )
 	{
@@ -1120,7 +1099,7 @@ inline Vec<T> concat(const Vec<T>& v, double t)
 
 // It concatenates t with the current vector.
 template <class T>
-inline Vec<T> concat(double t, const Vec<T>& v)
+inline Vec<T> concat(T t, const Vec<T>& v)
 {
 	if ( v.size() == 0 )
 	{
@@ -1236,7 +1215,7 @@ inline Vec<T> elem_mult(const Vec<T>& v1, const Vec<T>& v2)
 
 // It computes the sum of all elements of vector v
 template <class T>
-inline double sum(const Vec<T>& v)
+inline T sum(const Vec<T>& v)
 {
 	T result = 0;
 	size_t i = 0, size = v.size();
@@ -1268,7 +1247,7 @@ inline Vec<T> cumsum(const Vec<T>& v1)
 	}
 }
 
-// It computes the 2-norm or Euclidean norm of vector v
+// It computes the 2-norm for Euclidean space
 template <class T>
 inline double norm(const Vec<T>& v)
 {
@@ -1293,6 +1272,317 @@ inline Vec<T> abs(const Vec<T>& v)
 		result(i) = std::abs(v.get(i));
 	}
 	return result;
+}
+
+// It prints the elements of the vector
+template <class T>
+inline void print(const Vec<T>& v)
+{
+	if (v.size() == 0)
+	{
+		std::cout << "[ ]" << std::endl;
+		return;
+	}
+	else
+	{
+		std::cout << "[ ";
+		size_t i;
+		for (i = 0; i < v.size(); i++)
+		{
+			std::cout << v.get(i) << " ";
+		}
+		std::cout << "]" << std::endl;
+	}
+}
+
+// ##################################################################################################
+// ########################### COMPLEX NUMBER OPERATIONS AND FUNCTIONS ##############################
+
+// It returns an 'complex'-vector of size n with all elements equal to 0.
+inline cvec zeros_c(size_t n)
+{
+	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
+		std::string msg = FILE_LINE_ERROR + " exception in vec::zeros(size_t n): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		cvec a(n);
+		size_t i;
+		for (i = n; i--;)
+		{
+			a(i).real(0);
+			a(i).imag(0);
+		}
+		return a;
+	}
+}
+
+// It calculates an 'complex'-vector with elements taking
+// random values within the range [-10, 10].
+inline cvec rand_c(size_t n)
+{
+	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
+		std::string msg = FILE_LINE_ERROR + " exception in rand_c(size_t n): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		cvec a(n);
+		size_t i = 0;
+
+		// C++11 feature: It will be used to obtain a seed for the random number engine
+		std::random_device rd;
+		// C++11 feature: Standard mersenne_twister_engine seeded with rd()
+		std::mt19937 gen(rd());
+
+		// Define range
+		double min = -10, max = 10;
+
+		std::uniform_real_distribution<double> dis(0, 2*max);
+		for (i = n; i--;)
+		{
+			// Generate random number within the range [-10 10]
+			a(i).real(min + (double) dis(gen));
+			a(i).imag(min + (double) dis(gen));
+		}
+		return a;
+	}
+}
+
+// It computes the mean value of the complex vector
+inline std::complex<double> mean(const cvec& v)
+{
+	if (v.size() == 0)
+	{
+		std::string msg = FILE_LINE_ERROR + " NULL VECTOR in mean(const cvec& v)";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		std::complex<double> result = 0. + 0i;
+		size_t i = 0, size = v.size();
+		for (i = size; i--;)
+		{
+			result += v.get(i);
+		}
+		result /= size;
+		return result;
+	}
+}
+
+// It computes the min value of a complex vector
+// Based on MATLAB's implementation I compare
+// the modulus of each element and in case they
+// are equal I pick the one with the minimum phase
+inline std::complex<double> min(const cvec& v)
+{
+	if (v.size() == 0)
+	{
+		std::string msg = FILE_LINE_ERROR + " NULL VECTOR in min(const vec& v)";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		std::complex<double> min;
+		min.real( MAX(double) );
+		min.imag( MAX(double) );
+		size_t i = 0, size = v.size();
+		double modulus = 0;
+		double phase = 0;
+		for (i = size; i--;)
+		{
+			modulus = std::abs(v.get(i));
+			phase = atan2(v.get(i).imag(), v.get(i).real());
+			if (modulus < std::abs(min) )
+			{
+				min = v.get(i);
+			}
+			if (std::abs(modulus - std::abs(min)) < EPSILON && phase < atan2(min.imag(), min.real()))
+			{
+				min = v.get(i);
+			}
+		}
+		return min;
+	}
+}
+
+// It computes the min value of a complex vector
+// together with its index.
+inline std::complex<double> min(const cvec& v, size_t &index)
+{
+	if (v.size() == 0)
+	{
+		std::string msg = FILE_LINE_ERROR + " NULL VECTOR in min(const vec& v)";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		std::complex<double> min;
+		min.real( MAX(double) );
+		min.imag( MAX(double) );
+		size_t i = 0, size = v.size();
+		double modulus = 0;
+		double phase = 0;
+		index = 0;
+		for (i = size; i--;)
+		{
+			modulus = std::abs(v.get(i));
+			phase = atan2(v.get(i).imag(), v.get(i).real());
+			if (modulus < std::abs(min) )
+			{
+				min = v.get(i);
+				index = i;
+			}
+			if (std::abs(modulus - std::abs(min)) < EPSILON && phase < atan2(min.imag(), min.real()))
+			{
+				min = v.get(i);
+				index = i;
+			}
+		}
+		return min;
+	}
+}
+
+// It computes the max value of a complex vector
+// Based on MATLAB's implementation I compare
+// the modulus of each element and in case they
+// are equal I pick the one with the minimum phase
+inline std::complex<double> max(const cvec& v)
+{
+	if (v.size() == 0)
+	{
+		std::string msg = FILE_LINE_ERROR + " NULL VECTOR in min(const vec& v)";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		std::complex<double> max;
+		max.real( 0 );
+		max.imag( 0 );
+		size_t i = 0, size = v.size();
+		double modulus = 0;
+		double phase = 0;
+		for (i = size; i--;)
+		{
+			modulus = std::abs(v.get(i));
+			phase = atan2(v.get(i).imag(), v.get(i).real());
+			if (modulus > std::abs(max) )
+			{
+				max = v.get(i);
+			}
+			if (std::abs(modulus - std::abs(max)) < EPSILON && phase > atan2(max.imag(), max.real()))
+			{
+				max = v.get(i);
+			}
+		}
+		return max;
+	}
+}
+
+// It computes the max value of a complex vector
+// together with its index.
+inline std::complex<double> max(const cvec& v, size_t &index)
+{
+	if (v.size() == 0)
+	{
+		std::string msg = FILE_LINE_ERROR + " NULL VECTOR in min(const vec& v)";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		std::complex<double> max;
+		max.real( 0 );
+		max.imag( 0 );
+		size_t i = 0, size = v.size();
+		double modulus = 0;
+		double phase = 0;
+		index = 0;
+		for (i = size; i--;)
+		{
+			modulus = std::abs(v.get(i));
+			phase = atan2(v.get(i).imag(), v.get(i).real());
+			if (modulus > std::abs(max) )
+			{
+				max = v.get(i);
+				index = i;
+			}
+			if (std::abs(modulus - std::abs(max)) < EPSILON && phase > atan2(max.imag(), max.real()))
+			{
+				max = v.get(i);
+				index = i;
+			}
+		}
+		return max;
+	}
+}
+
+
+// It computes the conjugate of a complex vector
+inline cvec conj(const cvec& v)
+{
+	size_t i, size = v.size();
+	cvec result = v;
+	for (i = size; i--;)
+	{
+		result(i).imag(result(i).imag()*-1);
+	}
+	return result;
+}
+
+// It computes the 2-norm for complex space
+inline double norm(const cvec& v)
+{
+	cvec tmp = v;
+	return sqrt( (tmp*conj(tmp)).real() );
+}
+
+
+
+
+
+inline void print(const cvec& v)
+{
+	if (v.size() == 0)
+	{
+		std::cout << "[ ]" << std::endl;
+		return;
+	}
+	else
+	{
+		std::cout << "[ ";
+		size_t i;
+		for (i = 0; i < v.size()-1; i++)
+		{
+			if(v.get(i).imag() >= 0)
+			{
+				std::cout << v.get(i).real() << "+" << std::abs(v.get(i).imag()) << "i" << "  ";
+			}
+			else
+			{
+				std::cout << v.get(i).real() << "-" << std::abs(v.get(i).imag()) << "i" << "  ";
+			}
+
+		}
+		if(v.get(v.size()-1).imag() >= 0)
+		{
+			std::cout << v.get(v.size()-1).real() << "+" << std::abs(v.get(v.size()-1).imag()) << "i" << " ";
+		}
+		else
+		{
+			std::cout << v.get(v.size()-1).real() << "-" << std::abs(v.get(v.size()-1).imag()) << "i" << " ";
+		}
+		std::cout << "]" << std::endl;
+	}
 }
 
 // ======================== UNIT TEST IS WORKING FINE UP TO THIS POINT ========================
