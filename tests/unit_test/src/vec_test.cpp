@@ -6,9 +6,9 @@
  * Copyright (c) 2017 Ioannis Karagiannis
  * All rights reserved
 
- * This file is part of myLinearAlgebra library.
+ * This file is part of LinearAlgebra library.
 
- * myLinearAlgebra is free software: you can redistribute it and/or modify
+ * LinearAlgebra is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
@@ -19,7 +19,7 @@
  * See the GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with myLinearAlgebra.  If not, see <http://www.gnu.org/licenses/>.
+ * along with LinearAlgebra.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Contact info: https://www.linkedin.com/in/ioannis-karagiannis-7129394a/
  * 				ioanniskaragiannis1987@gmail.com
@@ -604,12 +604,12 @@ TEST_CASE( " Test vec::overload/(float t) function" ){
 		// Polar coordinates according to Euler's formula
 		// if z = a + ib ==> z = |z|( cos(phi)+isin(phi) )
 		// where |z| = abs(z) = sqrt(a^2+b^2)
-		// and phi = arg(z) = arctan(b/a)
+		// and phi = arg(z) = atan2(b/a)
 
 		double magn_0, magn_1, magn_t, arg_0, arg_1, arg_t;
-		magn_0 = std::abs(v1(0)); arg_0 = atan2(v1(0).imag(), v1(0).real());
-		magn_1 = std::abs(v1(1)); arg_1 = atan2(v1(1).imag(), v1(1).real());
-		magn_t = std::abs(t); arg_t = atan2(t.imag(), t.real());
+		magn_0 = std::abs(v1(0)); arg_0 = std::arg(v1(0));
+		magn_1 = std::abs(v1(1)); arg_1 = std::arg(v1(1));
+		magn_t = std::abs(t); arg_t = std::arg(t);
 		test(0).real( (magn_0/magn_t)*(cos(arg_0-arg_t)) );
 		test(0).imag( (magn_0/magn_t)*(sin(arg_0-arg_t)) );
 		test(1).real( (magn_1/magn_t)*(cos(arg_1-arg_t)) );

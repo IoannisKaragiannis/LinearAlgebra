@@ -1534,7 +1534,7 @@ inline cvec conj(const cvec& v)
 	cvec result = v;
 	for (i = size; i--;)
 	{
-		result(i).imag(result(i).imag()*-1);
+		result(i) = std::conj(result(i));
 	}
 	return result;
 }
