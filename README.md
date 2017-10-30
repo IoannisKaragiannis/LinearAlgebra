@@ -172,6 +172,18 @@ int main(){
 	printf("inv(m1) = \n"); print(m2);
 	printf("\n");
 	printf("m1*inv(m1) = \n"); print(m3);
+	printf("\n");
+	
+	cmat A(3,3), A_H;
+	// Determine a hermitian matrix
+	// It should be equal to its conjugate transpose
+	A(0,0) = 2; A(0,1) = 2.+1i; A(0,2) = 4;
+	A(1,0) = 2.-1i; A(1,1) = 3; A(1,2) = 1i;
+	A(2,0) = 4; A(2,1) = -1i; A(2,2) = 1;
+	A_H = conj_transpose(A);
+	printf("A = \n"); print(A);
+	printf("\n");
+	printf("A_H = \n"); print(A_H);
 
    }catch(const std::exception& e){
 	std::cerr << "EXCEPTION CAUGHT: " << e.what() << std::endl;
@@ -208,6 +220,15 @@ m1*inv(m1) =
 | 1 0 0 |
 | 1.77636e-15 1 0 |
 | 2.66454e-15 0 1 |
+
+A = 
+| 2+0i  2+1i  4+0i |
+| 2-1i  3+0i  0+1i |
+| 4+0i  -0-1i  1+0i |
+A_H = 
+| 2+0i  2+1i  4+0i |
+| 2-1i  3+0i  -0+1i |
+| 4+0i  0-1i  1+0i |
 
 ```
 
