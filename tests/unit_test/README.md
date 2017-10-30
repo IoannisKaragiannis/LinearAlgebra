@@ -30,7 +30,8 @@ You should see the following:
 *************************************
  
 ===============================================================================
-All tests passed (2479 assertions in 98 test cases)
+All tests passed (2975 assertions in 102 test cases)
+
 
 ```
 Be patient. The unit test, unlike any of your projects, is testing all the functions defined in the *vec.h* and *mat.h* files. So, it takes some time to create the executable of the unit test. It's roughly 1.1 [MB]; way larger than the respective executable of the demo which was around 136 [KB]. That's becauase the demo code only used a few functions of the *LinearAlgebra* library, not all of them. 
