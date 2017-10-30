@@ -180,7 +180,15 @@ int main(){
 	A(0,0) = 2; A(0,1) = 2.+1i; A(0,2) = 4;
 	A(1,0) = 2.-1i; A(1,1) = 3; A(1,2) = 1i;
 	A(2,0) = 4; A(2,1) = -1i; A(2,2) = 1;
+
+	// Check if the defined matrix is hermitian
+	if ( is_hermitian(A) ){
+		printf("'A' is indeed a hermitian matrix! \n");
+	}
+
 	A_H = conj_transpose(A);
+
+	printf("\n");
 	printf("A = \n"); print(A);
 	printf("\n");
 	printf("A_H = \n"); print(A_H);
@@ -220,6 +228,8 @@ m1*inv(m1) =
 | 1 0 0 |
 | 1.77636e-15 1 0 |
 | 2.66454e-15 0 1 |
+
+'A' is indeed a hermitian matrix! 
 
 A = 
 | 2+0i  2+1i  4+0i |
