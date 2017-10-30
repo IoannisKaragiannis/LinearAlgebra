@@ -71,7 +71,7 @@ TEST_CASE( " Test vec constructor." ){
 	}
 }
 
-TEST_CASE( " Test 'vec::set(size_t i, float k)' function." ){
+TEST_CASE( " Test 'vec::set(size_t i, double k)' function." ){
 	vec v(2);
 	SECTION(" Test for normal index"){
 		v.set(0, 3.51001);
@@ -107,9 +107,11 @@ TEST_CASE( " Test 'vec::get(size_t i, size_t j) const' function." ){
 		REQUIRE(v2.get(1) == Approx(5));
 	}
 	SECTION(" Test for normal index for complex vector"){
-		cvec v3(2); v3(0) = 6. + 2i; v3(1) = 3. - 1i;
-		REQUIRE(v3.get(0).real() == 6); REQUIRE(v3.get(0).imag() == 2);
-		REQUIRE(v3.get(1).real() == 3); REQUIRE(v3.get(1).imag() == -1);
+		cvec v3(3); v3(0) = 6. + 2i; v3(1) = 3. - 1i; v3(2) = 4. - 2i;
+		cvec v4 = v3.get(0, 1);
+		REQUIRE( v4.size() == 2 );
+		REQUIRE(v4.get(0).real() == 6); REQUIRE(v4.get(0).imag() == 2);
+		REQUIRE(v4.get(1).real() == 3); REQUIRE(v4.get(1).imag() == -1);
 	}
 	SECTION(" Test for boundary conditions."){
 		REQUIRE_THROWS(v1.get(1, -3));     // case j < 0
@@ -429,7 +431,7 @@ TEST_CASE( " Test vec::overload+(const vec& a) function" ){
 
 TEST_CASE( " Test vec::overload+(T t) function" ){
 	vec a;
-	float p;
+	double p;
 	SECTION(" Test normal conditions. "){
 		// a = [3 -5 9], p = 3.5 ==> c = a + p = [6.5 -1.5 12.5]
 		a = "[3 -5 9]", p = 3.5;
@@ -484,7 +486,7 @@ TEST_CASE( " Test vec::overload-(const vec& a) function" ){
 
 TEST_CASE( " Test vec::overload-(T t) function" ){
 	vec a;
-	float p;
+	double p;
 	SECTION(" Test normal conditions. "){
 		// a = [3 -5 9], p = 3.5 ==> c = a - p = [-0.5 -8.5 5.5]
 		a = "[3 -5 9]", p = 3.5;
@@ -515,8 +517,8 @@ TEST_CASE( " Test vec::overload*(const vec& a) function" ){
 	SECTION(" Test normal conditions. "){
 		// c = a + b = [1 2 3] * [1 -2 5] = 1*1 + 2*(-2) + 3*5 = 12
 		a = "[1 2 3]", b = "[1 -2 5]";
-		float c = a*b;
-		float d = b*a;
+		double c = a*b;
+		double d = b*a;
 		REQUIRE(c == 12);
 		REQUIRE(d == c); // Commutative property
 	}
@@ -540,7 +542,7 @@ TEST_CASE( " Test vec::overload*(const vec& a) function" ){
 
 TEST_CASE( " Test vec::overload*(T t) function" ){
 	vec a,c;
-	float p;
+	double p;
 	SECTION(" Test normal conditions. "){
 		// Example 1:
 		// a = [3 -5 9], p = 1 ==> c = a*p = a = [3 -5 9]
@@ -577,9 +579,9 @@ TEST_CASE( " Test vec::overload*(T t) function" ){
 	}
 }
 
-TEST_CASE( " Test vec::overload/(float t) function" ){
+TEST_CASE( " Test vec::overload/(double t) function" ){
 	vec a;
-	float p;
+	double p;
 	SECTION(" Test normal conditions. "){
 		// a = [3 -5 9], p = 1 ==> c = a/p = a = [3 -5 9]
 		// a = [3 -5 9], p = 0.5 ==> c = a/p = [6 -10 18]
@@ -633,7 +635,7 @@ TEST_CASE( " Test vec::overload/(float t) function" ){
 
 TEST_CASE( " Test vec::overload()(const size_t) function" ){
 	vec a;
-	float p;
+	double p;
 	SECTION(" Test normal conditions. "){
 		// a = [3 -5 9]
 		a = "[3 -5 9]";
@@ -660,7 +662,7 @@ TEST_CASE( " Test vec::overload()(const size_t) function" ){
 
 TEST_CASE( " Test vec::overload[](const size_t) function" ){
 	vec a;
-	float p;
+	double p;
 	SECTION(" Test normal conditions. "){
 		// a = [3 -5 9]
 		a = "[3 -5 9]";
@@ -715,7 +717,7 @@ TEST_CASE( " Test algebra::ones(size_t n) function" ){
 }
 
 TEST_CASE( " Test algebra::find_non_zero(const vec& v) function" ){
-	vec v1, v2;
+	vec v1; ivec v2;
 	SECTION(" Test normal conditions. "){
 		v1 = "[3 4 0 0 1 0]";
 		v2 = find_non_zero(v1);
@@ -731,7 +733,7 @@ TEST_CASE( " Test algebra::find_non_zero(const vec& v) function" ){
 }
 
 TEST_CASE( " Test algebra::find_zero(const vec& v) function" ){
-	vec v1, v2;
+	vec v1; ivec v2;
 	SECTION(" Test normal conditions. "){
 		v1 = "[3 4 0 0 1 0]";
 		v2 = find_zero(v1);
@@ -751,8 +753,8 @@ TEST_CASE( " Test algebra::dot(const vec& v1, const vec& v2) function" ){
 	SECTION(" Test normal conditions. "){
 		// c = a + b = [1 2 3] * [1 -2 5] = 1*1 + 2*(-2) + 3*5 = 12
 		a = "[1 2 3]"; b = "[1 -2 5]";
-		float c = dot(a,b);
-		float d = dot(b,a);
+		double c = dot(a,b);
+		double d = dot(b,a);
 		REQUIRE(c == 12);
 		REQUIRE(d == c);
 	}
@@ -778,7 +780,7 @@ TEST_CASE( " Test algebra::mean(const Vec<T>& v1) function" ){
 	SECTION(" Test normal conditions. "){
 		// a = [2 1 4 3] ==> mean(a) = 2.5
 		a = "[2 1 4 3]";
-		float c = mean(a);
+		double c = mean(a);
 		REQUIRE(c == Approx(2.5));
 	}
 	SECTION(" Test normal conditions for complex vectors. "){
@@ -806,7 +808,7 @@ TEST_CASE( " Test algebra::min(const vec& v1) function" ){
 	SECTION(" Test normal conditions. "){
 		// a = [2 -1 4 -3] ==> min(a) = -3
 		a = "[2 -1 4 -3]";
-		float c = min(a);
+		double c = min(a);
 		REQUIRE(c == Approx(-3));
 	}
 	SECTION(" Test normal conditions for complex vectors. "){
@@ -844,7 +846,7 @@ TEST_CASE( " Test algebra::min(const vec& v, size_t &index) function" ){
 	SECTION(" Test normal conditions. "){
 		// a = [2 -1 4 -3] ==> min(a, ind) = -3 and ind = 3
 		a = "[2 -1 4 -3]";
-		float minimum_value; size_t minimum_index;
+		double minimum_value; size_t minimum_index;
 		minimum_value = min(a, minimum_index);
 		REQUIRE(minimum_value == Approx(-3));
 		REQUIRE(minimum_index == 3);
@@ -890,7 +892,7 @@ TEST_CASE( " Test algebra::max(const vec& v1) function" ){
 	SECTION(" Test normal conditions. "){
 		// a = [2 -1 4 -3] ==> max(a) = 4
 		a = "[2 -1 4 -3]";
-		float c = max(a);
+		double c = max(a);
 		REQUIRE(c == Approx(4));
 	}
 	SECTION(" Test normal conditions for complex vectors. "){
@@ -928,7 +930,7 @@ TEST_CASE( " Test algebra::max(const vec& v, size_t &index) function" ){
 	SECTION(" Test normal conditions. "){
 		// a = [2 -1 4 -3] ==> max(a, ind) = 4 and ind = 2
 		a = "[2 -1 4 -3]";
-		float maximum_value; size_t maximum_index;
+		double maximum_value; size_t maximum_index;
 		maximum_value = max(a, maximum_index);
 		REQUIRE(maximum_value == Approx(4));
 		REQUIRE(maximum_index == 2);
@@ -1025,7 +1027,7 @@ TEST_CASE( " Test algebra::concat(const Vec<T>& v1, T t) function" ){
 	}
 }
 
-TEST_CASE( " Test algebra::concat(float t, const vec& v) function" ){
+TEST_CASE( " Test algebra::concat(double t, const vec& v) function" ){
 	vec a; double t;
 	SECTION(" Test normal conditions. "){
 		// a = [2 -1 4 -3], t = 99: a = concat(t, a) = [99 2 -1 4 -3]
@@ -1098,7 +1100,7 @@ TEST_CASE( " Test algebra::concat(const vec& v1, const vec& v2) function" ){
 	}
 }
 
-TEST_CASE( " Test algebra::linspace(float from, float to, size_t step) function" ){
+TEST_CASE( " Test algebra::linspace(T from, T to, size_t step) function" ){
 	vec a;
 	SECTION(" Test normal conditions. "){
 		// a = linspace(-3, 10, 2) = [-3 -1 1 3 5 7]

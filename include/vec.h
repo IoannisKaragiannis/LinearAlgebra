@@ -51,8 +51,6 @@
 
 #include <complex>      // C++14 feature for complex numbers
 
-using namespace std::complex_literals;
-
 #define M_PI 3.14159265358979323846
 
 // At the matrix inversion function we have: size_t P[size + 1];
@@ -70,6 +68,8 @@ using namespace std::complex_literals;
 // String to be used for logging errors.
 #define FILE_LINE_ERROR std::string(__FILE__) + std::string(":") + std::to_string(__LINE__) + std::string(": ")
 
+using namespace std::complex_literals;
+
 namespace algebra {
 
 // Declaration of Vec
@@ -78,7 +78,7 @@ template<class T> class Vec;
 template<class T> class Mat;
 
 template <class T>
-Mat<T> lup_invert(Mat<T>&, const Vec<T>&);
+Mat<T> lup_invert(Mat<T>&, const Vec<int>&);
 
 template <class T>
 class Vec {
@@ -125,10 +125,6 @@ public:
 
 	T& operator()(size_t k);
 	T& operator[](size_t k);
-
-	// Friend function for lu-decomposition. It will be defined
-	// in class Mat.
-	friend Mat<T> lup_invert<T>(Mat<T>&, const Vec<T>&);
 
 protected:
 
@@ -794,19 +790,19 @@ inline ivec ones_i(size_t n)
 // It computes a mask with ones where the input vector
 // has non-zero elements and zero elsewhere.
 template <class T>
-inline Vec<T> find_non_zero(const Vec<T>& v)
+inline ivec find_non_zero(const Vec<T>& v)
 {
 	size_t i, size = v.size();
-	Vec<T> result(size);
+	ivec result(size);
 	for (i = size; i--;)
 	{
 		if ( fabs(v.get(i) - T(0)) < EPSILON )
 		{
-			result.set(i, T(0));
+			result.set(i, 0);
 		}
 		else
 		{
-			result.set(i, T(1));
+			result.set(i, 1);
 		}
 	}
 	return result;
@@ -815,19 +811,19 @@ inline Vec<T> find_non_zero(const Vec<T>& v)
 // It computes a mask with ones where the input vector
 // has zero elements and zero elsewhere.
 template <class T>
-inline Vec<T> find_zero(const Vec<T>& v)
+inline ivec find_zero(const Vec<T>& v)
 {
 	size_t i, size = v.size();
-	Vec<T> result(size);
+	ivec result(size);
 	for (i = size; i--;)
 	{
 		if ( fabs(v.get(i) - T(0)) < EPSILON )
 		{
-			result.set(i, T(1));
+			result.set(i, 1);
 		}
 		else
 		{
-			result.set(i, T(0));
+			result.set(i, 0);
 		}
 	}
 	return result;

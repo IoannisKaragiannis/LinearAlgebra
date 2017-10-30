@@ -46,9 +46,9 @@ template<class T> class Mat;
 template <class T>
 Mat<T> transpose(const Mat<T>&);
 template <class T>
-Vec<T> lup_decompose(Mat<T>&, bool& is_singular);
+ivec lup_decompose(Mat<T>&, bool& is_singular);
 template <class T>
-Mat<T> lup_invert(Mat<T>&, const Vec<T>&);
+Mat<T> lup_invert(Mat<T>&, const ivec&);
 template <class T>
 Mat<T> inv(const Mat<T>&);
 template <class T>
@@ -88,7 +88,7 @@ public:
 	Vec<T> get_row(size_t) const;
 	Mat<T> get_rows(size_t, size_t) const;
 	Mat<T> get(size_t, size_t, size_t, size_t) const;
-	Mat<T> get(const Vec<T>&, const Vec<T>&) const;
+	Mat<T> get(const ivec&, const ivec&) const;
 
 	void zeros();
 	void clear();
@@ -126,8 +126,8 @@ public:
 
 	// Declaration of friend functions
 	friend Mat<T> transpose<>(const Mat<T>&);
-	friend Vec<T> lup_decompose<>(Mat<T>&, bool& is_singular);
-	friend Mat<T> lup_invert<>(Mat<T>&, const Vec<T>&);
+	friend ivec lup_decompose<>(Mat<T>&, bool& is_singular);
+	friend Mat<T> lup_invert<>(Mat<T>&, const ivec&);
 	friend Mat<T> inv<>(const Mat<T>&);
 	friend Mat<T> pinv<>(Mat<T>&); // pseudoinverse
 	friend Mat<T> strassen_algorithm<T>(const Mat<T>&, const Mat<T>&, size_t leafsize );
@@ -243,13 +243,13 @@ void Mat<T>::set_size(size_t r, size_t c)
 	}
 	else if ( r == 0 || c == 0 )
 	{
-		data_.resize(0, std::vector<double> (0));
+		data_.resize(0, std::vector<T> (0));
 		rows_ = 0;
 		cols_ = 0;
 	}
 	else
 	{
-		data_.resize(r, std::vector<double> (c));
+		data_.resize(r, std::vector<T> (c));
 		rows_ = r;
 		cols_ = c;
 		size_t i,j;
@@ -516,7 +516,7 @@ Mat<T> Mat<T>::get(size_t r1, size_t r2, size_t c1, size_t c2) const
 // It returns a matrix based on row-indices
 // vector r and column-indices vector c.
 template <class T>
-Mat<T> Mat<T>::get(const Vec<T>& r, const Vec<T>& c) const
+Mat<T> Mat<T>::get(const ivec& r, const ivec& c) const
 {
 	//Test if there are no elements in the mask vector
 	if (r.size() == 0 || c.size() == 0)
@@ -533,7 +533,7 @@ Mat<T> Mat<T>::get(const Vec<T>& r, const Vec<T>& c) const
 	}
 
 	//Test if the elements of the  row-indices exceed bounds, and throw exception if they do.
-	if (r.get(0) < 0 || r.get(0) >= rows_ )
+	if (r.get(0) < 0 || (size_t) r.get(0) >= rows_ )
 	{
 		std::string msg = FILE_LINE_ERROR + " exception in  mat::get(const vec& r, const vec& c): Row-index exceeds matrix dimensions";
 		log_error(msg.c_str());
@@ -541,7 +541,7 @@ Mat<T> Mat<T>::get(const Vec<T>& r, const Vec<T>& c) const
 	}
 	for (size_t i = 1; i < r.size(); i++)
 	{
-		if ( r.get(i) < 0 || r.get(i) >= rows_ || r.get(i) < r.get(i-1))
+		if ( (size_t) r.get(i) < 0 || (size_t) r.get(i) >= rows_ || r.get(i) < r.get(i-1))
 		{
 			std::string msg = FILE_LINE_ERROR + " exception in  mat::get(const vec& r, const vec& c): Row-index exceeds matrix dimensions";
 			log_error(msg.c_str());
@@ -550,7 +550,7 @@ Mat<T> Mat<T>::get(const Vec<T>& r, const Vec<T>& c) const
 	}
 
 	//Test if the elements of the  col-indices exceed bounds, and throw exception if they do.
-	if (c.get(0) < 0 || c.get(0) >= cols_ )
+	if (c.get(0) < 0 || (size_t) c.get(0) >= cols_ )
 	{
 		std::string msg = FILE_LINE_ERROR + " exception in  mat::get(const vec& r, const vec& c): Col-index exceeds matrix dimensions";
 		log_error(msg.c_str());
@@ -558,7 +558,7 @@ Mat<T> Mat<T>::get(const Vec<T>& r, const Vec<T>& c) const
 	}
 	for (size_t i = 1; i < c.size(); i++)
 	{
-		if ( c.get(i) < 0 || c.get(i) >= rows_ || c.get(i) < c.get(i-1) )
+		if ( c.get(i) < 0 || (size_t) c.get(i) >= rows_ || c.get(i) < c.get(i-1) )
 		{
 			std::string msg = FILE_LINE_ERROR + " exception in  mat::get(const vec& r, const vec& c1): Col-index exceeds matrix dimensions";
 			log_error(msg.c_str());
@@ -976,7 +976,7 @@ Mat<T> Mat<T>::operator/(T t)
 		log_error(msg.c_str());
 		throw std::out_of_range(msg);
 	}
-	else if (t == 0){
+	else if ( t == T(0) ){
 		std::string msg = FILE_LINE_ERROR + " 'std::invalid_argument' thrown in operator/(T t): DIVISION BY ZERO ";
 		log_error(msg.c_str());
 		throw std::invalid_argument(msg);
@@ -1160,10 +1160,10 @@ Mat<T> transpose(const Mat<T>& m)
 
 // It computes the LU-Decomposition taken from: https://en.wikipedia.org/wiki/LU_decomposition
 template <class T>
-Vec<T> lup_decompose(Mat<T>& a, bool& is_singular)
+ivec lup_decompose(Mat<T>& a, bool& is_singular)
 {
 	size_t n = a.rows();
-	Vec<T> pivot(n + 1); //Unit permutation vector
+	ivec pivot(n + 1); // Unit permutation vector
 	size_t i, j, k, imax;
 	double maxA, absA;
 	Vec<T> row_pivot(n);
@@ -1223,7 +1223,7 @@ Vec<T> lup_decompose(Mat<T>& a, bool& is_singular)
 }
 
 template <class T>
-Mat<T> lup_invert(Mat<T>& a, const Vec<T>& pivot)
+Mat<T> lup_invert(Mat<T>& a, const ivec& pivot)
 {
 	size_t N = a.rows();
 	Mat<T> a_inv(N, N);
@@ -1231,13 +1231,13 @@ Mat<T> lup_invert(Mat<T>& a, const Vec<T>& pivot)
 	{
 		for (size_t i = 0; i < N; i++)
 		{
-			if (pivot.data_[i] == j)
+			if ((size_t) pivot.get(i) == j)
 			{
-				a_inv.data_[i][j] = 1.0;
+				a_inv.data_[i][j] = T(1);
 			}
 			else
 			{
-				a_inv.data_[i][j] = 0.0;
+				a_inv.data_[i][j] = T(0);
 			}
 
 			for (size_t k = 0; k < i; k++)
@@ -1268,12 +1268,12 @@ Mat<T> inv(const Mat<T>& a)
 		a_inv(0,0) = 1.0/a.data_[0][0];
 		return a_inv;
 	}
-	else if ( a.rows() == a.cols() )
+	else if ( is_square(a) )
 	{
 		// copy 'a' in a temporary matrix 'tmp'
 		Mat<T> tmp = a;
 		bool is_singular = false;
-		Vec<T> pivot = lup_decompose(tmp, is_singular);
+		ivec pivot = lup_decompose(tmp, is_singular);
 		if(!is_singular)
 		{
 			Mat<T> a_inv = lup_invert(tmp, pivot);
@@ -1312,7 +1312,7 @@ Mat<T> pinv(Mat<T>& a)
 {
 	Mat<T> a_inv;
 
-	if ( a.rows() == a.cols() )
+	if ( is_square(a) )
 	{
 		a_inv = inv(a); // Normal inverse
 	}
@@ -1370,6 +1370,8 @@ template <class T>
 inline T min(const Mat<T>& m) { return min(mat2vec(m)); }
 
 // It returns the absolute value of matrix m.
+// The absolute value of a complex matrix is
+// meaningless.
 template <class T>
 inline Mat<T> abs(const Mat<T>& m)
 {
@@ -1388,21 +1390,21 @@ inline Mat<T> abs(const Mat<T>& m)
 // It returns a mask with ones where the input matrix
 // has non-zero elements and zero elsewhere.
 template <class T>
-inline Mat<T> find_non_zero(const Mat<T>& m)
+inline imat find_non_zero(const Mat<T>& m)
 {
 	size_t i, j, rows = m.rows(), cols = m.cols();
-	Mat<T> result(rows, cols);
+	imat result(rows, cols);
 	for (i = rows; i--;)
 	{
 		for (j = cols; j--;)
 		{
 			if(fabs(m.get(i,j) - T(0)) < EPSILON)
 			{
-				result.set(i, j, T(0));
+				result.set(i, j, 0);
 			}
 			else
 			{
-				result.set(i, j, T(1));
+				result.set(i, j, 1);
 			}
 		}
 	}
@@ -1412,21 +1414,21 @@ inline Mat<T> find_non_zero(const Mat<T>& m)
 // It returns a mask with ones where the input
 // matrix has zero elements and zero elsewhere.
 template <class T>
-inline Mat<T> find_zero(const Mat<T>& m)
+inline imat find_zero(const Mat<T>& m)
 {
 	size_t i, j, rows = m.rows(), cols = m.cols();
-	Mat<T> result(rows, cols);
+	imat result(rows, cols);
 	for (i = rows; i--;)
 	{
 		for (j = cols; j--;)
 		{
 			if ( fabs(m.get(i,j) - T(0)) < EPSILON )
 			{
-				result.set(i, j, T(1));
+				result.set(i, j, 1);
 			}
 			else
 			{
-				result.set(i, j, T(0));
+				result.set(i, j, 0);
 			}
 		}
 	}
@@ -1515,26 +1517,8 @@ inline mat rand_symmetric(size_t n)
 	}
 	else
 	{
-		mat result(n, n);
+		mat result = rand(n, n);
 		size_t i = 0, j = 0;
-
-		// C++11 feature: It will be used to obtain a seed for the random number engine
-		std::random_device rd;
-		// C++11 feature: Standard mersenne_twister_engine seeded with rd()
-		std::mt19937 gen(rd());
-
-		// Define range
-		double min = -10, max = 10;
-		std::uniform_real_distribution<double> dis(0, 2*max);
-
-		for (i = n; i--;)
-		{
-			for (j = n; j--;)
-			{
-				// Generate random double number within the range [-10 10]
-				result(i, j) = min + (double) dis(gen);
-			}
-		}
 
 		for (i = n; i--;)
 		{
@@ -1561,26 +1545,8 @@ inline imat rand_symmetric_i(size_t n)
 	}
 	else
 	{
-		imat result(n, n);
+		imat result = rand_i(n, n);
 		size_t i = 0, j = 0;
-
-		// C++11 feature: It will be used to obtain a seed for the random number engine
-		std::random_device rd;
-		// C++11 feature: Standard mersenne_twister_engine seeded with rd()
-		std::mt19937 gen(rd());
-
-		// Define range
-		int min = -10, max = 10;
-		std::uniform_int_distribution<int> dis(0, 2*max);
-
-		for (i = n; i--;)
-		{
-			for (j = n; j--;)
-			{
-				// Generate random double number within the range [-10 10]
-				result(i, j) = min + (int) dis(gen);
-			}
-		}
 
 		for (i = n; i--;)
 		{
@@ -1865,8 +1831,8 @@ inline T determinant(const Mat<T>& m)
 	}
 	else
 	{
-		double det = 1.0;
-		if ( m.rows() == m.cols() )
+		T det = T(1);
+		if ( is_square(m) )
 		{
 			size_t size = m.rows();
 			Mat<T> tmp(m.rows(), m.cols());
@@ -1877,14 +1843,14 @@ inline T determinant(const Mat<T>& m)
 					tmp(i,j) = m.get(i,j);
 				}
 			}
-			double k = 1.0, con, kc;
+			T k = T(1), con, kc;
 			size_t p;
 			for (p = 0; p < size - 1; p++)
 			{
-				if(tmp(p,p) != 0) //prepares the pivots by making them 1
+				if( tmp(p,p) != T(0) ) //prepares the pivots by making them 1
 				{
-					k *= (1 /tmp.get(p,p));
-					kc = (1 / tmp.get(p,p));
+					k *= (T(1) /tmp.get(p,p));
+					kc = (T(1) / tmp.get(p,p));
 					for (size_t j = p; j < size; j++)
 					{
 						tmp(j,p) *= kc;
@@ -1892,7 +1858,7 @@ inline T determinant(const Mat<T>& m)
 				}
 				for (size_t c = p + 1; c < size; c++) //makes the lower triangle matrix
 				{
-					con = -1 * tmp.get(p,c);
+					con = T(-1) * tmp.get(p,c);
 					for (size_t i = 0; i < size; i++)
 					{
 						tmp(i,c) += (tmp.get(i,p) * con);
@@ -1900,9 +1866,9 @@ inline T determinant(const Mat<T>& m)
 				}
 			}
 
-			if ( tmp(p,p) != 0 )// makes the elemnt n,n 1 to end the pivots
+			if ( tmp(p,p) != T(0) )// makes the elemnt n,n 1 to end the pivots
 			{
-				k *= (1 / tmp.get(p,p));
+				k *= (T(1) / tmp.get(p,p));
 				for(size_t j = p; j < size; j++)
 				{
 					tmp(p,j) /= tmp.get(p,p);
@@ -2001,6 +1967,48 @@ inline imat magic_square(int n)
 	}
 }
 
+// It returns true if the matric is symmetric
+template <class T>
+inline bool is_square(const Mat<T>& m)
+{
+	if ( m.rows() == m.cols() )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+// It returns true if the matrix is symmetric
+// For symmetric complex matrices the proper
+// criterion for them to be symmetric is to
+// be hermitian. That is the off-diagonal elements
+// ((i,j) and (j,i))to be complex conjugate pairs.
+template <class T>
+inline bool is_symmetric(const Mat<T>& m)
+{
+	if ( is_square(m) )
+	{
+		for (size_t i = 0; i < m.rows(); i++)
+		{
+			for(size_t j = 0; j < m.cols(); j++)
+			{
+				if ( i !=j && m.get(i,j) != m.get(j,i) )
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 // It prints the elements of the matrix.
 template <class T>
 inline void print(const Mat<T>& m)
@@ -2026,6 +2034,125 @@ inline void print(const Mat<T>& m)
 // ##################################################################################################
 // ########################### COMPLEX NUMBER OPERATIONS AND FUNCTIONS ##############################
 
+
+// It computes the maximum value of matrix m.
+inline std::complex<double> max(const cmat& m) {return max(mat2vec(m)); }
+
+// It computes the minimum value of matrix m.
+inline std::complex<double> min(const cmat& m) { return min(mat2vec(m)); }
+
+// It returns a 'complex'-matrix with random elements within the range [-10, 10].
+inline cmat rand_c(size_t m, size_t n)
+{
+	if ( (n*m) > MAX_ACCEPTABLE_VECTOR_SIZE*MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
+		std::string msg = FILE_LINE_ERROR + " exception in mat::rand_double(size_t n, size_t m): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		cmat a(m, n);
+		size_t i = 0, j = 0;
+
+		// C++11 feature: It will be used to obtain a seed for the random number engine
+		std::random_device rd;
+		// C++11 feature: Standard mersenne_twister_engine seeded with rd()
+		std::mt19937 gen(rd());
+
+		// Define range
+		double min = -10, max = 10;
+
+		std::uniform_real_distribution<double> dis(0, 2*max);
+		for (i = m; i--;)
+		{
+			for (j = n; j--;)
+			{
+				// Generate random complex number within the range [-10 10]
+				a(i, j).real(min + (double) dis(gen));
+				a(i, j).imag(min + (double) dis(gen));
+			}
+		}
+		return a;
+	}
+}
+
+// It returns an 'integer' symmetric matrix with
+// random elements within the range [-10, 10].
+inline cmat rand_symmetric_c(size_t n)
+{
+	if ( n > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
+		std::string msg = FILE_LINE_ERROR + " exception in rand_int_symmetric(size_t n): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		cmat result = rand_c(n, n);
+		size_t i = 0, j = 0;
+
+		for (i = n; i--;)
+		{
+			for (j = n; j--;)
+			{
+				if (i < j)
+				{
+					result(i,j) = result(j,i);
+				}
+			}
+		}
+		return result;
+	}
+}
+
+// It sets all elements of Mat<int> to zero.
+inline cmat zeros_c(size_t n, size_t m)
+{
+	if ( (n*m) > (MAX_ACCEPTABLE_VECTOR_SIZE*MAX_ACCEPTABLE_VECTOR_SIZE) )
+	{
+		std::string msg = FILE_LINE_ERROR + " exception in mat::zeros(size_t n, size_t m): n should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		cmat a(n,m);
+		size_t i, j;
+		for (i = n; i--;)
+		{
+			for (j = m; j--;)
+			{
+				a(i,j).real(0);
+				a(i,j).imag(0);
+			}
+		}
+		return a;
+	}
+}
+
+// It returns the identity matrix.
+inline cmat eye_c(size_t k)
+{
+	if ( k > MAX_ACCEPTABLE_VECTOR_SIZE )
+	{
+		std::string msg = FILE_LINE_ERROR + " exception in mat::eye(size_t k): k should lie in [0," + std::to_string(MAX_ACCEPTABLE_VECTOR_SIZE) +"]";
+		log_error(msg.c_str());
+		throw std::invalid_argument(msg);
+	}
+	else
+	{
+		cmat result(k,k);
+		size_t i;
+		for (i = k; i--;)
+		{
+			result(i,i).real(1);
+			result(i,i).imag(0);
+		}
+		return result;
+	}
+}
+
 // It computes the conjugate of a complex matrix
 inline cmat conj(const cmat& m)
 {
@@ -2035,23 +2162,62 @@ inline cmat conj(const cmat& m)
 	{
 		for(j = cols; j--;)
 		{
-			result(i,j).imag(result(i,j).imag()*-1);
+			result(i,j) = std::conj(result(i,j));
 		}
 	}
 	return result;
 }
 
-// It computes the conjugate transpose of a complex matrix
+// It computes the hermitian tranpose (or complex conjugate tranpose)
 inline cmat conj_transpose(const cmat& m)
 {
 	return transpose(conj(m));
 }
 
+// It returns true if the matrix is hermitian
+// i.e.: all diagonal elements are real
+// he element in the i-th row and j-th column
+// is equal to the complex conjugate of the element
+// in the j-th row and i-th column, for all indices i and j
+inline bool is_hermitian(const cmat& m)
+{
+	if (is_square(m))
+	{
+		cmat h_tranpose = conj_transpose(m);
+		for(size_t i = 0; i < m.rows(); i++)
+		{
+			if( std::abs(m.get(i,i).imag()) > EPSILON )
+			{
+				return false;
+			}
+			for(size_t j = 0; j < m.cols(); j++)
+			{
+				if(  std::abs( m.get(i,j).real() - h_tranpose(i,j).real() ) > EPSILON
+						||  std::abs( m.get(i,j).imag() - h_tranpose(i,j).imag() ) > EPSILON )
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
-
-
-
-
+inline bool is_symmetric(const cmat& m)
+{
+	if ( is_hermitian(m) )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 // It prints the elements of the matrix.
 inline void print(const cmat& m)

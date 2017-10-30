@@ -1,13 +1,14 @@
 /*====================================================================================================
- * Name         : mat_test.cpp implements a unit-test for the 'mat' class of the LinearAlgebra library.
+ * Name         : mat_test.cpp implements a unit-test for
+ *                the 'mat' class of the LinearAlgebra library.
  * Version      : 1.0.0, 23 Sep 2017
  *
  * Copyright (c) 2017 Ioannis Karagiannis
  * All rights reserved
 
- * This file is part of myLinearAlgebra library.
+ * This file is part of LinearAlgebra library.
 
- * myLinearAlgebra is free software: you can redistribute it and/or modify
+ * LinearAlgebra is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
@@ -18,7 +19,7 @@
  * See the GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with myLinearAlgebra.  If not, see <http://www.gnu.org/licenses/>.
+ * along with LinearAlgebra.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Contact info: https://www.linkedin.com/in/ioannis-karagiannis-7129394a/
  * 				ioanniskaragiannis1987@gmail.com
@@ -87,6 +88,15 @@ TEST_CASE( " Test 'mat::get(size_t r, size_t c)' function." ){
 		REQUIRE(m.get(0,0) == 0); REQUIRE(m.get(0,1) == 0);
 		REQUIRE(m.get(1,0) == 0); REQUIRE(m.get(1,1) == 0);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2);
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		REQUIRE( m1.get(0,0).real() == 3 ); REQUIRE( m1.get(0,0).imag() == 2 );
+		REQUIRE( m1.get(0,1).real() == 6 ); REQUIRE( m1.get(0,1).imag() == -8 );
+		REQUIRE( m1.get(1,0).real() == 4 ); REQUIRE( m1.get(1,0).imag() == -2 );
+		REQUIRE( m1.get(1,1).real() == 1 ); REQUIRE( m1.get(1,1).imag() == 7 );
+	}
 	SECTION(" Test for boundary conditions."){
 		m.set_size(2, 2);
 		REQUIRE_THROWS(m.get(2, 1));
@@ -97,11 +107,18 @@ TEST_CASE( " Test 'mat::get(size_t r, size_t c)' function." ){
 }
 
 
-TEST_CASE( " Test 'mat::set(size_t r, size_t c, float value)' function." ){
+TEST_CASE( " Test 'mat::set(size_t r, size_t c, T value)' function." ){
 	mat m(2,2);
 	SECTION(" Test for normal conditions"){
 		m.set(0,1, 3.510);
 		REQUIRE(m.get(0,1) == Approx(3.51));
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2);
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m1.set(1,1, 66.-77i);
+		REQUIRE( m1(1,1).real() == 66 ); REQUIRE( m1(1,1).imag() == -77 );
 	}
 	SECTION(" Test for boundary conditions."){
 		REQUIRE_THROWS(m.set(2, 1, 3.4));
@@ -117,6 +134,15 @@ TEST_CASE( " Test 'mat::set_row(size_t r, const vec& v1)' function." ){
 		REQUIRE(m.get(1,0) == 1);
 		REQUIRE(m.get(1,1) == 2);
 		REQUIRE(m.get(1,2) == 3);
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2); cvec v1(2);
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		v1(0) = 11.+22i; v1(1) = -33.+44i;
+		m1.set_row(1, v1);
+		REQUIRE( m1(1,0).real() == 11 ); REQUIRE( m1(1,0).imag() == 22 );
+		REQUIRE( m1(1,1).real() == -33 ); REQUIRE( m1(1,1).imag() == 44 );
 	}
 	SECTION(" Test for boundary conditions."){
 		vec v; v = "[1 2 3 4]";
@@ -135,6 +161,15 @@ TEST_CASE( " Test 'mat::set_col(size_t r, const vec& v1)' function." ){
 		REQUIRE(m.get(0,1) == 1);
 		REQUIRE(m.get(1,1) == 2);
 		REQUIRE(m.get(2,1) == 3);
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2); cvec v1(2);
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		v1(0) = 11.+22i; v1(1) = -33.+44i;
+		m1.set_col(1, v1);
+		REQUIRE( m1(0,1).real() == 11 ); REQUIRE( m1(0,1).imag() == 22 );
+		REQUIRE( m1(1,1).real() == -33 ); REQUIRE( m1(1,1).imag() == 44 );
 	}
 	SECTION(" Test for boundary conditions."){
 		vec v; v = "[1 2 3 4]";
@@ -185,6 +220,15 @@ TEST_CASE( " Test 'mat::set_rows(size_t r0, const mat& m1)' function." ){
 		REQUIRE(m.get(0,0) == 0); REQUIRE(m.get(0,1) == 0); REQUIRE(m.get(0,2) == 0);
 		REQUIRE(m.get(1,0) == 1); REQUIRE(m.get(1,1) == 2); REQUIRE(m.get(1,2) == 3);
 		REQUIRE(m.get(2,0) == 0); REQUIRE(m.get(2,1) == 0); REQUIRE(m.get(2,2) == 0);
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2(1,2);
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m2(0,0) = 1.5+1i; m2(0,1) = 2.3-1i;
+		m1.set_rows(1, m2);
+		REQUIRE( m1(1,0).real() == 1.5 ); REQUIRE( m1(1,0).imag() == 1 );
+		REQUIRE( m1(1,1).real() == 2.3 ); REQUIRE( m1(1,1).imag() == -1 );
 	}
 	SECTION(" Test for boundary conditions."){
 		m.set_size(3,3);
@@ -237,6 +281,15 @@ TEST_CASE( " Test 'mat::set_cols(size_t r0, const mat& m1)' function." ){
 		REQUIRE(m.get(1,0) == 0); REQUIRE(m.get(1,1) == 2); REQUIRE(m.get(1,2) == 0);
 		REQUIRE(m.get(2,0) == 0); REQUIRE(m.get(2,1) == 3); REQUIRE(m.get(2,2) == 0);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2(2,1);
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m2(0,0) = 1.5+1i; m2(1,0) = 2.3-1i;
+		m1.set_cols(1, m2);
+		REQUIRE( m1(0,1).real() == 1.5 ); REQUIRE( m1(0,1).imag() == 1 );
+		REQUIRE( m1(1,1).real() == 2.3 ); REQUIRE( m1(1,1).imag() == -1 );
+	}
 	SECTION(" Test for boundary conditions."){
 		k.set_size(4,2);
 		m.set_size(3,3);
@@ -276,6 +329,19 @@ TEST_CASE( " Test 'mat::set_submatrix(size_t r0, size_t c0, const mat& m)' funct
 		REQUIRE(m.get(1,0) == 3); REQUIRE(m.get(1,1) == 4); REQUIRE(m.get(1,2) == 0);
 		REQUIRE(m.get(2,0) == 0); REQUIRE(m.get(2,1) == 0); REQUIRE(m.get(2,2) == 0);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(3,3), m2(2,2);
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i; m1(0,2) = 2.+2i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i; m1(1,2) = -3.+1i;
+		m1(2,0) = -6.-2i; m1(2,1) = 12.-4i; m1(2,2) = 9.+1i;
+		m2(0,0) = 1.5+1i; m2(0,1) = 2.3-1i;
+		m2(1,0) = 4.5+2i; m2(1,1) = 7.3-1i;
+		m1.set_submatrix(1, 1, m2);
+		REQUIRE( m1(1,1).real() == 1.5 ); REQUIRE( m1(1,1).imag() == 1 );
+		REQUIRE( m1(1,2).real() == 2.3 ); REQUIRE( m1(1,2).imag() == -1 );
+		REQUIRE( m1(2,1).real() == 4.5 ); REQUIRE( m1(2,1).imag() == 2 );
+		REQUIRE( m1(2,2).real() == 7.3 ); REQUIRE( m1(2,2).imag() == -1 );
+	}
 	SECTION(" Test for boundary conditions."){
 		m.set_size(3,3);
 		k.set_size(2,2);
@@ -304,6 +370,17 @@ TEST_CASE( " Test 'mat::get_col(size_t c1) const' function." ){
 		v = m.get_col(2);
 		REQUIRE(v.get(0) == 3); REQUIRE(v.get(1) == 6); REQUIRE(v.get(2) == 9);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(3,3); cvec v1;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i; m1(0,2) = 2.+2i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i; m1(1,2) = -3.+1i;
+		m1(2,0) = -6.-2i; m1(2,1) = 12.-4i; m1(2,2) = 9.+1i;
+		v1 = m1.get_col(1);
+		REQUIRE( v1.size() == 3 );
+		REQUIRE( v1(0).real() == 6 ); REQUIRE( v1(0).imag() == -8 );
+		REQUIRE( v1(1).real() == 1 ); REQUIRE( v1(1).imag() == 7 );
+		REQUIRE( v1(2).real() == 12 ); REQUIRE( v1(2).imag() == -4 );
+	}
 	SECTION(" Test for boundary conditions."){
 		m.set_size(3,3);
 		r0 = "[1 2 3]"; r1 = "[4 5 6]"; r2 = "[7 8 9]";
@@ -330,6 +407,20 @@ TEST_CASE( " Test 'mat::get_cols(size_t c1, size_t c2) const' function." ){
 		REQUIRE(p.get(0, 0) == 2); REQUIRE(p.get(0, 1) == 3);
 		REQUIRE(p.get(1, 0) == 5); REQUIRE(p.get(1, 1) == 6);
 		REQUIRE(p.get(2, 0) == 8); REQUIRE(p.get(2, 1) == 9);
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(3,3), m2;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i; m1(0,2) = 2.+2i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i; m1(1,2) = -3.+1i;
+		m1(2,0) = -6.-2i; m1(2,1) = 12.-4i; m1(2,2) = 9.+1i;
+		m2 = m1.get_cols(1,2);
+		REQUIRE( m2.size() == 6 );
+		REQUIRE( m2(0,0).real() == 6 ); REQUIRE( m2(0,0).imag() == -8 );
+		REQUIRE( m2(0,1).real() == 2 ); REQUIRE( m2(0,1).imag() == 2 );
+		REQUIRE( m2(1,0).real() == 1 ); REQUIRE( m2(1,0).imag() == 7 );
+		REQUIRE( m2(1,1).real() == -3 ); REQUIRE( m2(1,1).imag() == 1 );
+		REQUIRE( m2(2,0).real() == 12 ); REQUIRE( m2(2,0).imag() == -4 );
+		REQUIRE( m2(2,1).real() == 9 ); REQUIRE( m2(2,1).imag() == 1 );
 	}
 	SECTION(" Test for boundary conditions."){
 		m.set_size(3,3);
@@ -358,6 +449,17 @@ TEST_CASE( " Test 'mat::get_row(size_t r1) const' function." ){
 		v = m.get_row(2);
 		REQUIRE(v.get(0) == 7); REQUIRE(v.get(1) == 8); REQUIRE(v.get(2) == 9);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(3,3); cvec v1;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i; m1(0,2) = 2.+2i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i; m1(1,2) = -3.+1i;
+		m1(2,0) = -6.-2i; m1(2,1) = 12.-4i; m1(2,2) = 9.+1i;
+		v1 = m1.get_row(1);
+		REQUIRE( v1.size() == 3 );
+		REQUIRE( v1(0).real() == 4 ); REQUIRE( v1(0).imag() == -2 );
+		REQUIRE( v1(1).real() == 1 ); REQUIRE( v1(1).imag() == 7 );
+		REQUIRE( v1(2).real() == -3 ); REQUIRE( v1(2).imag() == 1 );
+	}
 	SECTION(" Test for boundary conditions."){
 		m.set_size(3,3);
 		r0 = "[1 2 3]"; r1 = "[4 5 6]"; r2 = "[7 8 9]";
@@ -383,6 +485,20 @@ TEST_CASE( " Test 'mat::get_rows(size_t r1, size_t r2) const' function." ){
 		REQUIRE(p.cols() == m.cols());
 		REQUIRE(p.get(0, 0) == 4); REQUIRE(p.get(0, 1) == 5); REQUIRE(p.get(0, 2) == 6);
 		REQUIRE(p.get(1, 0) == 7); REQUIRE(p.get(1, 1) == 8); REQUIRE(p.get(1, 2) == 9);
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(3,3), m2;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i; m1(0,2) = 2.+2i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i; m1(1,2) = -3.+1i;
+		m1(2,0) = -6.-2i; m1(2,1) = 12.-4i; m1(2,2) = 9.+1i;
+		m2 = m1.get_rows(1,2);
+		REQUIRE( m2.size() == 6 );
+		REQUIRE( m2(0,0).real() == 4 ); REQUIRE( m2(0,0).imag() == -2 );
+		REQUIRE( m2(0,1).real() == 1 ); REQUIRE( m2(0,1).imag() == 7 );
+		REQUIRE( m2(0,2).real() == -3 ); REQUIRE( m2(0,2).imag() == 1 );
+		REQUIRE( m2(1,0).real() == -6 ); REQUIRE( m2(1,0).imag() == -2 );
+		REQUIRE( m2(1,1).real() == 12 ); REQUIRE( m2(1,1).imag() == -4 );
+		REQUIRE( m2(1,2).real() == 9 ); REQUIRE( m2(1,2).imag() == 1 );
 	}
 	SECTION(" Test for boundary conditions."){
 		m.set_size(3,3);
@@ -411,6 +527,18 @@ TEST_CASE( " Test 'mat::get(size_t r1, size_t r2, size_t c1, size_t c2) const' f
 		REQUIRE(p.get(0, 0) == 5); REQUIRE(p.get(0, 1) == 6);
 		REQUIRE(p.get(1, 0) == 8); REQUIRE(p.get(1, 1) == 9);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(3,3), m2;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i; m1(0,2) = 2.+2i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i; m1(1,2) = -3.+1i;
+		m1(2,0) = -6.-2i; m1(2,1) = 12.-4i; m1(2,2) = 9.+1i;
+		m2 = m1.get(1, 2, 1, 2);
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0).real() == 1 ); REQUIRE( m2(0,0).imag() == 7 );
+		REQUIRE( m2(0,1).real() == -3 ); REQUIRE( m2(0,1).imag() == 1 );
+		REQUIRE( m2(1,0).real() == 12 ); REQUIRE( m2(1,0).imag() == -4 );
+		REQUIRE( m2(1,1).real() == 9 ); REQUIRE( m2(1,1).imag() == 1 );
+	}
 	SECTION(" Test for boundary conditions."){
 		m.set_size(3,3);
 		r0 = "[1 2 3]"; r1 = "[4 5 6]"; r2 = "[7 8 9]";
@@ -423,7 +551,7 @@ TEST_CASE( " Test 'mat::get(size_t r1, size_t r2, size_t c1, size_t c2) const' f
 }
 
 TEST_CASE( " Test 'mat::get(const vec& r, const vec& c) const' function." ){
-	mat m, p; vec r0, r1, r2, r, c;
+	mat m, p; vec r0, r1, r2; ivec r, c;
 	SECTION(" Test for normal conditions"){
 		// Example 1:
 		//     |1 2 3|
@@ -471,6 +599,19 @@ TEST_CASE( " Test 'mat::get(const vec& r, const vec& c) const' function." ){
 		REQUIRE(p.get(1, 0) == 4); REQUIRE(p.get(1, 1) == 5); REQUIRE(p.get(1,2) == 6);
 		REQUIRE(p.get(2, 0) == 7); REQUIRE(p.get(2, 1) == 8); REQUIRE(p.get(2,2) == 9);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(3,3), m2; ivec r, c;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i; m1(0,2) = 2.+2i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i; m1(1,2) = -3.+1i;
+		m1(2,0) = -6.-2i; m1(2,1) = 12.-4i; m1(2,2) = 9.+1i;
+		r = "[0 2]"; c = "[0 2]";
+		m2 = m1.get(r, c);
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0).real() == 3 ); REQUIRE( m2(0,0).imag() == 2 );
+		REQUIRE( m2(0,1).real() == 2 ); REQUIRE( m2(0,1).imag() == 2 );
+		REQUIRE( m2(1,0).real() == -6 ); REQUIRE( m2(1,0).imag() == -2 );
+		REQUIRE( m2(1,1).real() == 9 ); REQUIRE( m2(1,1).imag() == 1 );
+	}
 	SECTION(" Test for boundary conditions."){
 		m.set_size(3,3);
 		r0 = "[1 2 3]"; r1 = "[4 5 6]"; r2 = "[7 8 9]";
@@ -494,6 +635,16 @@ TEST_CASE( " Test 'mat::zeros()' " ){
 	m.zeros();
 	REQUIRE(m.get(0,0) == 0); REQUIRE(m.get(0,1) == 0);
 	REQUIRE(m.get(1,0) == 0); REQUIRE(m.get(1,1) == 0);
+
+	cmat m1(2,2);
+	m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+	m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+	m1.zeros();
+	REQUIRE( m1(0,0).real() == 0 ); REQUIRE( m1(0,0).imag() == 0 );
+	REQUIRE( m1(0,1).real() == 0 ); REQUIRE( m1(0,1).imag() == 0 );
+	REQUIRE( m1(1,0).real() == 0 ); REQUIRE( m1(1,0).imag() == 0 );
+	REQUIRE( m1(1,1).real() == 0 ); REQUIRE( m1(1,1).imag() == 0 );
+
 }
 
 TEST_CASE( " Test 'mat::clear()' " ){
@@ -522,6 +673,17 @@ TEST_CASE( " Test 'mat::swap_rows(size_t i, size_t j)' " ){
 		REQUIRE(m(1,0) == tmp(0,0)); REQUIRE(m(1,1) == tmp(0,1)); REQUIRE(m(1,2) == tmp(0,2));
 		REQUIRE(m(2,0) == tmp(2,0)); REQUIRE(m(2,1) == tmp(2,1)); REQUIRE(m(2,2) == tmp(2,2));
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(3,3), m2;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i; m1(0,2) = 2.+2i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i; m1(1,2) = -3.+1i;
+		m1(2,0) = -6.-2i; m1(2,1) = 12.-4i; m1(2,2) = 9.+1i;
+		m2 = m1;
+		m1.swap_rows(0, 2);
+		REQUIRE( m2(0,0).real() == m1(2,0).real() ); REQUIRE( m2(0,0).imag() == m1(2,0).imag() );
+		REQUIRE( m2(0,1).real() == m1(2,1).real() ); REQUIRE( m2(0,1).imag() == m1(2,1).imag() );
+		REQUIRE( m2(0,2).real() == m1(2,2).real() ); REQUIRE( m2(0,2).imag() == m1(2,2).imag() );
+	}
 	SECTION( "Test boundary conditions." ){
 		m = rand_i(4,4);
 		REQUIRE_THROWS( m.swap_rows(0, 4) ); // j > cols
@@ -539,6 +701,17 @@ TEST_CASE( " Test 'mat::swap_cols(size_t i, size_t j)' " ){
 		REQUIRE(m(0,0) == tmp(0,2)); REQUIRE(m(0,1) == tmp(0,1)); REQUIRE(m(0,2) == tmp(0,0));
 		REQUIRE(m(1,0) == tmp(1,2)); REQUIRE(m(1,1) == tmp(1,1)); REQUIRE(m(1,2) == tmp(1,0));
 		REQUIRE(m(2,0) == tmp(2,2)); REQUIRE(m(2,1) == tmp(2,1)); REQUIRE(m(2,2) == tmp(2,0));
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(3,3), m2;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i; m1(0,2) = 2.+2i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i; m1(1,2) = -3.+1i;
+		m1(2,0) = -6.-2i; m1(2,1) = 12.-4i; m1(2,2) = 9.+1i;
+		m2 = m1;
+		m1.swap_cols(0, 2);
+		REQUIRE( m2(0,0).real() == m1(0,2).real() ); REQUIRE( m2(0,0).imag() == m1(0,2).imag() );
+		REQUIRE( m2(1,0).real() == m1(1,2).real() ); REQUIRE( m2(1,0).imag() == m1(1,2).imag() );
+		REQUIRE( m2(2,0).real() == m1(2,2).real() ); REQUIRE( m2(2,0).imag() == m1(2,2).imag() );
 	}
 	SECTION( "Test boundary conditions." ){
 		m = rand_i(4,4);
@@ -642,6 +815,18 @@ TEST_CASE( " Test 'mat::operator()(size_t r1, size_t r2, size_t c1, size_t c2)' 
 		REQUIRE( p.rows() == 1 ); REQUIRE( p.cols() == 2 );
 		REQUIRE(p(0,0) == 2); REQUIRE(p(0,1) == 3);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(3,3), m2;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i; m1(0,2) = 2.+2i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i; m1(1,2) = -3.+1i;
+		m1(2,0) = -6.-2i; m1(2,1) = 12.-4i; m1(2,2) = 9.+1i;
+		m2 = m1(1, 2, 1, 2);
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0).real() == 1 ); REQUIRE( m2(0,0).imag() == 7 );
+		REQUIRE( m2(0,1).real() == -3 ); REQUIRE( m2(0,1).imag() == 1 );
+		REQUIRE( m2(1,0).real() == 12 ); REQUIRE( m2(1,0).imag() == -4 );
+		REQUIRE( m2(1,1).real() == 9 ); REQUIRE( m2(1,1).imag() == 1 );
+	}
 	SECTION("Test boundary conditions."){
 		// Example 1 (access NULL VECTOR)
 		REQUIRE_THROWS( p = m(0, 0, 1, 2) );
@@ -667,6 +852,18 @@ TEST_CASE( " Test 'mat::operator+(const mat& m)' " ){
 		REQUIRE(b(0,0) == -3); REQUIRE(b(0,1) == 0); REQUIRE(b(0,2) == 4);
 		REQUIRE(b(1,0) == 6); REQUIRE(b(1,1) == 13); REQUIRE(b(1,2) == 13);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2, m3;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m2 = m1;
+		m3 = m1 + m2;
+		REQUIRE( m3.size() == 4 );
+		REQUIRE( m3(0,0).real() == 6 ); REQUIRE( m3(0,0).imag() == 4 );
+		REQUIRE( m3(0,1).real() == 12 ); REQUIRE( m3(0,1).imag() == -16 );
+		REQUIRE( m3(1,0).real() == 8 ); REQUIRE( m3(1,0).imag() == -4 );
+		REQUIRE( m3(1,1).real() == 2 ); REQUIRE( m3(1,1).imag() == 14 );
+	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
 		REQUIRE_THROWS( b = m + p );
@@ -677,8 +874,8 @@ TEST_CASE( " Test 'mat::operator+(const mat& m)' " ){
 	}
 }
 
-TEST_CASE( " Test 'mat::operator+(float t)' " ){
-	mat m,b; float t;
+TEST_CASE( " Test 'mat::operator+(T t)' " ){
+	mat m,b; double t;
 	SECTION("Test normal conditions"){
 		// Example 1
 		//		|1 2 3|		  				   |11 12 13|
@@ -690,6 +887,17 @@ TEST_CASE( " Test 'mat::operator+(float t)' " ){
 		REQUIRE( b.rows() == 2 ); REQUIRE( b.cols() == 3 );
 		REQUIRE(b(0,0) == 11); REQUIRE(b(0,1) == 12); REQUIRE(b(0,2) == 13);
 		REQUIRE(b(1,0) == 14); REQUIRE(b(1,1) == 15); REQUIRE(b(1,2) == 16);
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2;  std::complex<double> f = 2.+1i;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m2 = m1 + f;
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0).real() == 5 ); REQUIRE( m2(0,0).imag() == 3 );
+		REQUIRE( m2(0,1).real() == 8 ); REQUIRE( m2(0,1).imag() == -7 );
+		REQUIRE( m2(1,0).real() == 6 ); REQUIRE( m2(1,0).imag() == -1 );
+		REQUIRE( m2(1,1).real() == 3 ); REQUIRE( m2(1,1).imag() == 8 );
 	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
@@ -711,6 +919,18 @@ TEST_CASE( " Test 'mat::operator-(const mat& m)' " ){
 		REQUIRE(b(0,0) == 5); REQUIRE(b(0,1) == 4); REQUIRE(b(0,2) == 2);
 		REQUIRE(b(1,0) == 2); REQUIRE(b(1,1) == -3); REQUIRE(b(1,2) == -1);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2, m3;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m2 = m1;
+		m3 = m1 - m2;
+		REQUIRE( m3.size() == 4 );
+		REQUIRE( m3(0,0).real() == 0 ); REQUIRE( m3(0,0).imag() == 0 );
+		REQUIRE( m3(0,1).real() == 0 ); REQUIRE( m3(0,1).imag() == 0 );
+		REQUIRE( m3(1,0).real() == 0 ); REQUIRE( m3(1,0).imag() == 0 );
+		REQUIRE( m3(1,1).real() == 0 ); REQUIRE( m3(1,1).imag() == 0 );
+	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
 		REQUIRE_THROWS( b = m - p );
@@ -721,8 +941,8 @@ TEST_CASE( " Test 'mat::operator-(const mat& m)' " ){
 	}
 }
 
-TEST_CASE( " Test 'mat::operator-(float t)' " ){
-	mat m,b; float t;
+TEST_CASE( " Test 'mat::operator-(T t)' " ){
+	mat m,b; double t;
 	SECTION("Test normal conditions"){
 		// Example 1
 		//		|1 2 3|		  				   |-9 -8 -7|
@@ -735,14 +955,25 @@ TEST_CASE( " Test 'mat::operator-(float t)' " ){
 		REQUIRE(b(0,0) == -9); REQUIRE(b(0,1) == -8); REQUIRE(b(0,2) == -7);
 		REQUIRE(b(1,0) == -6); REQUIRE(b(1,1) == -5); REQUIRE(b(1,2) == -4);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2;  std::complex<double> f = 2.+1i;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m2 = m1 - f;
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0).real() == 1 ); REQUIRE( m2(0,0).imag() == 1 );
+		REQUIRE( m2(0,1).real() == 4 ); REQUIRE( m2(0,1).imag() == -9 );
+		REQUIRE( m2(1,0).real() == 2 ); REQUIRE( m2(1,0).imag() == -3 );
+		REQUIRE( m2(1,1).real() == -1 ); REQUIRE( m2(1,1).imag() == 6 );
+	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
 		REQUIRE_THROWS( b = m - t );
 	}
 }
 
-TEST_CASE( " Test 'mat::operator*(float t)' " ){
-	mat m,b; float t;
+TEST_CASE( " Test 'mat::operator*(T t)' " ){
+	mat m,b; double t;
 	SECTION("Test normal conditions"){
 		// Example 1
 		//		|1 2 3|		  				   |10 20 30|
@@ -754,6 +985,17 @@ TEST_CASE( " Test 'mat::operator*(float t)' " ){
 		REQUIRE( b.rows() == 2 ); REQUIRE( b.cols() == 3 );
 		REQUIRE(b(0,0) == 10); REQUIRE(b(0,1) == 20); REQUIRE(b(0,2) == 30);
 		REQUIRE(b(1,0) == 40); REQUIRE(b(1,1) == 50); REQUIRE(b(1,2) == 60);
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2;  std::complex<double> f = 2.+1i;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m2 = m1 * f;
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0).real() == 4 ); REQUIRE( m2(0,0).imag() == 7 );
+		REQUIRE( m2(0,1).real() == 20 ); REQUIRE( m2(0,1).imag() == -10 );
+		REQUIRE( m2(1,0).real() == 10 ); REQUIRE( m2(1,0).imag() == 0 );
+		REQUIRE( m2(1,1).real() == -5 ); REQUIRE( m2(1,1).imag() == 15 );
 	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
@@ -788,6 +1030,17 @@ TEST_CASE( " Test 'mat::operator*(const mat& m)' " ){
 		REQUIRE(b(1,0) == 4); REQUIRE(b(1,1) == 16); REQUIRE(b(1,2) == -6);
 		REQUIRE(b(2,0) == 6); REQUIRE(b(2,1) == 24); REQUIRE(b(2,2) == -9);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m2 = m1 * m1;
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0).real() == 13 ); REQUIRE( m2(0,0).imag() == -32 );
+		REQUIRE( m2(0,1).real() == 96 ); REQUIRE( m2(0,1).imag() == 22 );
+		REQUIRE( m2(1,0).real() == 34 ); REQUIRE( m2(1,0).imag() == 28 );
+		REQUIRE( m2(1,1).real() == -40 ); REQUIRE( m2(1,1).imag() == -30 );
+	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
 		REQUIRE_THROWS( b = m * p );
@@ -812,14 +1065,24 @@ TEST_CASE( " Test 'mat::operator*(const vec& v)' " ){
 		REQUIRE(b(0) == 8);
 		REQUIRE(b(1) == 14);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2); cvec v1(2), v2;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		v1(0) = 1.+0i; v1(1) = 0.-1i;
+		v2 = m1 * v1;
+		REQUIRE( v2.size() == 2 );
+		REQUIRE( v2(0).real() == -5 ); REQUIRE( v2(0).imag() == -4 );
+		REQUIRE( v2(1).real() == 11 ); REQUIRE( v2(1).imag() == -3 );
+	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
 		REQUIRE_THROWS( b = m * a );
 	}
 }
 
-TEST_CASE( " Test 'mat::operator/(float t)' " ){
-	mat m,b; float t;
+TEST_CASE( " Test 'mat::operator/(T t)' " ){
+	mat m,b; double t;
 	SECTION("Test normal conditions"){
 		// Example 1
 		//		|1 2 3|		  				   |0.1 0.2 0.3|
@@ -831,6 +1094,39 @@ TEST_CASE( " Test 'mat::operator/(float t)' " ){
 		REQUIRE( b.rows() == m.rows() ); REQUIRE( b.cols() == m.cols() );
 		REQUIRE(b(0,0) == Approx(0.1)); REQUIRE(b(0,1) == Approx(0.2)); REQUIRE(b(0,2) == Approx(0.3));
 		REQUIRE(b(1,0) == Approx(0.4)); REQUIRE(b(1,1) == Approx(0.5)); REQUIRE(b(1,2) == Approx(0.6));
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2, test(2,2);  std::complex<double> f = 2.+1i;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m2 = m1 / f;
+
+		// Polar coordinates according to Euler's formula
+		// if z = a + ib ==> z = |z|( cos(phi)+isin(phi) )
+		// where |z| = abs(z) = sqrt(a^2+b^2)
+		// and phi = arg(z) = atan2(b/a)
+
+		double m1_00_modulus, m1_01_modulus, m1_10_modulus, m1_11_modulus;
+		double m1_00_arg, m1_01_arg, m1_10_arg, m1_11_arg;
+		m1_00_modulus = std::abs(m1(0,0)); m1_01_modulus = std::abs(m1(0,1));
+		m1_10_modulus = std::abs(m1(1,0)); m1_11_modulus = std::abs(m1(1,1));
+		m1_00_arg = std::arg(m1(0,0)); m1_01_arg = std::arg(m1(0,1));
+		m1_10_arg = std::arg(m1(1,0)); m1_11_arg = std::arg(m1(1,1));
+
+		test(0,0).real( (m1_00_modulus/std::abs(f))*cos(m1_00_arg - std::arg(f)) );
+		test(0,0).imag( (m1_00_modulus/std::abs(f))*sin(m1_00_arg - std::arg(f)) );
+		test(1,0).real( (m1_10_modulus/std::abs(f))*cos(m1_10_arg - std::arg(f)) );
+		test(1,0).imag( (m1_10_modulus/std::abs(f))*sin(m1_10_arg - std::arg(f)) );
+		test(0,1).real( (m1_01_modulus/std::abs(f))*cos(m1_01_arg - std::arg(f)) );
+		test(0,1).imag( (m1_01_modulus/std::abs(f))*sin(m1_01_arg - std::arg(f)) );
+		test(1,1).real( (m1_11_modulus/std::abs(f))*cos(m1_11_arg - std::arg(f)) );
+		test(1,1).imag( (m1_11_modulus/std::abs(f))*sin(m1_11_arg - std::arg(f)) );
+
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0).real() == Approx( test(0,0).real() ) ); REQUIRE( m2(0,0).imag() == Approx( test(0,0).imag() ) );
+		REQUIRE( m2(0,1).real() == Approx( test(0,1).real() ) ); REQUIRE( m2(0,1).imag() == Approx( test(0,1).imag() ) );
+		REQUIRE( m2(1,0).real() == Approx( test(1,0).real() ) ); REQUIRE( m2(1,0).imag() == Approx( test(1,0).imag() ) );
+		REQUIRE( m2(1,1).real() == Approx( test(1,1).real() ) ); REQUIRE( m2(1,1).imag() == Approx( test(1,1).imag() ) );
 	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
@@ -934,6 +1230,17 @@ TEST_CASE( " Test 'transpose(const mat& a)' " ){
 		REQUIRE( m_t.get(0,0) == 1 ); REQUIRE( m_t.get(0,1) == 3 ); REQUIRE( m_t.get(0,2) == 5 );
 		REQUIRE( m_t.rows() == m.cols() ); REQUIRE( m_t.cols() == m.rows() );
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2;
+		m1(0,0) = 3.+2i; m1(0,1) = 6.-8i;
+		m1(1,0) = 4.-2i; m1(1,1) = 1.+7i;
+		m2 = transpose(m1);
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0).real() == 3 ); REQUIRE( m2(0,0).imag() == 2 );
+		REQUIRE( m2(0,1).real() == 4 ); REQUIRE( m2(0,1).imag() == -2 );
+		REQUIRE( m2(1,0).real() == 6 ); REQUIRE( m2(1,0).imag() == -8 );
+		REQUIRE( m2(1,1).real() == 1 ); REQUIRE( m2(1,1).imag() == 7 );
+	}
 	SECTION("Test boundary conditions."){
 		m.set_size(0,0);
 		m_t = transpose(m);
@@ -985,6 +1292,22 @@ TEST_CASE( " Test 'inv(const mat& a)' " ){
 		}
 	}
 
+	SECTION(" Test for normal conditions for complex matrices"){
+		//
+		// m1 = |-i  1 | ==> inv(m1) = | 0  0.5 |
+		//      | 2  0 |               | 1  0.5i|
+
+		cmat m1(2,2), m2;
+		m1(0,0) = 0.-1i; m1(0,1) = 1.+0i;
+		m1(1,0) = 2.+0i; m1(1,1) = 0.+0i;
+		m2 = inv(m1);
+		// Cross checking
+		cmat test = m1*m2;
+		REQUIRE( test(0,0).real() == Approx(1) ); REQUIRE( test(0,0).imag() == Approx(0) );
+		REQUIRE( test(0,1).real() == Approx(0) ); REQUIRE( test(0,1).imag() == Approx(0) );
+		REQUIRE( test(1,0).real() == Approx(0) ); REQUIRE( test(1,0).imag() == Approx(0) );
+		REQUIRE( test(1,1).real() == Approx(1) ); REQUIRE( test(1,1).imag() == Approx(0) );
+	}
 	SECTION("Test boundary conditions."){
 		m = "[7 2 1;0 3 -1]"; // non-sqaure
 		REQUIRE_THROWS( inv(m) );
@@ -1045,6 +1368,21 @@ TEST_CASE( " Test 'pinv(const mat& a)' " ){
 		}
 
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		//
+		// m1 = |-i  1  i| ==> pinv(m1) = | -0.5+0.5i  0.25+0i  |
+		//      | 2  0 2i|                |   0+0i    -0.25+0.25|  (Right inverse)
+		//                                |-0.5-0.5i   0-0.25i  |
+		cmat m1(2,3), m2, test;
+		m1(0,0) = 0.-1i; m1(0,1) = 1.+0i; m1(0,2) = 0.+1i;
+		m1(1,0) = 2.+0i; m1(1,1) = 0.+0i; m1(1,2) = 0.+2i;
+		m2 = pinv(m1);
+		test = m1*m2;
+		REQUIRE( test(0,0).real() == Approx(1) ); REQUIRE( test(0,0).imag() == Approx(0) );
+		REQUIRE( test(0,1).real() == Approx(0) ); REQUIRE( test(0,1).imag() == Approx(0) );
+		REQUIRE( test(1,0).real() == Approx(0) ); REQUIRE( test(1,0).imag() == Approx(0) );
+		REQUIRE( test(1,1).real() == Approx(1) ); REQUIRE( test(1,1).imag() == Approx(0) );
+	}
 
 	SECTION("Test boundary conditions."){
 		m = "[1 0 1 0;1 0 1 0]"; // neither full row rank, nor full column rank
@@ -1069,12 +1407,26 @@ TEST_CASE( " Test 'mat::mat2vec(const mat& m)' " ){
 		REQUIRE(v(0) == 1); REQUIRE(v(1) == 2); REQUIRE(v(2) == 3);
 		REQUIRE(v(3) == 4); REQUIRE(v(4) == 5); REQUIRE(v(5) == 6);
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		//
+		// m1 = |-i  1 |
+		//      | 2  0 |
+
+		cmat m1(2,2); cvec v2;
+		m1(0,0) = 0.-1i; m1(0,1) = 1.+0i;
+		m1(1,0) = 2.+0i; m1(1,1) = 0.+0i;
+		v2 = mat2vec(m1);
+		REQUIRE( v2.size() == 4 );
+		REQUIRE( v2(0).real() == 0 ); REQUIRE( v2(0).imag() == -1 );
+		REQUIRE( v2(1).real() == 1 ); REQUIRE( v2(1).imag() == 0 );
+		REQUIRE( v2(2).real() == 2 ); REQUIRE( v2(2).imag() == 0 );
+		REQUIRE( v2(3).real() == 0 ); REQUIRE( v2(3).imag() == 0 );
+	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
 		REQUIRE( mat2vec(m).size() == 0);
 	}
 }
-
 
 TEST_CASE( " Test 'mat::max(const mat& m)' " ){
 	mat m;
@@ -1085,6 +1437,16 @@ TEST_CASE( " Test 'mat::max(const mat& m)' " ){
 		//
 		m = "[1 -2 3;4 77 6]";
 		REQUIRE( max(m) == 77);
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		//
+		// m1 = |2-i  2-3i  | ==> max(m1) = -1+4i
+		//      |3+i  -1+4i |
+
+		cmat m1(2,2);
+		m1(0,0) = 2.-1i; m1(0,1) = 2.-3i;
+		m1(1,0) = 3.+1i; m1(1,1) = -1.+4i;
+		REQUIRE( max(m1).real() == -1 ); REQUIRE( max(m1).imag() == 4 );
 	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
@@ -1101,6 +1463,16 @@ TEST_CASE( " Test 'mat::min(const mat& m)' " ){
 		//
 		m = "[1 -2 3;4 77 6]";
 		REQUIRE( min(m) == -2);
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		//
+		// m1 = |2-i  2-3i  | ==> min(m1) = 2-i
+		//      |3+i  -1+4i |
+
+		cmat m1(2,2);
+		m1(0,0) = 2.-1i; m1(0,1) = 2.-3i;
+		m1(1,0) = 3.+1i; m1(1,1) = -1.+4i;
+		REQUIRE( min(m1).real() == 2 ); REQUIRE( min(m1).imag() == -1 );
 	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
@@ -1119,12 +1491,11 @@ TEST_CASE( " Test 'mat::abs(const mat& m)' " ){
 		t = abs(m);
 		REQUIRE( t(0,0) == 1); REQUIRE( t(0,1) == 2); REQUIRE( t(0,2) == 3);
 		REQUIRE( t(1,0) == 4); REQUIRE( t(1,1) == 77); REQUIRE( t(1,2) == 6);
-
 	}
 }
 
 TEST_CASE( " Test algebra::find_non_zero(const mat& m) function" ){
-	mat m1, m2;
+	mat m1; imat m2;
 	SECTION(" Test normal conditions. "){
 		m1 = "[3 4 0;0 1 0;-9 0 5]";
 		m2 = find_non_zero(m1);
@@ -1139,10 +1510,23 @@ TEST_CASE( " Test algebra::find_non_zero(const mat& m) function" ){
 			}
 		}
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		//
+		// m1 = |-i  1 |
+		//      | 2  0 |
+
+		cmat m1(2,2); imat m2;
+		m1(0,0) = 0.-1i; m1(0,1) = 1.+0i;
+		m1(1,0) = 2.+0i; m1(1,1) = 0.+0i;
+		m2 = find_non_zero(m1);
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0) == 1 ); REQUIRE( m2(0,1) == 1 );
+		REQUIRE( m2(1,0) == 1 ); REQUIRE( m2(1,1) == 0 );
+	}
 }
 
 TEST_CASE( " Test algebra::find_zero(const mat& m) function" ){
-	mat m1, m2;
+	mat m1; imat m2;
 	SECTION(" Test normal conditions. "){
 		m1 = "[3 4 0;0 1 0;-9 0 5]";
 		m2 = find_zero(m1);
@@ -1156,6 +1540,19 @@ TEST_CASE( " Test algebra::find_zero(const mat& m) function" ){
 				}
 			}
 		}
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		//
+		// m1 = |-i  1 |
+		//      | 2  0 |
+
+		cmat m1(2,2); imat m2;
+		m1(0,0) = 0.-1i; m1(0,1) = 1.+0i;
+		m1(1,0) = 2.+0i; m1(1,1) = 0.+0i;
+		m2 = find_zero(m1);
+		REQUIRE( m2.size() == 4 );
+		REQUIRE( m2(0,0) == 0 ); REQUIRE( m2(0,1) == 0 );
+		REQUIRE( m2(1,0) == 0 ); REQUIRE( m2(1,1) == 1 );
 	}
 }
 
@@ -1209,6 +1606,18 @@ TEST_CASE( " Test 'mat::zeros(size_t n, size_t m)' " ){
 		}
 
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+
+		cmat m1 = zeros_c(3,2);
+		REQUIRE( m1.rows() == 3 ); REQUIRE( m1.cols() == 2 );
+		for(size_t i = 0; i < m1.rows(); i++){
+			for(size_t j = 0; j < m1.cols(); j++){
+				REQUIRE( m1(i,j).real() == 0 );
+				REQUIRE( m1(i,j).imag() == 0 );
+			}
+		}
+
+	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
 		REQUIRE_THROWS( m = zeros(-3,1) );
@@ -1249,6 +1658,16 @@ TEST_CASE( " Test 'mat::eye(size_t k)' " ){
 		}
 
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+
+		cmat m1 = eye_c(3);
+		REQUIRE( m1.rows() == 3 ); REQUIRE( m1.cols() == 3 );
+		for(size_t i = 0; i < m1.rows(); i++){
+			REQUIRE( m1(i,i).real() == 1 );
+			REQUIRE( m1(i,i).imag() == 0 );
+		}
+
+	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
 		REQUIRE_THROWS( m = eye(-3) );
@@ -1270,6 +1689,15 @@ TEST_CASE( " Test 'mat::diag(const mat& m)' " ){
 			REQUIRE( v(i) == m(i, i) );
 		}
 
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2); cvec v1;
+		m1(0,0) = 1; m1(0,1) = -1i;
+		m1(1,0) = 1.+2i; m1(1,1) = -3;
+		v1 = diag(m1);
+		REQUIRE( v1.size() == 2 );
+		REQUIRE( v1(0).real() == 1 ); REQUIRE( v1(0).imag() == 0 );
+		REQUIRE( v1(1).real() == -3 ); REQUIRE( v1(1).imag() == 0 );
 	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
@@ -1298,6 +1726,16 @@ TEST_CASE( " Test 'mat::diag(const vec& v)' " ){
 		}
 
 	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1; cvec v1(2);
+		v1(0) = 1.-1i; v1(1) = -3.+4i;
+		m1 = diag(v1);
+		REQUIRE( m1.size() == 4 );
+		REQUIRE( m1(0,0).real() == 1 ); REQUIRE( m1(0,0).imag() == -1 );
+		REQUIRE( m1(0,1).real() == 0 ); REQUIRE( m1(0,1).imag() == 0 );
+		REQUIRE( m1(1,0).real() == 0 ); REQUIRE( m1(1,0).imag() == 0 );
+		REQUIRE( m1(1,1).real() == -3 ); REQUIRE( m1(1,1).imag() == 4 );
+	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
 		REQUIRE( diag(v).size() == 0 );
@@ -1317,6 +1755,20 @@ TEST_CASE( " Test 'mat::concat_hor(const mat& m1, const mat& m2)' " ){
 		REQUIRE( c.rows() == a.rows() ); REQUIRE( c.cols() == a.cols() + b.cols() );
 		REQUIRE(c(0,0) == 2); REQUIRE(c(0,1) == 3); REQUIRE(c(0,2) == 4); REQUIRE(c(0,3) == 9); REQUIRE(c(0,4) == 4);
 		REQUIRE(c(1,0) == 1); REQUIRE(c(1,1) == 5); REQUIRE(c(1,2) == 9); REQUIRE(c(1,3) == 0); REQUIRE(c(1,4) == 5);
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2(2,1), m3;
+		m1(0,0) = 2; m1(0,1) = 1.+3i;
+		m1(1,0) = 4.-2i; m1(1,1) = -2.+1i;
+		m2(0,0) = 8.-7i; m2(1,0) = 3.+2i;
+		m3 = concat_hor(m1, m2);
+		REQUIRE( m3.size() == 6 );
+		REQUIRE( m3(0,0).real() == 2 ); REQUIRE( m3(0,0).imag() == 0 );
+		REQUIRE( m3(0,1).real() == 1 ); REQUIRE( m3(0,1).imag() == 3 );
+		REQUIRE( m3(0,2).real() == 8 ); REQUIRE( m3(0,2).imag() == -7 );
+		REQUIRE( m3(1,0).real() == 4 ); REQUIRE( m3(1,0).imag() == -2 );
+		REQUIRE( m3(1,1).real() == -2 ); REQUIRE( m3(1,1).imag() == 1 );
+		REQUIRE( m3(1,2).real() == 3 ); REQUIRE( m3(1,2).imag() == 2 );
 	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
@@ -1340,7 +1792,20 @@ TEST_CASE( " Test 'mat::concat_ver(const mat& m1, const mat& m2)' " ){
 		REQUIRE(c(1,0) == 1); REQUIRE(c(1,1) == 5);
 		REQUIRE(c(2,0) == 9); REQUIRE(c(2,1) == 4);
 		REQUIRE(c(3,0) == 0); REQUIRE(c(3,1) == 5);
-
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cmat m1(2,2), m2(1,2), m3;
+		m1(0,0) = 2; m1(0,1) = 1.+3i;
+		m1(1,0) = 4.-2i; m1(1,1) = -2.+1i;
+		m2(0,0) = 8.-7i; m2(0,1) = 3.+2i;
+		m3 = concat_ver(m1, m2);
+		REQUIRE( m3.size() == 6 );
+		REQUIRE( m3(0,0).real() == 2 ); REQUIRE( m3(0,0).imag() == 0 );
+		REQUIRE( m3(0,1).real() == 1 ); REQUIRE( m3(0,1).imag() == 3 );
+		REQUIRE( m3(1,0).real() == 4 ); REQUIRE( m3(1,0).imag() == -2 );
+		REQUIRE( m3(1,1).real() == -2 ); REQUIRE( m3(1,1).imag() == 1 );
+		REQUIRE( m3(2,0).real() == 8 ); REQUIRE( m3(2,0).imag() == -7 );
+		REQUIRE( m3(2,1).real() == 3 ); REQUIRE( m3(2,1).imag() == 2 );
 	}
 	SECTION("Test boundary conditions."){
 		// Example 1: NULL MATRIX
@@ -1372,7 +1837,17 @@ TEST_CASE( " Test 'outer_product(const vec& v1, const vec& v2)' function" ){
 		REQUIRE(c(0,0) == -2); REQUIRE(c(0,1) == 4);
 		REQUIRE(c(1,0) == 1); REQUIRE(c(1,1) == -2);
 		REQUIRE(c(2,0) == -4); REQUIRE(c(2,1) == 8);
-
+	}
+	SECTION(" Test for normal conditions for complex matrices"){
+		cvec v1(2), v2(2); cmat m1;
+		v1(0) = 1; v1(1) = 2.-3i;
+		v2(0) = 3.+1i; v2(1) = -4;
+		m1 = outer_product(v1, v2);
+		REQUIRE( m1.size() == 4 );
+		REQUIRE( m1(0,0).real() == 3 ); REQUIRE( m1(0,0).imag() == 1 );
+		REQUIRE( m1(0,1).real() == -4 ); REQUIRE( m1(0,1).imag() == 0 );
+		REQUIRE( m1(1,0).real() == 9 ); REQUIRE( m1(1,0).imag() == -7 );
+		REQUIRE( m1(1,1).real() == -8 ); REQUIRE( m1(1,1).imag() == 12 );
 	}
 	SECTION(" Test boundary conditions. "){
 		REQUIRE_THROWS( outer_product(a, b) );
@@ -1423,6 +1898,90 @@ TEST_CASE( " Test 'mat::magic_square(int n)' " ){
 		REQUIRE_THROWS( magic_square(-1) );
 		REQUIRE_THROWS( magic_square(4) );
 		REQUIRE_THROWS( magic_square(MAX_ACCEPTABLE_VECTOR_SIZE + 1) );
+	}
+}
+
+TEST_CASE( " Test is_square(const Mat<T>& m) " ){
+	SECTION(" Normal conditions "){
+		mat m1, m2;
+		m1 = "[1 -2;-2 4]";
+		m2 = "[1 3 5;7 9 11]";
+		REQUIRE( is_square(m1) == true );
+		REQUIRE( is_square(m2) == false );
+	}
+}
+
+
+TEST_CASE( " Test is_symmetric(const Mat<T>& m) " ){
+	SECTION(" Normal conditions "){
+		mat m1, m2, m3;
+		m1 = "[1 -2;-2 4]";
+		m2 = "[1 -2;3 4]";
+		m3 = "[1 3 5;7 9 11]";
+		REQUIRE( is_symmetric(m1) == true );
+		REQUIRE( is_symmetric(m2) == false );
+		REQUIRE( is_symmetric(m3) == false );
+	}
+	SECTION(" Normal conditions for complex matrices"){
+		cmat m1(3,3);
+		m1(0,0) = 2; m1(0,1) = 2.+1i; m1(0,2) = 4;
+		m1(1,0) = 2.-1i; m1(1,1) = 3; m1(1,2) = 1i;
+		m1(2,0) = 4; m1(2,1) = -1i; m1(2,2) = 1;
+		REQUIRE( is_symmetric(m1) == true );
+
+		m1(0,0) = 2; m1(0,1) = 2.-1i; m1(0,2) = 4;
+		m1(1,0) = 2.-1i; m1(1,1) = 3; m1(1,2) = 1i;
+		m1(2,0) = 4; m1(2,1) = -1i; m1(2,2) = 1;
+		REQUIRE( is_symmetric(m1) == false );
+	}
+}
+
+TEST_CASE(" Test is_hermitian(const cmat& m) "){
+	SECTION("Test for normal conditions"){
+		// matrix taken from https://en.wikipedia.org/wiki/Hermitian_matrix
+		cmat m(3,3), m1, m2;
+		m(0,0) = 2; m(0,1) = 2.+1i; m(0,2) = 4;
+		m(1,0) = 2.-1i; m(1,1) = 3; m(1,2) = 1i;
+		m(2,0) = 4; m(2,1) = -1i; m(2,2) = 1;
+
+		REQUIRE( is_hermitian(m) == true );
+
+		// Test basic properties of hermitian matrix
+		REQUIRE( is_hermitian(m + conj_transpose(m)) == true);
+		REQUIRE( is_hermitian(conj_transpose(m) + m) == true);
+
+		// A*A' = A'*A
+		m1 = m*conj_transpose(m);
+		m2 = conj_transpose(m)*m;
+		for (size_t i = 0; i < m.rows(); i++)
+		{
+			for (size_t j = 0; j < m.cols(); j++)
+			{
+				REQUIRE( m1(i,j).real() == m2(i,j).real() );
+				REQUIRE( m1(i,j).imag() == m2(i,j).imag() );
+			}
+		}
+
+		// inverse of hermitian matrix should be hermitian as well
+		REQUIRE( is_hermitian(inv(m1)) == true );
+
+		// A*A should be hermitian
+		REQUIRE( is_hermitian(m1*m1) == true );
+
+		// A+A should be hermitian
+		REQUIRE( is_hermitian(m1+m1) == true );
+
+		m1.set_size(2,3);
+		m1(0,0) = 2; m1(0,1) = 2.+1i; m1(0,2) = 4;
+		m1(1,0) = 2.-1i; m1(1,1) = 3; m1(1,2) = 1i;
+		REQUIRE( is_hermitian(m1) == false );
+
+		m1.set_size(3,3);
+		// Change the m1(0,1) element to brake symmetry
+		m1(0,0) = 2; m1(0,1) = 2.-1i; m1(0,2) = 4;
+		m1(1,0) = 2.-1i; m1(1,1) = 3; m1(1,2) = 1i;
+		m1(2,0) = 4; m1(2,1) = -1i; m1(2,2) = 1;
+		REQUIRE( is_hermitian(m1) == false );
 		log_error(" ");
 		log_error("===========================================================================================================");
 		log_error("================================= UNIT-TEST FOR MATRIX CLASS FINISHED ==================================");
