@@ -163,7 +163,7 @@ int main(){
 	m2 = inv(m1);
 
 	// Confirm that m1*m2 equals to the identity matrix
-	m3 = find_non_zero(m1 * m2);
+	m3 = m1 * m2;
 
 	// print out the results
 	printf("\n");
@@ -206,8 +206,8 @@ inv(m1) =
 
 m1*inv(m1) = 
 | 1 0 0 |
-| 0 1 0 |
-| 0 0 1 |
+| 1.77636e-15 1 0 |
+| 2.66454e-15 0 1 |
 
 ```
 
