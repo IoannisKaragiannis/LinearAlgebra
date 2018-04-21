@@ -5,7 +5,10 @@
 
 ![Alt Text](https://giphy.com/embed/BmmfETghGOPrW)
 
+
 <img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" width="40" height="40" />
+
+<img src="https://giphy.com/gifs/reaction-BmmfETghGOPrW/.gif" width="40" height="40" />
 
 
 This is an easy-to-install linear algebra library. It consists of two major classes, _**Vec**_ standing for vector
