@@ -23,6 +23,6 @@ To get started check the [wiki](https://github.com/IoannisKaragiannis/LinearAlge
 This project is licensed under the GNU General Public License - see the [LICENSE.md](https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/LICENSE) file for details
 
 ## Issues
-Should you find any bug or have an issue in general, do not hesitate to open an issue on [issues](https://github.com/IoannisKaragiannis/LinearAlgebra/issues).
+Should you find any bug or have an issue in general, do not hesitate to open a new [issue](https://github.com/IoannisKaragiannis/LinearAlgebra/issues).
 
 <img src="https://media.giphy.com/media/BmmfETghGOPrW/giphy.gif" width="250" height="100" />
