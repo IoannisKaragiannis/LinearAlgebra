@@ -3,12 +3,13 @@
 <iframe src="https://giphy.com/embed/BmmfETghGOPrW" width="480" height="206" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/reaction-BmmfETghGOPrW">via GIPHY</a></p>
 
 
-![Alt Text](https://giphy.com/embed/BmmfETghGOPrW)
+![Alt Text](https://media.giphy.com/media/BmmfETghGOPrW/giphy.gif)
+
 
 
 <img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" width="40" height="40" />
 
-<img src="https://giphy.com/gifs/reaction-BmmfETghGOPrW/giphy.gif" width="40" height="40" />
+<img src="https://media.giphy.com/media/BmmfETghGOPrW/giphy.gif" width="40" height="40" />
 
 
 This is an easy-to-install linear algebra library. It consists of two major classes, _**Vec**_ standing for vector
