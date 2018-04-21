@@ -1,4 +1,4 @@
-<img src="https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/images/LinearAlgebraLibrary/LA.png" width="600" height="270"> <img src="https://media.giphy.com/media/BmmfETghGOPrW/giphy.gif" width="300" height="150" />
+<img src="https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/images/LinearAlgebraLibrary/LA.png" width="600" height="270"> <img src="https://media.giphy.com/media/BmmfETghGOPrW/giphy.gif" width="250" height="100" />
 
 
 This is an easy-to-install linear algebra library. It consists of two major classes, _**Vec**_ standing for vector
