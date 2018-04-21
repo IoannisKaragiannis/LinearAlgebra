@@ -1,3 +1,5 @@
+<img src="https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/images/LinearAlgebraLibrary/LA.png" width="400" height="180">
+
 # UNIT TEST
 
 This is a unit test based upon *catch.hpp* file. For more details see [CATCH](https://github.com/philsquared/Catch).
