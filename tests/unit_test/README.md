@@ -38,7 +38,7 @@ Be patient. The unit test, unlike any of your projects, is testing all the funct
 
 An error log file will be created under the /tmp/LinearAlgebra directory. This file contains all the exceptions thrown 
 while running the unit-test. It reveals all the extreme cases I have taken into consideration. If you can think of a
-counter-example that would fail the test feel free to contact me.
+counter-example that would fail the test feel free to open a new issue on [issues](https://github.com/IoannisKaragiannis/LinearAlgebra/issues).
 
 
 ## CROSS-COMPILE UNIT TEST
