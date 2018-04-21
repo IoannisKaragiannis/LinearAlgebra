@@ -13,15 +13,6 @@ To get started check the [wiki](https://github.com/IoannisKaragiannis/LinearAlge
 - IDE: Eclipse. The instructions I provide in [wiki](https://github.com/IoannisKaragiannis/LinearAlgebra/wiki) are meant for Eclipse. You should figure out yourselves how to apply these instructions on different IDEs.
 
 
-## LOG FILE
-
-Assuming you are using Linux, an error-log file will be stored under the
-/tmp/LinearAlgebra/ directory. This will be helpful to detect bugs in your
-code related to *LinearAlgebra* lib. If you are working on an OS other than Linux
-the functions within *mylog.h* file will not work. As I haven't tested this library on Windows
-or Mac OS, I cannot guarantee anything.
-
-
 ## AUTHORS
 
 * **Ioannis Karagiannis** 
