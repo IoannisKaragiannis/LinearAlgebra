@@ -1,14 +1,12 @@
 <img src="https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/images/LinearAlgebraLibrary/LA.png" width="400" height="180">
 
-# UNIT TEST
-
 This is a unit test based upon *catch.hpp* file. For more details see [CATCH](https://github.com/philsquared/Catch).
 
-## PREREQUISITES
+## Prerequisites
 
 Make sure you have enabled C++14 as described in the main README file.
  
-## RUN THE UNIT TEST
+## Run the Unit Test
 
 **_Step 1_:**
 
@@ -43,7 +41,7 @@ while running the unit-test. It reveals all the extreme cases I have taken into 
 counter-example that would fail the test, do not hesitate to open a new issue on [issues](https://github.com/IoannisKaragiannis/LinearAlgebra/issues).
 
 
-## CROSS-COMPILE UNIT TEST
+## Cross-Compile Unit Test
 
 Install the ARM cross compiler toolchain on your Linux Ubuntu PC:
 ```
@@ -65,10 +63,10 @@ $ sudo apt-get install g++-arm-linux-gnueabihf
 Now, you can simply edit the makefile and modify line 11 accordingly. In order to be able to compile with arm-linux-gnueabihf-g++-4.9 you need to work on Ubuntu 16.06. If you are working on Ubuntu 14.04, like I do for instance, you will only be able to install arm-linux-gnueabihf-g++-4.8 which will complain if you try for example to exploit specific C++14 features. I prefer compiling my project directly on the machine, but that's just how I do it. Cross compilers might restrict you some times.
 
 
-## AUTHORS
+## Authors
 
 * **Ioannis Karagiannis** 
 
-## LICENSE
+## License
 
 This project is licensed under the GNU General Public License - see the [LICENSE.md](https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/LICENSE) file for details
