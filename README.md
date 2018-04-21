@@ -1,4 +1,4 @@
-<img src="https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/images/LinearAlgebraLibrary/LA.png" width="500" height="250">
+<img src="https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/images/LinearAlgebraLibrary/LA.png" width="650" height="280">
 
 This is an easy-to-install linear algebra library. It consists of two major classes, _**Vec**_ standing for vector
 and _**Mat**_ standing for matrix together with a set of accompanying functions and operations.
