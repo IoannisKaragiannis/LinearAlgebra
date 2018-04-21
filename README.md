@@ -17,7 +17,7 @@ To get started check the [wiki](https://github.com/IoannisKaragiannis/LinearAlge
 ## Issues
 Should you find any bug or have an issue in general, do not hesitate to open a new [issue](https://github.com/IoannisKaragiannis/LinearAlgebra/issues).
 
-<img src="https://media.giphy.com/media/BmmfETghGOPrW/giphy.gif" width="250" height="100" />
+<img src="https://media.giphy.com/media/BmmfETghGOPrW/giphy.gif" width="250" height="120" />
 
 ## Authors
 
