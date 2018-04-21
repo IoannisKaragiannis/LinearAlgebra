@@ -13,10 +13,13 @@ To get started check the [wiki](https://github.com/IoannisKaragiannis/LinearAlge
 - IDE: Eclipse. The instructions I provide in [wiki](https://github.com/IoannisKaragiannis/LinearAlgebra/wiki) are meant for Eclipse. You should figure out yourselves how to apply these instructions on different IDEs.
 
 
-## AUTHORS
+## Authors
 
 * **Ioannis Karagiannis** 
 
-## LICENSE
+## License
 
 This project is licensed under the GNU General Public License - see the [LICENSE.md](https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/LICENSE) file for details
+
+## Issues
+Should you find any bug or have an issue in general, do not hesitate to open an issue on [issues](https://github.com/IoannisKaragiannis/LinearAlgebra/issues).
