@@ -9,7 +9,8 @@ machine learning, and in general in any kind of academic/scientific project.
 To get started check the [wiki](https://github.com/IoannisKaragiannis/LinearAlgebra/wiki).
 
 ## Recuirements
-
+- OS: Linux. Library is tested only on Ubuntu 14.04 and 16.04.
+- IDE: Eclipse. The instructions I provide in [wiki](https://github.com/IoannisKaragiannis/LinearAlgebra/wiki) are meant for Eclipse. You should figure out yourselves how to apply these instructions on different IDEs.
 
 
 ## LOG FILE
