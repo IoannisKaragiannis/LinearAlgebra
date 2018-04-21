@@ -5,6 +5,9 @@
 
 ![Alt Text](https://giphy.com/embed/BmmfETghGOPrW)
 
+<img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" width="40" height="40" />
+
+
 This is an easy-to-install linear algebra library. It consists of two major classes, _**Vec**_ standing for vector
 and _**Mat**_ standing for matrix together with a set of accompanying functions and operations.
 This library might be useful for projects within the field of signal/image processing,
