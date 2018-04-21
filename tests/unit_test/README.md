@@ -37,8 +37,8 @@ All tests passed (2975 assertions in 102 test cases)
 Be patient. The unit test, unlike any of your projects, is testing all the functions defined in the *vec.h* and *mat.h* files. So, it takes some time to create the executable of the unit test. It's roughly 1.1 [MB]; way larger than the respective executable of the demo which was around 136 [KB]. That's becauase the demo code only used a few functions of the *LinearAlgebra* library, not all of them. 
 
 An error log file will be created under the /tmp/LinearAlgebra directory. This file contains all the exceptions thrown 
-while running the unit-test. It reveals all the extreme cases I have taken into consideration. If you can think of a
-counter-example that would fail the test feel free to open a new issue on [issues](https://github.com/IoannisKaragiannis/LinearAlgebra/issues).
+while running the unit-test. It reveals all the extreme cases I have taken into consideration. Should you think of a
+counter-example that would fail the test, do not hesitate to open a new issue on [issues](https://github.com/IoannisKaragiannis/LinearAlgebra/issues).
 
 
 ## CROSS-COMPILE UNIT TEST
