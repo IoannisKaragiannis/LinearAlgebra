@@ -1,4 +1,4 @@
-<img src="https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/images/LinearAlgebraLibrary/LA.png" width="600" height="270"> <img src="https://media.giphy.com/media/BmmfETghGOPrW/giphy.gif" width="250" height="100" />
+<img src="https://github.com/IoannisKaragiannis/LinearAlgebra/blob/master/images/LinearAlgebraLibrary/LA.png" width="600" height="270"> 
 
 
 This is an easy-to-install linear algebra library. It consists of two major classes, _**Vec**_ standing for vector
@@ -24,3 +24,5 @@ This project is licensed under the GNU General Public License - see the [LICENSE
 
 ## Issues
 Should you find any bug or have an issue in general, do not hesitate to open an issue on [issues](https://github.com/IoannisKaragiannis/LinearAlgebra/issues).
+
+<img src="https://media.giphy.com/media/BmmfETghGOPrW/giphy.gif" width="250" height="100" />
