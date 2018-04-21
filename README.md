@@ -20,14 +20,6 @@ code related to *LinearAlgebra* lib. If you are working on an OS other than Linu
 the functions within *mylog.h* file will not work. As I haven't tested this library on Windows
 or Mac OS, I cannot guarantee anything.
 
-# DEMO
-
-Look at the [demo](https://github.com/IoannisKaragiannis/LinearAlgebra/tree/master/demo) folder.
-
-
-So, now you must have familiriazed yourself with the *LinearAlgebra* library. Start your exciting project and don't forget to say a good word for me.
-
-P.S.: There are several linear algebra libraries out there way more complete and probably better performing than mine (e.g.: itpp, armadillo, eigen, etc.). But this is just a project I wanted to work on and share it with you. Cheers.
 
 ## AUTHORS
 
